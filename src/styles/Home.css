@@ -1,0 +1,303 @@
+/* 홈페이지 레이아웃 */
+.container {
+  max-width: 1200px;
+}
+
+
+/* 타이포그래피 */
+.card-title {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.text-muted {
+  font-size: 0.8rem;
+}
+
+.text-warning {
+  font-size: 0.9rem;
+}
+
+/* 검색 폼 */
+.input-group {
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: var(--bs-primary);
+}
+
+/* 목록 아이템 공통 스타일 */
+.movie-list-item, .board-list-item, .top-movie-item {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* 마지막 아이템은 밑줄 제거 */
+.movie-list-item:last-child, 
+.board-list-item:last-child, 
+.top-movie-item:last-child {
+  border-bottom: none;
+}
+
+/* 목록 아이템 hover 효과 */
+.movie-list-item:hover, .board-list-item:hover, .top-movie-item:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--bs-primary);
+}
+
+/* 게시판 아이템 추가 스타일 */
+.board-item h6 {
+  margin-bottom: 0.25rem;
+}
+
+/* 목록 컨테이너 */
+.list-container {
+  padding: 0.5rem;
+}
+
+/* 목록 아이템 내부 요소 스타일 */
+.movie-list-item h6, 
+.board-list-item h6, 
+.top-movie-item h6 {
+  margin-bottom: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+/* hover 시 제목 색상 변경 */
+.movie-list-item:hover h6, 
+.board-list-item:hover h6, 
+.top-movie-item:hover h6 {
+  color: var(--bs-primary);
+}
+
+/* 카드 헤더 스타일 */
+.card-header {
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 1.25rem;
+}
+
+/* 더보기 버튼 스타일 */
+.more-link {
+  color: var(--bs-primary);
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.more-link:hover {
+  background-color: var(--bs-primary);
+  color: white;
+  text-decoration: none;
+}
+
+/* 게시판 아이템 스타일 */
+.board-list-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.board-list-item h6 {
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.board-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 행 높이 맞추기 */
+.row-height-match {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row-height-match > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 카드 높이 조정 */
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* 자유게시판 카드 스타일 */
+.board-list-item {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.board-list-item:last-child {
+  border-bottom: none;
+}
+
+/* 자유게시판 카드 내용 영역 */
+.card-body {
+  max-height: none !important; /* 높이 제한 제거 */
+  overflow: visible !important; /* 오버플로우 제거 */
+}
+
+/* 현재 상영작 배너 스타일 */
+.now-playing-card {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.now-playing-banner {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.now-playing-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.now-playing-banner:hover img {
+  transform: scale(1.05);
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.banner-overlay h3 {
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+/* 영화 그리드 스타일 */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.movie-grid-item {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.movie-grid-item:hover {
+  transform: translateY(-5px);
+}
+
+.movie-poster {
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.movie-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-info h6 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* 평점 TOP 5 스타일 */
+.rank-badge {
+  width: 30px;
+  height: 30px;
+  background-color: var(--bs-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.rating {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+/* 카드 높이 조정 */
+.row-height-match .card {
+  height: 100%;
+}
+
+/* 게시판 아이템 간격 조정 */
+.board-list-item {
+  padding: 1rem 1.25rem;
+}
+
+/* TOP 5와 게시판 아이템 공통 스타일 */
+.top-movie-item, .board-list-item {
+  height: 80px; /* 모든 아이템의 높이를 동일하게 설정 */
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
+/* TOP 5 영화 아이템 레이아웃 */
+.top-movie-item {
+  justify-content: space-between;
+}
+
+.top-movie-item .movie-info {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+/* 게시판 아이템 레이아웃 */
+.board-list-item {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.board-list-item h6 {
+  margin: 0;
+  width: 100%;
+}
+
+/* 마지막 아이템 테두리 제거 */
+.top-movie-item:last-child,
+.board-list-item:last-child {
+  border-bottom: none;
+} 

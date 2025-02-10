@@ -1,5 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
+import Home from './pages/Home';
+import ItemList from './pages/ItemLists';
+import ItemDetail from './pages/ItemDetail';
+import ItemRegistration from './pages/ItemRegistration';
+import ItemEdit from './pages/ItemEdit';
 
 function App() {
   return (
@@ -21,5 +26,5 @@ function App() {
     </div>
   );
 }
-//1
+
 export default App;

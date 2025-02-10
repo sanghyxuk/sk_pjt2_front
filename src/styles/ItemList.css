@@ -1,0 +1,144 @@
+/* 게시판 목록 페이지 스타일 */
+.board-container {
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+/* 테이블 스타일 */
+table.board-table {
+  width: 100%;
+  margin-bottom: 1rem;
+  table-layout: fixed !important; /* 강제 적용 */
+}
+
+table.board-table th,
+table.board-table td {
+  padding: 1rem !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  white-space: nowrap !important; /* 모든 셀 줄바꿈 방지 */
+}
+
+table.board-table thead th {
+  background-color: var(--bg-color) !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  font-weight: 600 !important;
+}
+
+.board-table tbody tr:hover {
+  background-color: var(--hover-bg);
+}
+
+/* 테이블 링크 스타일 */
+.board-table a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.board-table a:hover {
+  color: var(--bs-primary);
+}
+
+/* 추천 수와 조회수 스타일 */
+.board-table th:nth-child(5),  /* 추천 컬럼 헤더 */
+.board-table th:last-child,    /* 조회수 컬럼 헤더 */
+.board-table td:nth-child(5),  /* 추천 컬럼 데이터 */
+.board-table td:last-child {   /* 조회수 컬럼 데이터 */
+  text-align: center;
+  color: var(--text-color);
+}
+
+.like-icon {
+  color: var(--bs-primary);
+  font-size: 0.9rem;
+  margin-right: 0.3rem;
+}
+
+.comment-count {
+  color: var(--bs-primary);
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* 컬럼 너비 재설정 */
+table.board-table th:nth-child(1), 
+table.board-table td:nth-child(1) { /* 번호 */
+  width: 7% !important;
+}
+
+table.board-table th:nth-child(2), 
+table.board-table td:nth-child(2) { /* 제목 */
+  width: 48% !important;
+}
+
+table.board-table th:nth-child(3), 
+table.board-table td:nth-child(3) { /* 작성자 */
+  width: 15% !important;
+}
+
+table.board-table th:nth-child(4), 
+table.board-table td:nth-child(4) { /* 작성일 */
+  width: 15% !important;
+}
+
+table.board-table th:nth-child(5), 
+table.board-table td:nth-child(5) { /* 추천 */
+  width: 7% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+table.board-table th:nth-child(6), 
+table.board-table td:nth-child(6) { /* 조회수 */
+  width: 8% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+/* 제목 텍스트 말줄임 처리 */
+table.board-table td:nth-child(2) {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  padding-right: 10px !important;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  table.board-table {
+    font-size: 0.9rem;
+  }
+
+  table.board-table th,
+  table.board-table td {
+    padding: 0.75rem 0.5rem !important;
+  }
+
+  table.board-table th:nth-child(1), 
+  table.board-table td:nth-child(1) { /* 번호 */
+    width: 10% !important;
+  }
+
+  table.board-table th:nth-child(2), 
+  table.board-table td:nth-child(2) { /* 제목 */
+    width: 45% !important;
+  }
+
+  table.board-table th:nth-child(3), 
+  table.board-table td:nth-child(3) { /* 작성자 */
+    width: 15% !important;
+  }
+
+  table.board-table th:nth-child(4), 
+  table.board-table td:nth-child(4) { /* 작성일 */
+    width: 15% !important;
+  }
+
+  table.board-table th:nth-child(5), 
+  table.board-table td:nth-child(5), /* 추천 */
+  table.board-table th:nth-child(6), 
+  table.board-table td:nth-child(6) { /* 조회수 */
+    width: 7.5% !important;
+  }
+} 
