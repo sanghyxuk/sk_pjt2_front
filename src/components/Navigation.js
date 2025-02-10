@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import logoLight from '../assets/logo-light.png';
-import logoDark from '../assets/logo-dark.png';
+// import logoLight from '../assets/logo-light.png';
+// import logoDark from '../assets/logo-dark.png';
 
 function Navigation() {
   const { theme, toggleTheme } = useTheme();

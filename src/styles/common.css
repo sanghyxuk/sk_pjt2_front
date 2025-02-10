@@ -1,0 +1,158 @@
+/* 모든 페이지에서 공통으로 사용할 스타일 */
+.page-container {
+  padding: 2rem 0;
+}
+
+.page-title {
+  margin-bottom: 1.5rem;
+  color: #212529;
+}
+
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px var(--card-shadow);
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.pagination {
+  margin-top: 2rem;
+}
+
+.page-item.active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.page-link {
+  color: #0d6efd;
+}
+
+.table-responsive {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 공통 리스트 아이템 스타일 */
+.list-item {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover {
+  background-color: var(--hover-bg);
+}
+
+
+
+/* 공통 테이블 스타일 */
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* 카드 헤더 스타일 */
+.card-header {
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 1.25rem;
+}
+
+/* 카드 바디 스타일 */
+.card-body {
+  background-color: var(--card-bg);
+  padding: 1.25rem;
+}
+
+/* 카드 푸터 스타일 */
+.card-footer {
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 1.25rem;
+}
+
+/* 카드 제목 스타일 */
+.card-title {
+  color: var(--text-color);
+  margin-bottom: 0.75rem;
+}
+
+/* 카드 텍스트 스타일 */
+.card-text {
+  color: var(--text-color);
+}
+
+.card .text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* 카드 관련 공통 스타일 */
+.movie-card {
+  height: 100%;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.movie-poster {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.movie-info {
+  padding: 1rem;
+}
+
+.movie-title {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-rating {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.star-icon {
+  color: #ffd700;
+  margin-right: 0.5rem;
+} 

@@ -1,167 +1,178 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaHeart, FaEye, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useHomeData } from '../hooks/useHome';
 import '../styles/Home.css';
-import nowPlayingBanner from '../assets/now_playing_banner.jpg';
+import advertisementBanner from '../assets/advertisement_banner.jpg';
 
 function Home() {
   const { homeData, loading, error } = useHomeData();
+
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  console.log("homeData:", homeData);
+  console.log("loading:", loading);
+  console.log("error:", error);
 
-  const formatDate = (timestamp) => {
-    if (!timestamp) return '날짜 없음';
-    const date = new Date(timestamp);
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+  const categories = [
+    { name: "Woman's Fashion", link: "/womens-fashion" },
+    { name: "Men's Fashion", link: "/mens-fashion" },
+    { name: "Electronics", link: "/electronics" },
+    { name: "Home & Lifestyle", link: "/home-lifestyle" },
+    { name: "Medicine", link: "/medicine" },
+    { name: "Sports & Outdoor", link: "/sports-outdoor" },
+    { name: "Baby's & Toys", link: "/baby-toys" },
+    { name: "Groceries & Pets", link: "/groceries-pets" },
+    { name: "Health & Beauty", link: "/health-beauty" }
+  ];
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
-    navigate(`/movies?search=${searchTerm.trim()}`);
+    navigate(`/search?q=${searchTerm.trim()}`);
   };
 
   if (loading) {
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </Container>
+        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Container>
     );
   }
 
   if (error) {
     return (
-      <Container className="py-5 text-center">
-        <h3>데이터를 불러오는데 실패했습니다.</h3>
-        <p className="text-muted">잠시 후 다시 시도해주세요.</p>
-      </Container>
+        <Container className="py-5 text-center">
+          <h3>데이터를 불러오는데 실패했습니다.</h3>
+          <p className="text-muted">잠시 후 다시 시도해주세요.</p>
+        </Container>
     );
   }
 
   return (
-    <Container className="py-5">
-      {/* 검색 폼 */}
-      <div className="mb-4">
-        <Form onSubmit={handleSearch}>
-          <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="검색어를 입력하세요 (영화, 배우, 감독)"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Button type="submit" variant="primary">
-              <FaSearch /> 검색
-            </Button>
-          </InputGroup>
-        </Form>
-      </div>
+      <Container fluid className="py-4">
+        <Row>
+          {/* 왼쪽 카테고리 메뉴 */}
+          <Col md={3} lg={2} className="sidebar">
+            <h3>Categories</h3>
+            <ul className="category-menu">
+              {categories.map((category, index) => (
+                  <li key={index}>
+                    <Link to={category.link}>{category.name}</Link>
+                  </li>
+              ))}
+            </ul>
+          </Col>
 
-      {/* 현재 상영작 배너 카드 */}
-      <Card className="mb-4 now-playing-card">
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-0">현재 상영작</h5>
-          <Link to="/now-playing" className="more-link">더보기</Link>
-        </Card.Header>
-        <Link to="/now-playing" className="text-decoration-none">
-          <Card.Body className="p-0">
-            <div className="now-playing-banner">
-              <img src={nowPlayingBanner} alt="현재 상영작" className="w-100" />
+          {/* 메인 컨텐츠 */}
+          <Col md={9} lg={10}>
+            {/* 검색바 */}
+            <div className="mb-4">
+              <Form onSubmit={handleSearch}>
+                <InputGroup>
+                  <Form.Control
+                      type="text"
+                      placeholder="What are you looking for?"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <Button type="submit" variant="primary">
+                    <FaSearch /> Search
+                  </Button>
+                </InputGroup>
+              </Form>
+            </div>
+
+            {/* 광고 배너 */}
+            <div className="advertisement-banner mb-4">
+              <img src={advertisementBanner} alt="iPhone 14 Series" />
               <div className="banner-overlay">
-                <h3>현재 상영중인 인기 영화를 만나보세요</h3>
+                <div className="apple-logo">
+                  <img src="/apple-logo.png" alt="Apple" width="40" />
+                  <span>iPhone 14 Series</span>
+                </div>
+                <h2>Up to 10% off Voucher</h2>
+                <Button variant="outline-light">Shop Now →</Button>
               </div>
             </div>
-          </Card.Body>
-        </Link>
-      </Card>
 
-      {/* 최신 영화 목록 카드 */}
-      <Card className="mb-4">
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-0">영화 목록</h5>
-          <Link to="/movies" className="more-link">더보기</Link>
-        </Card.Header>
-        <Card.Body className="p-0">
-          <div className="movie-grid">
-            {homeData.recentMovies.map((movie) => (
-              <Link key={movie.movieId} to={`/movie/${movie.movieId}`} className="movie-grid-item">
-                <div className="movie-poster">
-                  <img src={movie.posterUrl} alt={movie.title} />
-                </div>
-                <div className="movie-info">
-                  <h6>{movie.title}</h6>
-                  <small className="text-muted">{movie.director}</small>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </Card.Body>
-      </Card>
+            {/* Today's 섹션 */}
+            <div className="section-header d-flex justify-content-between align-items-center mb-3">
+              <div className="d-flex align-items-center">
+                <div className="red-marker"></div>
+                <h4 className="mb-0">Today's</h4>
+              </div>
+              <div className="navigation-arrows">
+                <Button variant="light" className="me-2"><FaArrowLeft /></Button>
+                <Button variant="light"><FaArrowRight /></Button>
+              </div>
+            </div>
 
-      {/* 평점 TOP 10과 자유게시판 */}
-      <Row className="row-height-match">
-        <Col md={6}>
-          <Card className="h-100">
-            <Card.Header className="d-flex justify-content-between align-items-center">
-              <h5 className="mb-0">평점 TOP 5</h5>
-              <Link to="/top-movies" className="more-link">더보기</Link>
-            </Card.Header>
-            <Card.Body className="p-0">
-              {homeData.topMovies.slice(0, 5).map((movie, index) => (
-                <Link 
-                  key={movie.movieId} 
-                  to={`/movie/${movie.movieId}`} 
-                  className="top-movie-item d-flex align-items-center text-decoration-none"
-                >
-                  <div className="rank-badge">{index + 1}</div>
-                  <div className="movie-info flex-grow-1">
-                    <h6 className="mb-1">{movie.title}</h6>
-                    <small className="text-muted d-block">
-                      {movie.director} • {movie.genre}
-                    </small>
+            {/* 상품 그리드 */}
+            <div className="movie-grid mb-4">
+              {homeData.recentMovies.map((product) => (
+                  <div key={product.movieId} className="movie-grid-item">
+                    <div className="movie-poster">
+                      <span className="discount-badge">-40%</span>
+                      <button className="wishlist-icon"><FaHeart /></button>
+                      <button className="quick-view"><FaEye /></button>
+                      <img src={product.posterUrl} alt={product.title} />
+                    </div>
+                    <div className="movie-info">
+                      <h6>{product.title}</h6>
+                      <div className="price-info">
+                        <span className="current-price">$120</span>
+                        <span className="original-price">$160</span>
+                      </div>
+                      <div className="rating">
+                        {"★".repeat(5)} ({product.rating})
+                      </div>
+                      <Button variant="dark" className="add-to-cart-btn">Add to Cart</Button>
+                    </div>
                   </div>
-                  <div className="rating">★ {movie.rating?.toFixed(1)}</div>
-                </Link>
               ))}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={6}>
-          <Card className="h-100">
-            <Card.Header className="d-flex justify-content-between align-items-center">
-              <h5 className="mb-0">자유게시판</h5>
-              <Link to="/community" className="more-link">더보기</Link>
-            </Card.Header>
-            <Card.Body className="p-0">
-              {homeData.recentPosts.map((post) => (
-                <Link 
-                  key={post.postId} 
-                  to={`/community/${post.postId}`}
-                  className="board-list-item text-decoration-none"
-                >
-                  <h6 className="text-truncate">{post.title}</h6>
-                  <div className="board-meta">
-                    <small className="text-muted">{post.nickname}</small>
-                    <small className="text-muted">
-                      {new Date(post.created).toLocaleDateString()}
-                    </small>
-                  </div>
-                </Link>
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+            </div>
+
+            {/* Browse By Category */}
+            <div className="section-header mb-3">
+              <div className="d-flex align-items-center">
+                <div className="red-marker"></div>
+                <h4 className="mb-0">Browse By Category</h4>
+              </div>
+            </div>
+            <div className="category-grid">
+              <div className="category-item">
+                <i className="category-icon">📱</i>
+                <span>Phones</span>
+              </div>
+              <div className="category-item">
+                <i className="category-icon">💻</i>
+                <span>Computers</span>
+              </div>
+              <div className="category-item">
+                <i className="category-icon">⌚</i>
+                <span>SmartWatch</span>
+              </div>
+              <div className="category-item">
+                <i className="category-icon">📸</i>
+                <span>Camera</span>
+              </div>
+              <div className="category-item">
+                <i className="category-icon">🎧</i>
+                <span>HeadPhones</span>
+              </div>
+              <div className="category-item">
+                <i className="category-icon">🎮</i>
+                <span>Gaming</span>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
   );
 }
 
-export default Home; 
+export default Home;
