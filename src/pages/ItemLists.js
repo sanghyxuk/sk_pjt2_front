@@ -35,7 +35,7 @@ function ItemLists() {
       loadPosts(0);
       return;
     }
-
+//
     setSearchTerm(searchQuery || '');
     setSearchType(searchTypeQuery || 'title');
     setSearchType(searchTypeQuery || 'title');
