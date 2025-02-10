@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { postsAPI } from '../api/posts';
+import '../styles/ItemWriteEdit.css'; // CSS 파일 추가
 
 function ItemRegistration() {
   const { id } = useParams(); // 수정 모드일 경우 게시글 ID
@@ -58,18 +59,11 @@ function ItemRegistration() {
     try {
       if (id) {
         // 수정 모드
-        console.log('Updating post:', { id, title: title.trim(), content: content.trim() }); // 디버깅용
         await postsAPI.updatePost(id, title.trim(), content.trim());
         alert('게시글이 수정되었습니다.');
       } else {
         // 새 글 작성 모드
-        if (files.length > 0) {
-          // 파일이 있는 경우
-          await postsAPI.createPost(title, content, files);
-        } else {
-          // 파일이 없는 경우
-          await postsAPI.createPost(title, content, null);
-        }
+        await postsAPI.createPost(title, content, files.length > 0 ? files : null);
         alert('게시글이 작성되었습니다.');
       }
       navigate('/community');
@@ -82,53 +76,72 @@ function ItemRegistration() {
   };
 
   return (
-    <Container className="py-4">
-      <h2>{id ? '게시글 수정' : '새 게시글 작성'}</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>제목</Form.Label>
-          <Form.Control
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="제목을 입력하세요"
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>내용</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={10}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="내용을 입력하세요"
-            required
-          />
-        </Form.Group>
-
-        {!id && ( // 새 글 작성시에만 파일 업로드 가능
+      <Container className="py-4 item-registration-container">
+        <h2>{id ? '게시글 수정' : '새 게시글 작성'}</h2>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>파일 첨부</Form.Label>
+            <Form.Label>상품 이름 *</Form.Label>
             <Form.Control
-              type="file"
-              multiple
-              onChange={(e) => setFiles(Array.from(e.target.files))}
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="상품 이름을 입력하세요"
+                required
             />
           </Form.Group>
-        )}
 
-        <div className="d-flex justify-content-end gap-2">
-          <Button variant="secondary" onClick={() => navigate('/community')}>
-            취소
-          </Button>
-          <Button variant="primary" type="submit" disabled={isLoading}>
-            {isLoading ? '처리중...' : (id ? '수정하기' : '작성하기')}
-          </Button>
-        </div>
-      </Form>
-    </Container>
+          <Form.Group className="mb-3">
+            <Form.Label>가격 *</Form.Label>
+            <Form.Control
+                type="number"
+                placeholder="가격을 입력하세요"
+                required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>택배비 *</Form.Label>
+            <Form.Control
+                type="number"
+                placeholder="택배비를 입력하세요"
+                required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>상품 설명</Form.Label>
+            <Form.Control
+                as="textarea"
+                rows={5}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="상품 설명을 입력하세요"
+            />
+          </Form.Group>
+
+          {!id && ( // 새 글 작성시에만 파일 업로드 가능
+              <Form.Group className="mb-3">
+                <Form.Label>파일 첨부</Form.Label>
+                <Form.Control
+                    type="file"
+                    multiple
+                    onChange={(e) => setFiles(Array.from(e.target.files))}
+                />
+              </Form.Group>
+          )}
+
+          <Row>
+            <Col className="d-flex justify-content-end gap-2">
+              <Button variant="secondary" onClick={() => navigate('/community')}>
+                취소
+              </Button>
+              <Button variant="primary" type="submit" disabled={isLoading}>
+                {isLoading ? '처리중...' : (id ? '수정하기' : '작성하기')}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Container>
   );
 }
 
