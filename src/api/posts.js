@@ -92,7 +92,7 @@ export const postsAPI = {
     likePost: (postId, username) => 
         api.post('/posts/like', null, {
             params: {
-                postId,
+                itemId: postId,
                 username
             }
         }),

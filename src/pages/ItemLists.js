@@ -19,7 +19,7 @@ function ItemLists() {
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 0);
   const [totalPages, setTotalPages] = useState(0);
-  const [itemsPerPage] = useState(8); // 페이지당 아이템 수 조정
+  const [itemsPerPage] = useState(4); // 페이지당 아이템 수 조정
 
   useEffect(() => {
     // 로그인하지 않은 경우, 페이지 내용을 로드하지 않음
@@ -166,11 +166,11 @@ function ItemLists() {
         <div className="product-list">
           {Array.isArray(filteredItems) && filteredItems.length > 0 ? (
               filteredItems.map((item) => (
-                  <div className="product-card" key={item.postId}>
+                  <div className="product-card" key={item.itemId}>
                     {item.discount && (
                         <div className="discount">-{item.discount}%</div>
                     )}
-                    <Link to={`/community/${item.postId}`}>
+                    <Link to={`/items/${item.itemId}`}>
                       <img src={item.imageUrl || 'default-image-url.jpg'} alt={item.title} />
                       <h5>{item.title}</h5>
                       <div className="price">${item.price}</div>

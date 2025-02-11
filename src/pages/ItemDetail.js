@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Button, Form } from 'react-bootstrap';
+import { Container, Card, Button, Form, Row, Col } from 'react-bootstrap';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { FaTrash, FaThumbsUp } from 'react-icons/fa';
+import { FaTrash, FaThumbsUp, FaHeart } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { postsAPI } from '../api/posts';
+//import { postsAPI } from '../api/posts';
+import { items } from '../data/dummyData'; // 더미 데이터 import
 import Pagination from '../components/Pagination';
 import '../styles/common.css';
 import '../styles/ItemDetail.css';
@@ -13,7 +14,7 @@ function ItemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [post, setPost] = useState(null);
+  const [item, setItem] = useState(null);
   const [commentList, setCommentList] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,14 +37,29 @@ function ItemDetail() {
     setCurrentCommentPage(pageNumber);
   };
 
+  // 더미 데이터에서 item 가져오기
+  useEffect(() => {
+    const fetchedItem = items.find(item => item.itemId === parseInt(id));
+    if (fetchedItem) {
+      setItem(fetchedItem);
+      setLikeCount(fetchedItem.heart || 0);
+      // 댓글 예시 데이터 추가
+      setCommentList([
+        { commentId: 1, userId: 1, nickname: "작성자 1", content: "첫 번째 댓글입니다.", created: "2022-01-02" },
+        { commentId: 2, userId: 2, nickname: "작성자 2", content: "두 번째 댓글입니다.", created: "2022-01-03" },
+      ]);
+    }
+  }, [id]);
+
+  /*
   const checkUserInteractions = async () => {
-    if (!user || !post) return;
+    if (!user || !item) return;
 
     try {
-      const likeStatus = await postsAPI.checkLikeStatus(Number(post.postId), user.id);
+      const likeStatus = await postsAPI.checkLikeStatus(Number(items.itemId), user.id);
       setIsLiked(likeStatus);
 
-      if (post.username) {
+      if (items.username) {
         const followStatus = await postsAPI.checkFollowStatus(user.id, post.username);
         setIsFollowing(followStatus);
       }
@@ -221,191 +237,125 @@ function ItemDetail() {
       alert('팔로우 처리 중 오류가 발생했습니다.');
     }
   };
+  */
 
-  if (!post) return <div>로딩 중...</div>;
+  if (!item) return <div>로딩 중...</div>;
 
   return (
       <Container className="py-5">
-        {/* 게시글 카드 */}
-        <Card className="post-card">
-          <Card.Header>
-            <div className="post-header">
-              <div className="post-title">
-                <h4>{post.title}</h4>
-              </div>
-              <div className="post-info">
-                <div className="author-info">
-                  <Link to={`/user/${post.username}`} className="author-name">
-                    {post.nickname}
-                  </Link>
-                  {user && user.id !== post.username && (
-                      <Button
-                          variant={isFollowing ? "secondary" : "primary"}
-                          size="sm"
-                          className="follow-btn"
-                          onClick={handleFollow}
-                      >
-                        {isFollowing ? '팔로잉' : '팔로우'}
-                      </Button>
-                  )}
-                </div>
-                <div className="post-meta">
-                  <span className="post-date">{post.created}</span>
-                  <span className="post-views">조회수: {post.cnt + 1}</span>
-                </div>
-              </div>
-              {canDeletePost() && (
-                  <div className="post-actions">
-                    {Number(user.userId) === Number(post.userId) && (
-                        <Button
-                            variant="outline-primary"
-                            onClick={() => navigate(`/items/edit/${id}`)}
-                        >
-                          수정
-                        </Button>
-                    )}
-                    <Button
-                        variant="outline-danger"
-                        onClick={handleDelete}
-                    >
-                      삭제
-                    </Button>
+        <Row>
+          <Col md={8}>
+            <Card className="item-card">
+              <Card.Header>
+                <div className="item-header">
+                  <h4>{item.title}</h4>
+                  <div className="item-meta">
+                    <span className="item-date">{item.created}</span>
+                    <span className="item-views">조회수: {item.cnt}</span>
                   </div>
-              )}
-            </div>
-          </Card.Header>
-          <Card.Body>
-            <div className="post-content">
-              {post.fileAttached === 1 && post.files && post.files.length > 0 && (
-                  <div className="post-images mt-3">
-                    {post.files.map((filePath, index) => {
-                      const fileName = filePath.split('\\').pop().split('/').pop();
-                      return (
-                          <div key={index} className="mb-3">
-                            <img
-                                src={`http://localhost:8080/uploads/${fileName}`}
-                                alt={`첨부 이미지 ${index + 1}`}
-                                className="img-fluid"
-                                style={{
-                                  maxWidth: '100%',
-                                  maxHeight: '500px',
-                                  objectFit: 'contain'
-                                }}
-                            />
-                          </div>
-                      );
-                    })}
-                  </div>
-              )}
-              <p>{post.content}</p>
-            </div>
-
-            <div className="like-section">
-              <Button
-                  variant={isLiked ? "primary" : "outline-primary"}
-                  onClick={handleLike}
-                  className="like-btn"
-              >
-                <FaThumbsUp /> {likeCount}
-              </Button>
-            </div>
-          </Card.Body>
-          <Card.Footer>
-            <div className="d-flex justify-content-end gap-3">
-              <Button variant="secondary" onClick={() => navigate('/items')}>
-                목록
-              </Button>
-            </div>
-          </Card.Footer>
-        </Card>
-
-        {/* 댓글 섹션 */}
-        <Card className="comments-section">
-          <Card.Header>
-            <h5 className="mb-0">댓글 {commentList.length}개</h5>
-          </Card.Header>
-          <Card.Body className="p-0">
-            {user && (
-                <div className="comment-form">
-                  <Form onSubmit={handleCommentSubmit}>
-                    <Form.Group>
-                      <Form.Control
-                          as="textarea"
-                          value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
-                          placeholder="댓글을 입력하세요"
-                      />
-                    </Form.Group>
-                    <div className="d-flex justify-content-end mt-2">
-                      <Button type="submit" variant="primary">댓글 작성</Button>
-                    </div>
-                  </Form>
                 </div>
-            )}
-
-            {currentComments.map((comment) => (
-                <div key={comment.commentId} className="comment-item">
-                  <div className="comment-header">
-                    <div className="comment-author">
-                      <strong>{comment.nickname}</strong>
-                      <span className="comment-date">{comment.created}</span>
-                    </div>
-                    {hasDeletePermission(user, comment.userId) && (
-                        <div className="comment-buttons">
-                          {Number(user.userId) === Number(comment.userId) && (
-                              <Button
-                                  variant="outline-primary"
-                                  size="sm"
-                                  onClick={() => handleEditStart(comment)}
-                              >
-                                수정
-                              </Button>
-                          )}
-                          <Button
-                              variant="outline-danger"
-                              size="sm"
-                              onClick={() => handleCommentDelete(comment.commentId)}
-                          >
-                            삭제
-                          </Button>
-                        </div>
-                    )}
-                  </div>
-                  {editingCommentId === comment.commentId ? (
-                      <div className="comment-edit-form">
-                        <Form.Control
-                            as="textarea"
-                            value={editCommentContent}
-                            onChange={(e) => setEditCommentContent(e.target.value)}
-                        />
-                        <div className="d-flex justify-content-end mt-2">
-                          <Button variant="primary" onClick={() => handleEditSubmit(comment.commentId)}>수정 완료</Button>
-                          <Button variant="secondary" onClick={handleEditCancel}>취소</Button>
-                        </div>
+              </Card.Header>
+              <Card.Body>
+                <div className="item-content">
+                  {item.fileAttached === 1 && item.files && item.files.length > 0 && (
+                      <div className="item-images mt-3">
+                        {item.files.map((filePath, index) => (
+                            <div key={index} className="mb-3">
+                              <img
+                                  src={`http://localhost:8080/uploads/${filePath}`}
+                                  alt={`첨부 이미지 ${index + 1}`}
+                                  className="img-fluid"
+                              />
+                            </div>
+                        ))}
                       </div>
-                  ) : (
+                  )}
+                  <p>{item.content}</p>
+                </div>
+                <div className="like-section">
+                  <Button
+                      variant={isLiked ? "primary" : "outline-primary"}
+                      onClick={() => {
+                        setIsLiked(!isLiked);
+                        setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+                      }}
+                      className="like-btn"
+                  >
+                    <FaHeart /> {likeCount}
+                  </Button>
+                </div>
+              </Card.Body>
+              <Card.Footer>
+                <div className="d-flex justify-content-end gap-3">
+                  <Button variant="secondary" onClick={() => navigate('/items')}>
+                    목록
+                  </Button>
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="comments-section">
+              <Card.Header>
+                <h5 className="mb-0">댓글 {commentList.length}개</h5>
+              </Card.Header>
+              <Card.Body className="p-0">
+                {user && (
+                    <div className="comment-form">
+                      <Form onSubmit={(e) => {
+                        e.preventDefault();
+                        if (newComment.trim()) {
+                          setCommentList([...commentList, { commentId: commentList.length + 1, userId: user.id, nickname: user.nickname, content: newComment, created: new Date().toLocaleDateString() }]);
+                          setNewComment('');
+                        }
+                      }}>
+                        <Form.Group>
+                          <Form.Control
+                              as="textarea"
+                              value={newComment}
+                              onChange={(e) => setNewComment(e.target.value)}
+                              placeholder="댓글을 입력하세요"
+                          />
+                        </Form.Group>
+                        <div className="d-flex justify-content-end mt-2">
+                          <Button type="submit" variant="primary">댓글 작성</Button>
+                        </div>
+                      </Form>
+                    </div>
+                )}
+
+                {commentList.map((comment) => (
+                    <div key={comment.commentId} className="comment-item">
+                      <div className="comment-header">
+                        <div className="comment-author">
+                          <strong>{comment.nickname}</strong>
+                          <span className="comment-date">{comment.created}</span>
+                        </div>
+                        {user && user.id === comment.userId && (
+                            <div className="comment-buttons">
+                              <Button
+                                  variant="outline-danger"
+                                  size="sm"
+                                  onClick={() => setCommentList(commentList.filter(c => c.commentId !== comment.commentId))}
+                              >
+                                삭제
+                              </Button>
+                            </div>
+                        )}
+                      </div>
                       <div className="comment-content">
                         {comment.content}
                       </div>
-                  )}
-                </div>
-            ))}
+                    </div>
+                ))}
 
-            {commentList.length === 0 && (
-                <p className="text-center text-muted py-4">첫 번째 댓글을 작성해보세요!</p>
-            )}
-
-            {totalCommentPages > 1 && (
-                <div className="d-flex justify-content-center py-3">
-                  <Pagination
-                      currentPage={currentCommentPage}
-                      totalPages={totalCommentPages}
-                      onPageChange={handleCommentPageChange}
-                  />
-                </div>
-            )}
-          </Card.Body>
-        </Card>
+                {commentList.length === 0 && (
+                    <p className="text-center text-muted py-4">첫 번째 댓글을 작성해보세요!</p>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
   );
 }
