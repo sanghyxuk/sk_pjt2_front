@@ -1,69 +1,68 @@
 import { useState, useEffect } from 'react';
-//import { movieAPI } from '../api/movie';
-import { postsAPI } from '../api/posts';
+import { items } from '../data/dummyData'; // 더미 데이터 임포트
 
 export function useHomeData() {
   const [homeData, setHomeData] = useState({
-    topMovies: [],
-    recentMovies: [],
-    recentPosts: []
+    recentItems: []  // 최근 아이템 리스트 (게시글 포함)
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchHomeData = async () => {
+    const fetchHomeData = () => {
       try {
         setLoading(true);
-        
-        const [topMoviesResponse, allMoviesResponse, recentPostsResponse] = await Promise.all([
-          //movieAPI.getTopMovies(),
-          //movieAPI.getMovies(),
-          postsAPI.getPostsList(0, 5)
-        ]);
 
-        // 응답 데이터 구조 확인 및 안전한 데이터 추출
-        const topMovies = topMoviesResponse?.data || [];
-        const recentMovies = allMoviesResponse?.data || [];
-        
-        // 게시글과 사용자 정보 매핑
-        const postsData = recentPostsResponse?.data?.post?.content || [];
-        const userData = recentPostsResponse?.data?.user || [];
-        
-        const recentPosts = postsData.map((post, index) => {
-          const user = userData[index];
-          return {
-            ...post,
-            nickname: user?.nickname || '알 수 없음'
-          };
-        });
+        // 더미 데이터에서 최근 아이템(게시글)을 가져옴
+        const recentItems = items.slice(-5).map(item => ({
+          itemId: item.itemId,
+          title: item.title,
+          content: item.content,
+          nickname: item.nickname || '알 수 없음' // 사용자 정보가 없으므로 기본값 설정
+        }));
 
         console.log('Extracted Data:', {
-          topMovies,
-          recentMovies,
-          recentPosts
+          recentItems
         });
 
         setHomeData({
-          topMovies: topMovies.slice(0, 5),
-          recentMovies: recentMovies.slice(0, 5),
-          recentPosts: recentPosts
+          recentItems: recentItems
         });
 
       } catch (err) {
         setError(err);
         console.error('Error fetching home data:', err);
-        console.error('Error details:', {
-          message: err.message,
-          response: err.response
-        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchHomeData();
+
+    // 주석: 나중에 API를 사용하여 데이터를 가져오고 싶다면 아래와 같이 수정할 수 있습니다.
+    /*
+    const fetchHomeData = async () => {
+      try {
+        setLoading(true);
+
+        const recentItemsResponse = await itemsAPI.getRecentItems(); // 최근 아이템 API 호출
+
+        const recentItems = recentItemsResponse?.data || [];
+
+        setHomeData({
+          recentItems: recentItems
+        });
+
+      } catch (err) {
+        setError(err);
+        console.error('Error fetching home data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    */
+
   }, []);
 
   return { homeData, loading, error };
-} 
+}

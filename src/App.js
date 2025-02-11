@@ -44,7 +44,7 @@ function App() {
               <Route path="/items" element={<ItemLists />} />
               <Route path="/items/write" element={<ItemRegistration />} />
               <Route path="/items/edit/:id" element={<ItemRegistration />} />
-              <Route path="/community/:id" element={<ItemDetail />} />
+              <Route path="/items/:id" element={<ItemDetail />} />
             </Routes>
           </AuthProvider>
         </ThemeProvider>

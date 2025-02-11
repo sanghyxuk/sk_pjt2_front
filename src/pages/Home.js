@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Card, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaEye, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useHomeData } from '../hooks/useHome';
@@ -11,9 +11,6 @@ function Home() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  console.log("homeData:", homeData);
-  console.log("loading:", loading);
-  console.log("error:", error);
 
   const categories = [
     { name: "Woman's Fashion", link: "/womens-fashion" },
@@ -111,24 +108,24 @@ function Home() {
               </div>
             </div>
 
-            {/* 상품 그리드 */}
-            <div className="movie-grid mb-4">
-              {homeData.recentMovies.map((product) => (
-                  <div key={product.movieId} className="movie-grid-item">
-                    <div className="movie-poster">
-                      <span className="discount-badge">-40%</span>
+            {/* 추천 상품 그리드 */}
+            <div className="product-grid mb-4">
+              {homeData.recentItems.map((item) => (
+                  <div key={item.itemId} className="product-grid-item">
+                    <div className="product-poster">
+                      <span className="discount-badge">-{item.discount}%</span>
                       <button className="wishlist-icon"><FaHeart /></button>
                       <button className="quick-view"><FaEye /></button>
-                      <img src={product.posterUrl} alt={product.title} />
+                      <img src={item.posterUrl} alt={item.title} />
                     </div>
-                    <div className="movie-info">
-                      <h6>{product.title}</h6>
+                    <div className="product-info">
+                      <h6>{item.title}</h6>
                       <div className="price-info">
-                        <span className="current-price">$120</span>
-                        <span className="original-price">$160</span>
+                        <span className="current-price">${item.currentPrice}</span>
+                        <span className="original-price">${item.originalPrice}</span>
                       </div>
                       <div className="rating">
-                        {"★".repeat(5)} ({product.rating})
+                        {"★".repeat(5)} ({item.rating})
                       </div>
                       <Button variant="dark" className="add-to-cart-btn">Add to Cart</Button>
                     </div>

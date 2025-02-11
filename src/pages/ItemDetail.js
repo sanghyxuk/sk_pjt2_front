@@ -121,7 +121,7 @@ function ItemDetail() {
 
     try {
       await postsAPI.deletePost(id, user);
-      navigate('/community');
+      navigate('/items');
     } catch (error) {
       console.error('Error deleting post:', error);
     }
@@ -259,7 +259,7 @@ function ItemDetail() {
                     {Number(user.userId) === Number(post.userId) && (
                         <Button
                             variant="outline-primary"
-                            onClick={() => navigate(`/community/edit/${id}`)}
+                            onClick={() => navigate(`/items/edit/${id}`)}
                         >
                           수정
                         </Button>
@@ -312,7 +312,7 @@ function ItemDetail() {
           </Card.Body>
           <Card.Footer>
             <div className="d-flex justify-content-end gap-3">
-              <Button variant="secondary" onClick={() => navigate('/community')}>
+              <Button variant="secondary" onClick={() => navigate('/items')}>
                 목록
               </Button>
             </div>

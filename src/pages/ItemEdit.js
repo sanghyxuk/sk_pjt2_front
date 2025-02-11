@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { boards } from '../data/dummyData';
+import { items } from '../data/dummyData';
 import '../styles/ItemWriteEdit.css';
 
 function ItemEdit() {
@@ -15,24 +15,24 @@ function ItemEdit() {
   const [previews, setPreviews] = useState([]);
 
   useEffect(() => {
-    const post = boards.find(post => post.boardId === parseInt(id));
-    if (!post) {
+    const item = items.find(item => item.itemId === parseInt(id));
+    if (!item) {
       alert('게시글을 찾을 수 없습니다.');
-      navigate('/community');
+      navigate('/items');
       return;
     }
 
-    if (!user || user.userId !== post.userId) {
+    if (!user || user.userId !== item.userId) {
       alert('수정 권한이 없습니다.');
-      navigate('/community');
+      navigate('/items');
       return;
     }
 
-    setTitle(post.title);
-    setContent(post.content);
-    if (post.images) {
-      setPreviews(post.images);
-      setImages(post.images);
+    setTitle(item.title);
+    setContent(item.content);
+    if (item.images) {
+      setPreviews(item.images);
+      setImages(item.images);
     }
   }, [id, user, navigate]);
 
@@ -50,6 +50,7 @@ function ItemEdit() {
     }
 
     // 실제 구현시에는 API 호출
+    /**
     const updatedPost = {
       boardId: parseInt(id),
       userId: user.userId,
@@ -57,9 +58,23 @@ function ItemEdit() {
       content: content.trim(),
       images: images, // 수정된 이미지 포함
     };
+    */
+
+        // 더미 데이터에서 아이템 수정
+    const updatedItem = {
+          itemId: parseInt(id),
+          userId: user.userId,
+          title: title.trim(),
+          content: content.trim(),
+        };
+
+    const index = items.findIndex(item => item.itemId === parseInt(id));
+    if (index !== -1) {
+      items[index] = updatedItem; // 수정된 아이템으로 업데이트
+    }
 
     // 수정 완료 후 상세 페이지로 이동
-    navigate(`/community/${id}`);
+    navigate(`/items/${id}`);
   };
 
   return (
@@ -116,7 +131,7 @@ function ItemEdit() {
               </Form.Group>
 
               <div className="d-flex justify-content-end gap-2">
-                <Button variant="secondary" onClick={() => navigate(`/community/${id}`)}>
+                <Button variant="secondary" onClick={() => navigate(`/items/${id}`)}>
                   취소
                 </Button>
                 <Button variant="primary" type="submit">

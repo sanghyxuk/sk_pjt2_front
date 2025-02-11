@@ -3,11 +3,10 @@ import { Container, Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { postsAPI } from '../api/posts';
+import { items } from '../data/dummyData';
 import Pagination from '../components/Pagination';
 import '../styles/common.css';
 import '../styles/ItemLists.css';
-import dummyItems from '../data/dummyItems';
 
 function ItemLists() {
   const navigate = useNavigate();
@@ -15,56 +14,55 @@ function ItemLists() {
   const { user } = useAuth();
   const searchParams = new URLSearchParams(location.search);
 
-  const [posts, setPosts] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [searchType, setSearchType] = useState(searchParams.get('type') || 'title');
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 0);
   const [totalPages, setTotalPages] = useState(0);
-  const [itemsPerPage] = useState(15);
+  const [itemsPerPage] = useState(8); // 페이지당 아이템 수 조정
 
   useEffect(() => {
-    const currentParams = new URLSearchParams(location.search);
-    const searchQuery = currentParams.get('search');
-    const searchTypeQuery = currentParams.get('type');
-    const pageQuery = parseInt(currentParams.get('page'));
+    // 로그인하지 않은 경우, 페이지 내용을 로드하지 않음
+    //if (!user) {
+    //  return;
+    //}
 
-    if (location.pathname === '/community' && !location.search) {
-      setSearchTerm('');
-      setSearchType('title');
-      setCurrentPage(0);
-      loadPosts(0);
-      return;
-    }
-//
-    setSearchTerm(searchQuery || '');
-    setSearchType(searchTypeQuery || 'title');
-    setSearchType(searchTypeQuery || 'title');
-    setCurrentPage(pageQuery || 0);
+    loadPosts(currentPage); // 현재 페이지에 맞는 포스트 로드
+  }, [location.search, user]);
 
-    if (searchQuery) {
-      loadPosts(pageQuery || 0, searchQuery, searchTypeQuery);
-    } else {
-      loadPosts(pageQuery || 0);
-    }
-  }, [location.pathname, location.search]);
-
-  const loadPosts = async (page, search = '', type = 'title') => {
-    // 페이지네이션 로직을 위해 페이지당 아이템 수를 고려하여 데이터 슬라이스
+  const loadPosts = (page) => {
     const startIndex = page * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedPosts = dummyItems.slice(startIndex, endIndex);
 
-    setPosts(paginatedPosts);
-    setTotalPages(Math.ceil(dummyItems.length / itemsPerPage));
+    // 검색어가 있을 경우 필터링
+    const filtered = items.filter(item => {
+      if (searchType === 'title') {
+        return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+      } else if (searchType === 'content') {
+        return item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase());
+      } else if (searchType === 'titleContent') {
+        return (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase())));
+      } else if (searchType === 'author') {
+        return item.author && item.author.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+      return false;
+    });
+
+    const paginatedItems = filtered.slice(startIndex, endIndex);
+    setFilteredItems(paginatedItems);
+    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
   };
 
   /*
   const loadPosts = async (page, search = '', type = 'title') => {
     try {
       let response;
+      // 검색 쿼리가 있는 경우 API 호출
       if (search) {
         response = await postsAPI.searchPosts(search.trim(), page, itemsPerPage, type);
       } else {
+        // 검색 쿼리가 없는 경우 모든 포스트 가져오기
         response = await postsAPI.getPostsList(page, itemsPerPage);
       }
 
@@ -72,6 +70,7 @@ function ItemLists() {
         const postsData = response.data.post.content;
         const userData = response.data.user;
 
+        // 포스트와 사용자 정보를 결합
         const postsWithUserInfo = postsData.map((post, index) => ({
           ...post,
           nickname: userData[index]?.nickname || '알 수 없음'
@@ -92,36 +91,22 @@ function ItemLists() {
     e.preventDefault();
     const params = new URLSearchParams();
 
+    // 검색어가 있는 경우, URL 파라미터 설정
     if (searchTerm.trim()) {
       params.set('type', searchType);
       params.set('search', searchTerm.trim());
       params.set('page', '0');
-      navigate(`/community?${params.toString()}`);
+      navigate(`/items?${params.toString()}`);
     } else {
-      navigate('/community');
+      navigate('/items');
     }
   };
 
-  const handlePageChange = async (pageNumber) => {
+  const handlePageChange = (pageNumber) => {
     const params = new URLSearchParams(location.search);
     params.set('page', pageNumber - 1);
     navigate(`${location.pathname}?${params.toString()}`);
     setCurrentPage(pageNumber - 1);
-    window.scrollTo(0, 0);
-
-    const searchQuery = params.get('search');
-    const searchTypeQuery = params.get('type');
-
-    if (searchQuery) {
-      await loadPosts(pageNumber - 1, searchQuery, searchTypeQuery);
-    } else {
-      await loadPosts(pageNumber - 1);
-    }
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR');
   };
 
   const handleWriteClick = () => {
@@ -130,7 +115,7 @@ function ItemLists() {
       navigate('/login');
       return;
     }
-    navigate('/community/write');
+    navigate('/items/write');
   };
 
   return (
@@ -146,9 +131,9 @@ function ItemLists() {
                   onChange={(e) => setSearchType(e.target.value)}
                   className="mb-2 mb-md-0"
               >
-                <option value="title">제목</option>
+                <option value="title">상품이름</option>
                 <option value="content">내용</option>
-                <option value="titleContent">제목+내용</option>
+                <option value="titleContent">상품이름+내용</option>
                 <option value="author">작성자</option>
               </Form.Select>
             </Col>
@@ -168,35 +153,35 @@ function ItemLists() {
           </Row>
         </Form>
 
-        {/* 글쓰기 버튼 */}
+        {/* 등록하기 버튼 */}
         <div className="d-flex justify-content-end mb-3">
           {user && (
               <Button variant="primary" onClick={handleWriteClick}>
-                글쓰기
+                상품등록하기
               </Button>
           )}
         </div>
 
         {/* 카드 형식의 상품 목록 */}
         <div className="product-list">
-          {Array.isArray(posts) && posts.length > 0 ? (
-              posts.map((post) => (
-                  <div className="card" key={post.postId}>
-                    {post.discount && (
-                        <div className="discount">-{post.discount}%</div>
+          {Array.isArray(filteredItems) && filteredItems.length > 0 ? (
+              filteredItems.map((item) => (
+                  <div className="product-card" key={item.postId}>
+                    {item.discount && (
+                        <div className="discount">-{item.discount}%</div>
                     )}
-                    <Link to={`/community/${post.postId}`}>
-                      <img src={post.imageUrl || 'default-image-url.jpg'} alt={post.title} />
-                      <h5>{post.title}</h5>
-                      <div className="price">${post.price}</div>
-                      <div className="rating">⭐ {post.rating || 0}</div>
+                    <Link to={`/community/${item.postId}`}>
+                      <img src={item.imageUrl || 'default-image-url.jpg'} alt={item.title} />
+                      <h5>{item.title}</h5>
+                      <div className="price">${item.price}</div>
+                      <div className="rating">⭐ {item.rating || 0}</div>
                     </Link>
                     <Button className="btn-add-to-cart">Add To Cart</Button>
                   </div>
               ))
           ) : (
               <div className="text-center py-4">
-                게시글이 없습니다.
+                상품이 없습니다.
               </div>
           )}
         </div>

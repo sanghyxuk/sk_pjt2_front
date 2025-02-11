@@ -1,186 +1,125 @@
-/* Bootstrap 오버라이드를 위한 특정성 높은 선택자 사용 */
-.container.py-5 {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px !important;
+body {
+  background-color: #f8f9fa;
 }
 
-/* 검색바 커스텀 */
-.container .input-group {
-  max-width: 800px;
-  margin: 0 auto 2rem;
+.sidebar {
+  background-color: #fff;
+  border-right: 1px solid #dee2e6;
+  padding: 15px;
 }
 
-.container .input-group .form-control {
-  border-radius: 4px 0 0 4px !important;
-  border: 1px solid #e1e1e1 !important;
-  padding: 0.5rem 1rem !important;
+.category-menu {
+  list-style-type: none;
+  padding: 0;
 }
 
-.container .input-group .btn-primary {
-  border-radius: 0 4px 4px 0 !important;
-  background-color: #dc3545 !important;
-  border: none !important;
-  padding: 0.5rem 1.5rem !important;
+.category-menu li {
+  margin-bottom: 10px;
 }
 
-/* 카드 스타일 오버라이드 */
-.container .card {
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 8px !important;
-  overflow: hidden;
+.category-menu li a {
+  text-decoration: none;
+  color: #007bff;
 }
 
-.container .card-header {
-  background-color: white !important;
-  border-bottom: 1px solid #e1e1e1 !important;
-  padding: 1rem !important;
-}
-
-/* 광고 배너 */
 .advertisement-banner {
   position: relative;
-  background: #000;
-  border-radius: 0 0 8px 8px;
   overflow: hidden;
-  height: 300px;
+  border-radius: 5px;
 }
 
 .advertisement-banner img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  border-radius: 5px;
 }
 
 .banner-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  color: white;
-}
-
-/* 상품 그리드 */
-.movie-grid {
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
-  gap: 20px !important;
-  padding: 20px !important;
-}
-
-.movie-grid-item {
-  position: relative;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.2s;
-  text-decoration: none;
-  color: inherit;
-}
-
-.movie-grid-item:hover {
-  transform: translateY(-5px);
-}
-
-.movie-poster {
-  position: relative;
-  padding-top: 100%;
-  background: #f5f5f5;
-}
-
-.movie-poster img {
-  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 20px;
 }
 
-/* 할인 뱃지 */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.product-grid-item {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+}
+
+.product-poster {
+  position: relative;
+}
+
 .discount-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #dc3545;
+  background-color: red;
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-  z-index: 1;
+  padding: 5px;
+  border-radius: 3px;
 }
 
-/* 상품 정보 */
-.movie-info {
+.product-info {
   padding: 15px;
 }
 
-.movie-info h6 {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-/* TOP 5 리스트 아이템 */
-.top-movie-item {
-  padding: 15px;
-  border-bottom: 1px solid #e1e1e1;
-  display: flex;
-  align-items: center;
-}
-
-.rank-badge {
-  width: 24px;
-  height: 24px;
-  background: #dc3545;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 15px;
-}
-
-/* 게시판 리스트 아이템 */
-.board-list-item {
-  padding: 15px;
-  border-bottom: 1px solid #e1e1e1;
-  color: inherit;
-}
-
-.board-list-item:hover {
-  background: #f8f9fa;
-}
-
-.board-meta {
+.price-info {
   display: flex;
   justify-content: space-between;
-  margin-top: 5px;
+  margin: 10px 0;
 }
 
-/* 반응형 스타일 */
-@media (max-width: 1200px) {
-  .movie-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-  }
+.current-price {
+  color: #28a745;
+  font-weight: bold;
 }
 
-@media (max-width: 992px) {
-  .movie-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
+.original-price {
+  text-decoration: line-through;
+  color: #6c757d;
 }
 
-@media (max-width: 768px) {
-  .movie-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
+.rating {
+  color: #ffc107;
 }
 
-@media (max-width: 576px) {
-  .movie-grid {
-    grid-template-columns: repeat(1, 1fr) !important;
-  }
+.add-to-cart-btn {
+  width: 100%;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.category-item {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  flex: 1 1 120px;
+  text-align: center;
+}
+
+.category-icon {
+  font-size: 24px;
 }

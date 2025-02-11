@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { items } from '../data/dummyData'; // 더미 데이터 임포트
 import { postsAPI } from '../api/posts';
 import '../styles/ItemWriteEdit.css'; // CSS 파일 추가
 
@@ -11,10 +12,11 @@ function ItemRegistration() {
   const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 수정 모드일 경우 기존 게시글 데이터 로드
+  // 수정 모드일 경우 기존 아이템 데이터 로드
   useEffect(() => {
     if (id) {
       loadPost();
@@ -29,7 +31,7 @@ function ItemRegistration() {
         // userId를 Number로 변환하여 비교
         if (Number(user?.userId) !== Number(post.userId)) {
           alert('수정 권한이 없습니다.');
-          navigate('/community');
+          navigate('/items');
           return;
         }
         setTitle(post.title);
@@ -38,7 +40,7 @@ function ItemRegistration() {
     } catch (error) {
       console.error('Error loading post:', error);
       alert('게시글을 불러오는데 실패했습니다.');
-      navigate('/community');
+      navigate('/items');
     }
   };
 
@@ -54,7 +56,8 @@ function ItemRegistration() {
       alert('제목과 내용을 모두 입력해주세요.');
       return;
     }
-
+    ///////
+    /**
     setIsLoading(true);
     try {
       if (id) {
@@ -66,13 +69,28 @@ function ItemRegistration() {
         await postsAPI.createPost(title, content, files.length > 0 ? files : null);
         alert('게시글이 작성되었습니다.');
       }
-      navigate('/community');
+      navigate('/items');
     } catch (error) {
       console.error('Error saving post:', error);
       alert(id ? '게시글 수정에 실패했습니다.' : '게시글 작성에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }
+  */
+    /////
+        // 더미 데이터에 새 아이템 추가
+    const newItem = {
+          itemId: items.length + 1, // 새로운 아이템 ID
+          userId: user.userId,
+          title: title.trim(),
+          content: content.trim(),
+          images: images,
+        };
+
+    // 실제 구현에서는 API 호출로 서버에 아이템을 저장해야 합니다.
+    items.push(newItem); // 더미 데이터에 추가
+    alert('아이템이 작성되었습니다.');
+    navigate('/items'); // 아이템 목록으로 이동
   };
 
   return (
@@ -132,7 +150,7 @@ function ItemRegistration() {
 
           <Row>
             <Col className="d-flex justify-content-end gap-2">
-              <Button variant="secondary" onClick={() => navigate('/community')}>
+              <Button variant="secondary" onClick={() => navigate('/items')}>
                 취소
               </Button>
               <Button variant="primary" type="submit" disabled={isLoading}>
