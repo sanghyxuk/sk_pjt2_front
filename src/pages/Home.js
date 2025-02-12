@@ -72,7 +72,7 @@ function Home() {
                   <img src="/apple-logo.png" alt="Apple" width="40" />
                   <span>iPhone 14 Series</span>
                 </div>
-                <h2>Up to 10% off Voucher</h2>
+                <h2>(광고)Up to 10% off Voucher</h2>
                 <Button variant="outline-light">Shop Now →</Button>
               </div>
             </div>
@@ -110,7 +110,7 @@ function Home() {
               ))}
             </div>
 
-            <Button className="more-button" onClick={() => navigate('/items')}>View All Products</Button>
+            <Button className="more-button" onClick={() => navigate('/items')}>더보기</Button>
 
             <div className="divider"></div>
 

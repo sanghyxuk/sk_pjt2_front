@@ -56,7 +56,7 @@ function ItemRegistration() {
       alert('상품이름과 설명을 모두 입력해주세요.');
       return;
     }
-    ///////
+
     /**
     setIsLoading(true);
     try {
@@ -77,7 +77,7 @@ function ItemRegistration() {
       setIsLoading(false);
     }
   */
-    /////
+
         // 더미 데이터에 새 아이템 추가
     const newItem = {
           itemId: items.length + 1, // 새로운 아이템 ID

@@ -27,8 +27,6 @@
 .banner {
   position: relative;
   text-align: center;
-  margin: 0 auto;
-  width: 90%;
 }
 
 .banner img {
@@ -63,15 +61,13 @@
 
 .categories {
   margin-top: 50px;
-  padding-top: 30px;
-  border-top: 2px solid #ddd;
 }
 
 .categories h3 {
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-weight: bold;
-  text-align: left;
+  color: #DB4444;
 }
 
 .category-grid {
@@ -100,18 +96,6 @@
   font-weight: bold;
 }
 
-.view-more-btn {
-  display: block;
-  margin: 20px auto;
-  background-color: #d32f2f;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.view-more-btn:hover {
-  background-color: #b71c1c;
+.section-header h4 {
+  color: #DB4444;
 }

@@ -51,6 +51,7 @@ function ItemDetail() {
     }
   }, [id]);
 
+  // API사용시 해제
   /*
   const checkUserInteractions = async () => {
     if (!user || !item) return;
