@@ -110,11 +110,11 @@ function ItemLists() {
   };
 
   const handleWriteClick = () => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-      navigate('/login');
-      return;
-    }
+    //if (!user) {
+    //  alert('로그인이 필요합니다.');
+    //  navigate('/login');
+    //  return;
+    //}
     navigate('/items/write');
   };
 
@@ -155,7 +155,8 @@ function ItemLists() {
 
         {/* 등록하기 버튼 */}
         <div className="d-flex justify-content-end mb-3">
-          {user && (
+          {(
+          //{user && (
               <Button variant="primary" onClick={handleWriteClick}>
                 상품등록하기
               </Button>

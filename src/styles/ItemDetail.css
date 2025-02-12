@@ -1,28 +1,7 @@
-.item-card {
+.item-image-card {
     margin-bottom: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.item-title h4 {
-    margin: 0;
-    font-weight: bold;
-}
-
-.item-meta {
-    font-size: 0.9em;
-    color: #666;
-}
-
-.item-content {
-    font-size: 1.1em;
-    line-height: 1.6;
 }
 
 .item-images img {
@@ -30,8 +9,37 @@
     margin-bottom: 15px;
 }
 
+.item-detail-card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.item-price {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.item-description {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
 .like-section {
-    margin-top: 20px;
     text-align: center;
 }
 

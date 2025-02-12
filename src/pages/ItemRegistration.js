@@ -53,7 +53,7 @@ function ItemRegistration() {
     }
 
     if (!title.trim() || !content.trim()) {
-      alert('제목과 내용을 모두 입력해주세요.');
+      alert('상품이름과 설명을 모두 입력해주세요.');
       return;
     }
     ///////
@@ -95,7 +95,7 @@ function ItemRegistration() {
 
   return (
       <Container className="py-4 item-registration-container">
-        <h2>{id ? '게시글 수정' : '새 게시글 작성'}</h2>
+        <h2>{id ? '상품 수정' : '새 상품 등록'}</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>상품 이름 *</Form.Label>

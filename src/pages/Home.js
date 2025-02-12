@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaHeart, FaEye, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaSearch, FaHeart, FaEye } from 'react-icons/fa';
 import { useHomeData } from '../hooks/useHome';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
 
 function Home() {
   const { homeData, loading, error } = useHomeData();
-
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const categories = [
-    { name: "Woman's Fashion", link: "/womens-fashion" },
-    { name: "Men's Fashion", link: "/mens-fashion" },
-    { name: "Electronics", link: "/electronics" },
-    { name: "Home & Lifestyle", link: "/home-lifestyle" },
-    { name: "Medicine", link: "/medicine" },
-    { name: "Sports & Outdoor", link: "/sports-outdoor" },
-    { name: "Baby's & Toys", link: "/baby-toys" },
-    { name: "Groceries & Pets", link: "/groceries-pets" },
-    { name: "Health & Beauty", link: "/health-beauty" }
+    { name: "Phones", icon: "📱" },
+    { name: "Computers", icon: "💻" },
+    { name: "SmartWatch", icon: "⌚" },
+    { name: "Camera", icon: "📷" },
+    { name: "HeadPhones", icon: "🎧" },
+    { name: "Gaming", icon: "🎮" }
   ];
 
   const handleSearch = (e) => {
@@ -51,22 +47,8 @@ function Home() {
 
   return (
       <Container fluid className="py-4">
-        <Row>
-          {/* 왼쪽 카테고리 메뉴 */}
-          <Col md={3} lg={2} className="sidebar">
-            <h3>Categories</h3>
-            <ul className="category-menu">
-              {categories.map((category, index) => (
-                  <li key={index}>
-                    <Link to={category.link}>{category.name}</Link>
-                  </li>
-              ))}
-            </ul>
-          </Col>
-
-          {/* 메인 컨텐츠 */}
-          <Col md={9} lg={10}>
-            {/* 검색바 */}
+        <Row className="justify-content-center">
+          <Col md={10} lg={9}>
             <div className="mb-4">
               <Form onSubmit={handleSearch}>
                 <InputGroup>
@@ -83,8 +65,7 @@ function Home() {
               </Form>
             </div>
 
-            {/* 광고 배너 */}
-            <div className="advertisement-banner mb-4">
+            <div className="banner mb-4">
               <img src={advertisementBanner} alt="iPhone 14 Series" />
               <div className="banner-overlay">
                 <div className="apple-logo">
@@ -96,21 +77,15 @@ function Home() {
               </div>
             </div>
 
-            {/* Today's 섹션 */}
             <div className="section-header d-flex justify-content-between align-items-center mb-3">
               <div className="d-flex align-items-center">
                 <div className="red-marker"></div>
-                <h4 className="mb-0">Today's</h4>
-              </div>
-              <div className="navigation-arrows">
-                <Button variant="light" className="me-2"><FaArrowLeft /></Button>
-                <Button variant="light"><FaArrowRight /></Button>
+                <h4 className="mb-0 text-start">Today's 추천 상품</h4>
               </div>
             </div>
 
-            {/* 추천 상품 그리드 */}
             <div className="product-grid mb-4">
-              {homeData.recentItems.map((item) => (
+              {homeData.recentItems.slice(0, 4).map((item) => (
                   <div key={item.itemId} className="product-grid-item">
                     <div className="product-poster">
                       <span className="discount-badge">-{item.discount}%</span>
@@ -119,7 +94,9 @@ function Home() {
                       <img src={item.posterUrl} alt={item.title} />
                     </div>
                     <div className="product-info">
-                      <h6>{item.title}</h6>
+                      <h6>
+                        <Link to={`/items/${item.itemId}`} className="product-title-link">{item.title}</Link>
+                      </h6>
                       <div className="price-info">
                         <span className="current-price">${item.currentPrice}</span>
                         <span className="original-price">${item.originalPrice}</span>
@@ -133,39 +110,21 @@ function Home() {
               ))}
             </div>
 
-            {/* Browse By Category */}
-            <div className="section-header mb-3">
-              <div className="d-flex align-items-center">
-                <div className="red-marker"></div>
-                <h4 className="mb-0">Browse By Category</h4>
+            <Button className="more-button" onClick={() => navigate('/items')}>View All Products</Button>
+
+            <div className="divider"></div>
+
+            <section className="categories">
+              <h3 className="text-start">Browse By Category</h3>
+              <div className="category-grid">
+                {categories.map((category, index) => (
+                    <div key={index} className="category-item">
+                      <span>{category.icon}</span>
+                      <Link to={category.link}>{category.name}</Link>
+                    </div>
+                ))}
               </div>
-            </div>
-            <div className="category-grid">
-              <div className="category-item">
-                <i className="category-icon">📱</i>
-                <span>Phones</span>
-              </div>
-              <div className="category-item">
-                <i className="category-icon">💻</i>
-                <span>Computers</span>
-              </div>
-              <div className="category-item">
-                <i className="category-icon">⌚</i>
-                <span>SmartWatch</span>
-              </div>
-              <div className="category-item">
-                <i className="category-icon">📸</i>
-                <span>Camera</span>
-              </div>
-              <div className="category-item">
-                <i className="category-icon">🎧</i>
-                <span>HeadPhones</span>
-              </div>
-              <div className="category-item">
-                <i className="category-icon">🎮</i>
-                <span>Gaming</span>
-              </div>
-            </div>
+            </section>
           </Col>
         </Row>
       </Container>

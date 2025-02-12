@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 // import { authAPI } from '../api/auth'; // 실제 API를 사용할 경우 주석 해제
+import { users } from '../data/dummyData';
 
 const AuthContext = createContext(null);
 

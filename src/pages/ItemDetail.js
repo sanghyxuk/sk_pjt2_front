@@ -45,8 +45,8 @@ function ItemDetail() {
       setLikeCount(fetchedItem.heart || 0);
       // 댓글 예시 데이터 추가
       setCommentList([
-        { commentId: 1, userId: 1, nickname: "작성자 1", content: "첫 번째 댓글입니다.", created: "2022-01-02" },
-        { commentId: 2, userId: 2, nickname: "작성자 2", content: "두 번째 댓글입니다.", created: "2022-01-03" },
+        { commentId: 1, userId: 1, nickname: "작성자 1", content: "첫 번째 후기입니다.", created: "2022-01-02" },
+        { commentId: 2, userId: 2, nickname: "작성자 2", content: "두 번째 후기입니다.", created: "2022-01-03" },
       ]);
     }
   }, [id]);
@@ -244,35 +244,36 @@ function ItemDetail() {
   return (
       <Container className="py-5">
         <Row>
-          <Col md={8}>
+          <Col md={6}>
             <Card className="item-card">
-              <Card.Header>
-                <div className="item-header">
-                  <h4>{item.title}</h4>
-                  <div className="item-meta">
-                    <span className="item-date">{item.created}</span>
-                    <span className="item-views">조회수: {item.cnt}</span>
-                  </div>
-                </div>
-              </Card.Header>
               <Card.Body>
-                <div className="item-content">
+                <div className="item-images">
                   {item.fileAttached === 1 && item.files && item.files.length > 0 && (
-                      <div className="item-images mt-3">
-                        {item.files.map((filePath, index) => (
-                            <div key={index} className="mb-3">
-                              <img
-                                  src={`http://localhost:8080/uploads/${filePath}`}
-                                  alt={`첨부 이미지 ${index + 1}`}
-                                  className="img-fluid"
-                              />
-                            </div>
-                        ))}
-                      </div>
+                      item.files.map((filePath, index) => (
+                          <div key={index} className="mb-3">
+                            <img
+                                src={`http://localhost:8080/uploads/${filePath}`}
+                                alt={`첨부 이미지 ${index + 1}`}
+                                className="img-fluid"
+                            />
+                          </div>
+                      ))
                   )}
-                  <p>{item.content}</p>
                 </div>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card className="item-card">
+              <Card.Body>
+                <h4>{item.title}</h4>
+                <div className="item-meta">
+                  <span className="item-date">{item.created}</span>
+                  <span className="item-views">조회수: {item.cnt}</span>
+                </div>
+                <p>{item.content}</p>
                 <div className="like-section">
+
                   <Button
                       variant={isLiked ? "primary" : "outline-primary"}
                       onClick={() => {
@@ -284,20 +285,20 @@ function ItemDetail() {
                     <FaHeart /> {likeCount}
                   </Button>
                 </div>
-              </Card.Body>
-              <Card.Footer>
-                <div className="d-flex justify-content-end gap-3">
-                  <Button variant="secondary" onClick={() => navigate('/items')}>
-                    목록
-                  </Button>
+                <div className="action-buttons mt-3">
+                  <Button variant="primary" className="me-2">채팅하기</Button>
+                  <Button variant="success">배달</Button>
+                  <Button variant="success">직거래</Button>
                 </div>
-              </Card.Footer>
+              </Card.Body>
             </Card>
           </Col>
-          <Col md={4}>
+        </Row>
+        <Row className="mt-4">
+          <Col>
             <Card className="comments-section">
               <Card.Header>
-                <h5 className="mb-0">댓글 {commentList.length}개</h5>
+                <h5 className="mb-0">후기 {commentList.length}개</h5>
               </Card.Header>
               <Card.Body className="p-0">
                 {user && (
@@ -314,11 +315,11 @@ function ItemDetail() {
                               as="textarea"
                               value={newComment}
                               onChange={(e) => setNewComment(e.target.value)}
-                              placeholder="댓글을 입력하세요"
+                              placeholder="후기를 입력하세요"
                           />
                         </Form.Group>
                         <div className="d-flex justify-content-end mt-2">
-                          <Button type="submit" variant="primary">댓글 작성</Button>
+                          <Button type="submit" variant="primary">후기 작성</Button>
                         </div>
                       </Form>
                     </div>
