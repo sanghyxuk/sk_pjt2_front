@@ -31,6 +31,7 @@
   height: 300px; /* 배너 높이 조정 */
   overflow: hidden;
   border-radius: 10px;
+  margin-bottom: 40px; /* 배너와 추천 상품 사이 공백 추가 */
 }
 
 .banner img {
@@ -113,6 +114,16 @@
   text-align: center;
 }
 
+.product-title-link {
+  color: black; /* 상품 이름 색상을 검정색으로 설정 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.product-title-link:hover {
+  color: black; /* 호버 시에도 검정색 유지 */
+  text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
 .more-button {
   display: block;
   margin: 20px auto; /* 버튼을 가운데로 정렬 */
@@ -130,6 +141,12 @@
 .more-button:hover {
   background-color: #0056b3; /* 호버 시 배경색 변경 */
 }
+
+.divider {
+  border-top: 2px solid rgba(221, 221, 221, 0.82); /* 더 두껍고 어두운 선 */
+  margin: 30px 0; /* 구분선 위아래에 더 많은 여백 추가 */
+}
+
 
 /* 카테고리 */
 .categories {
@@ -157,6 +174,16 @@
   width: 120px;
 }
 
+.category-link {
+  color: black; /* 카테고리 링크 색상을 검정으로 설정 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.category-link:hover {
+  color: black; /* 호버 시 색상 유지 */
+  text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
 .category-item span {
   display: block;
   font-size: 2rem;
@@ -171,5 +198,6 @@
 
 .section-header h4 {
   color: #DB4444;
+  font-weight: bold; /* "Today's 추천상품" 글자 두께를 "Browse By Category"와 동일하게 설정 */
+  margin-bottom: 20px; /* "Today's 추천상품"과 상품 그리드 사이 공백 추가 */
 }
-

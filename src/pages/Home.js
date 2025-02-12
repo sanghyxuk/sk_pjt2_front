@@ -12,12 +12,12 @@ function Home() {
   const navigate = useNavigate();
 
   const categories = [
-    { name: "Phones", icon: "📱" },
-    { name: "Computers", icon: "💻" },
-    { name: "SmartWatch", icon: "⌚" },
-    { name: "Camera", icon: "📷" },
-    { name: "HeadPhones", icon: "🎧" },
-    { name: "Gaming", icon: "🎮" }
+    { name: "Phones", icon: "📱", link: "/category/phones" },
+    { name: "Computers", icon: "💻", link: "/category/computers" },
+    { name: "SmartWatch", icon: "⌚", link: "/category/smartwatch" },
+    { name: "Camera", icon: "📷", link: "/category/camera" },
+    { name: "HeadPhones", icon: "🎧", link: "/category/headphones" },
+    { name: "Gaming", icon: "🎮", link: "/category/gaming" }
   ];
 
   const handleSearch = (e) => {
@@ -104,7 +104,7 @@ function Home() {
                       <div className="rating">
                         {"★".repeat(5)} ({item.rating})
                       </div>
-                      <Button variant="dark" className="add-to-cart-btn">Add to Cart</Button>
+                      <Button variant="dark" className="add-to-cart-btn">찜해두기</Button>
                     </div>
                   </div>
               ))}
@@ -120,7 +120,7 @@ function Home() {
                 {categories.map((category, index) => (
                     <div key={index} className="category-item">
                       <span>{category.icon}</span>
-                      <Link to={category.link}>{category.name}</Link>
+                      <Link to={category.link} className="category-link">{category.name}</Link>
                     </div>
                 ))}
               </div>

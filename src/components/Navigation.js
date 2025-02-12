@@ -48,7 +48,7 @@ function Navigation() {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/Items">Product</Nav.Link>
               <Nav.Link as={Link} to="/Contact">Contact</Nav.Link>
-              <Nav.Link as={Link} to="/Sign up">Sign Up</Nav.Link>
+              <Nav.Link as={Link} to="/Signup">Sign Up</Nav.Link>
               {user && (
                   user.role === 'ROLE_ADMIN' ? (
                       <Nav.Link as={Link} to="/admin/users">관리자 페이지</Nav.Link>
@@ -80,8 +80,7 @@ function Navigation() {
                     </Dropdown>
                 ) : (
                     <>
-                      <Nav.Link onClick={handleLogin}>로그인</Nav.Link>
-                      {/* <Nav.Link as={Link} to="/login">로그인</Nav.Link>  원래 동작으로 돌아가고 싶을 경우 주석 해제 */}
+                      <Nav.Link as={Link} to="/login">로그인</Nav.Link>
                       <Nav.Link as={Link} to="/signup">회원가입</Nav.Link>
                     </>
                 )}
