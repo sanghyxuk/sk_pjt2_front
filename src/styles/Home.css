@@ -24,82 +24,6 @@
   max-width: 300px;
 }
 
-.banner {
-  position: relative;
-  text-align: center;
-}
-
-.banner img {
-  width: 100%;
-  height: auto;
-}
-
-.banner-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-}
-
-.products {
-  text-align: center;
-  padding: 40px;
-}
-
-.product-grid {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-
-.product-item {
-  border: 1px solid #ddd;
-  padding: 15px;
-  text-align: center;
-}
-
-.categories {
-  margin-top: 50px;
-}
-
-.categories h3 {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #DB4444;
-}
-
-.category-grid {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.category-item {
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-  width: 120px;
-}
-
-.category-item span {
-  display: block;
-  font-size: 2rem;
-}
-
-.category-item a {
-  text-decoration: none;
-  color: #333;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.section-header h4 {
-  color: #DB4444;
-}
-
 /* 광고 banner 디자인 */
 .banner {
   position: relative;
@@ -170,3 +94,64 @@
     font-size: 1.2rem;
   }
 }
+
+/* 추천상품 */
+.products {
+  text-align: center;
+  padding: 40px;
+}
+
+.product-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.product-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+}
+
+/* 카테고리 */
+.categories {
+  margin-top: 50px;
+}
+
+.categories h3 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #DB4444;
+}
+
+.category-grid {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.category-item {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  width: 120px;
+}
+
+.category-item span {
+  display: block;
+  font-size: 2rem;
+}
+
+.category-item a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.section-header h4 {
+  color: #DB4444;
+}
+
