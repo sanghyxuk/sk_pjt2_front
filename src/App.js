@@ -14,6 +14,11 @@ import WishlistPage from "./pages/WishlistPage";
 import ChatListPage from "./pages/ChatListPage";
 import ChatPage from "./pages/ChatPage";
 
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ContactPage from './pages/ContactPage';
+import EditProfilePage from './pages/EditProfilePage';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import './styles/common.css';  // 전역 스타일
@@ -47,6 +52,11 @@ function App() {
               <Route path="/wishlist" element={<WishlistPage />} />
               <Route path="/chat" element={<ChatListPage />} />
               <Route path="/chat/:roomId" element={<ChatPage />} />
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/profile/edit" element={<EditProfilePage />} />
             </Routes>
           </AuthProvider>
         </ThemeProvider>
