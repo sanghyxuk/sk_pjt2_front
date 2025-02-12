@@ -268,13 +268,12 @@ function ItemDetail() {
             <Card className="item-card">
               <Card.Body>
                 <h4>{item.title}</h4>
-                <div className="item-meta">
-                  <span className="item-date">{item.created}</span>
-                  <span className="item-views">조회수: {item.cnt}</span>
-                </div>
+                <h3 className="item-price">\{item.price}</h3>
                 <p>{item.content}</p>
-                <div className="like-section">
 
+                <div className="divider"></div>
+
+                <div className="like-section">
                   <Button
                       variant={isLiked ? "primary" : "outline-primary"}
                       onClick={() => {
@@ -283,13 +282,18 @@ function ItemDetail() {
                       }}
                       className="like-btn"
                   >
-                    <FaHeart /> {likeCount}
+                    찜하기
+                    <FaHeart/> {likeCount}
                   </Button>
                 </div>
                 <div className="action-buttons mt-3">
                   <Button variant="primary" className="me-2">채팅하기</Button>
                   <Button variant="success">배달</Button>
                   <Button variant="success">직거래</Button>
+                </div>
+                <div className="item-meta">
+                  <span className="item-date">{item.created}</span>
+                  <span className="item-views">조회수: {item.cnt}</span>
                 </div>
               </Card.Body>
             </Card>
@@ -299,7 +303,7 @@ function ItemDetail() {
           <Col>
             <Card className="comments-section">
               <Card.Header>
-                <h5 className="mb-0">후기 {commentList.length}개</h5>
+              <h5 className="mb-0">후기 {commentList.length}개</h5>
               </Card.Header>
               <Card.Body className="p-0">
                 {user && (

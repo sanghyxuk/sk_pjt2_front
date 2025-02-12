@@ -33,6 +33,11 @@
     margin-bottom: 1.5rem;
 }
 
+.divider {
+    border-top: 2px solid rgba(221, 221, 221, 0.82); /* 더 두껍고 어두운 선 */
+    margin: 30px 0; /* 구분선 위아래에 더 많은 여백 추가 */
+}
+
 .item-actions {
     display: flex;
     gap: 10px;
