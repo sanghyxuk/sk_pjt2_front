@@ -287,9 +287,14 @@ function ItemDetail() {
                   </Button>
                 </div>
                 <div className="action-buttons mt-3">
-                  <Button variant="primary" className="me-2">채팅하기</Button>
-                  <Button variant="success">배달</Button>
+                  <Button variant="success">배달 \{item.delivery}</Button>
                   <Button variant="success">직거래</Button>
+                  <div>
+                    <Button variant="primary" className="me-2" onClick={() => navigate('/chat')}>
+                      채팅하기
+                    </Button>
+                  </div>
+
                 </div>
                 <div className="item-meta">
                   <span className="item-date">{item.created}</span>

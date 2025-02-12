@@ -8,6 +8,11 @@ import ItemLists from './pages/ItemLists';
 import ItemDetail from './pages/ItemDetail';
 import ItemRegistration from './pages/ItemRegistration';
 import ItemEdit from './pages/ItemEdit';
+import MySalePage from "./pages/MySalePage";
+import MyPurchasePage from "./pages/MyPurchasePage";
+import WishlistPage from "./pages/WishlistPage";
+import ChatListPage from "./pages/ChatListPage";
+import ChatPage from "./pages/ChatPage";
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -37,6 +42,11 @@ function App() {
               <Route path="/items/write" element={<ItemRegistration />} />
               <Route path="/items/edit/:id" element={<ItemRegistration />} />
               <Route path="/items/:id" element={<ItemDetail />} />
+              <Route path="/mysale" element={<MySalePage />} />
+              <Route path="/mypurchase" element={<MyPurchasePage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/chat" element={<ChatListPage />} />
+              <Route path="/chat/:roomId" element={<ChatPage />} />
             </Routes>
           </AuthProvider>
         </ThemeProvider>

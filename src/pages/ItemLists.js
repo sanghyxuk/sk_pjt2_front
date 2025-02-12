@@ -178,7 +178,7 @@ function ItemLists() {
                       <div className="price">${item.price}</div>
                       <div className="rating">⭐ {item.rating || 0}</div>
                     </Link>
-                    <Button className="btn-add-to-cart">Add To Cart</Button>
+                    <Button className="btn-add-to-cart">찜해두기</Button>
                   </div>
               ))
           ) : (

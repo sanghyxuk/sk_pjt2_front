@@ -1,0 +1,25 @@
+.chat-room {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+.chat-room-details {
+    margin-left: 15px;
+}
+
+.chat-room-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.chat-room-last {
+    color: gray;
+    font-size: 14px;
+}
