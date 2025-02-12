@@ -294,7 +294,6 @@ function ItemDetail() {
                       채팅하기
                     </Button>
                   </div>
-
                 </div>
                 <div className="item-meta">
                   <span className="item-date">{item.created}</span>
