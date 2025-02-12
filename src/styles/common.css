@@ -38,13 +38,13 @@
 /* 버튼 스타일 */
 
 .btn-primary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #DB4444;
+  border-color: #DB4444;
 }
 
 .btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+  background-color: #bb3838;
+  border-color: #bb3838;
 }
 
 /* 페이지네이션 스타일 */
