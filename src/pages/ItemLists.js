@@ -54,6 +54,7 @@ function ItemLists() {
     setTotalPages(Math.ceil(filtered.length / itemsPerPage));
   };
 
+  // api 사용한 검색
   /*
   const loadPosts = async (page, search = '', type = 'title') => {
     try {
