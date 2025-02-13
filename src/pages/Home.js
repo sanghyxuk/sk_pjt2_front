@@ -98,8 +98,8 @@ function Home() {
                         <Link to={`/items/${item.itemId}`} className="product-title-link">{item.title}</Link>
                       </h6>
                       <div className="price-info">
-                        <span className="current-price">${item.currentPrice}</span>
-                        <span className="original-price">${item.originalPrice}</span>
+                        <span className="current-price">${item.price}</span>
+                        <span className="original-price">${item.price}</span>
                       </div>
                       <div className="rating">
                         {"★".repeat(5)} ({item.rating})

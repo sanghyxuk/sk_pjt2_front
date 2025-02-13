@@ -243,7 +243,7 @@ function ItemDetail() {
   if (!item) return <div>로딩 중...</div>;
 
   return (
-      <Container className="py-5" >
+      <Container className="py-5" style={{ display: 'flex', flexDirection: 'column' }}>
         <Row>
           <Col md={6}>
             <Card className="item-card">
