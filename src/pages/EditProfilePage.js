@@ -1,5 +1,6 @@
 // src/pages/EditProfilePage.js
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/EditProfilePage.css';
 
 function EditProfilePage() {
@@ -31,23 +32,44 @@ function EditProfilePage() {
         <div className="outer-container">
             <div className="main-content">
                 <div className="container">
+                    {/* 사이드바 영역 */}
                     <div className="sidebar-container">
                         <div className="sidebar">
                             <h3 className="sidebar-title">Manage My Account</h3>
                             <ul className="sidebar-menu">
-                                <li className="menu-item active">Edit My Profile</li>
+                                <li className="menu-item active">
+                                    <Link to="/profile/edit" className="sidebar-link">
+                                        Edit My Profile
+                                    </Link>
+                                </li>
                             </ul>
 
                             <h3 className="sidebar-title">My Items</h3>
                             <ul className="sidebar-menu">
-                                <li className="menu-item">My sale</li>
-                                <li className="menu-item">My purchase</li>
+                                <li className="menu-item">
+                                    <Link to="/mysale" className="sidebar-link">
+                                        My sale
+                                    </Link>
+                                </li>
+                                <li className="menu-item">
+                                    <Link to="/mypurchase" className="sidebar-link">
+                                        My purchase
+                                    </Link>
+                                </li>
                             </ul>
 
                             <h3 className="sidebar-title">My WishList</h3>
+                            <ul className="sidebar-menu">
+                                <li className="menu-item">
+                                    <Link to="/wishlist" className="sidebar-link">
+                                        My WishList
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
+                    {/* 프로필 수정 폼 영역 */}
                     <div className="profile-container">
                         <div className="main-area">
                             <h1 className="page-title">Edit Your Profile</h1>
