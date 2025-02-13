@@ -1,7 +1,5 @@
 // src/pages/ContactPage.js
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import '../styles/ContactPage.css';
 
 function ContactPage() {
@@ -26,7 +24,6 @@ function ContactPage() {
 
     return (
         <div className="outer-container">
-            <Header />
             <div className="main-content">
                 <div className="sub-nav">Home / Contact</div>
                 <div className="content-wrapper">
@@ -87,7 +84,6 @@ function ContactPage() {
                     </form>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

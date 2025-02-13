@@ -1,7 +1,5 @@
 // src/pages/RegisterPage.js
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import KakaoIcon from '../assets/free-icon-black-oval-speech-bubble-54466.png';
 import GoogleIcon from '../assets/free-icon-google-300221.png';
 import '../styles/RegisterPage.css';
@@ -27,7 +25,6 @@ function RegisterPage() {
 
     return (
         <div className="outer-container">
-            <Header />
             <div className="main-content">
                 <form className="register-form" onSubmit={handleSubmit}>
                     <h1 className="title">회원가입</h1>
@@ -80,7 +77,6 @@ function RegisterPage() {
                     </div>
                 </form>
             </div>
-            <Footer />
         </div>
     );
 }

@@ -1,8 +1,6 @@
 // src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import KakaoIcon from '../assets/free-icon-black-oval-speech-bubble-54466.png';
 import GoogleIcon from '../assets/free-icon-google-300221.png';
 import '../styles/LoginPage.css';
@@ -18,7 +16,6 @@ function LoginPage() {
 
     return (
         <div className="outer-container">
-            <Header />
             <div className="main-content">
                 <form className="login-form" onSubmit={handleLogin}>
                     <h1 className="title">로그인</h1>
@@ -66,7 +63,6 @@ function LoginPage() {
                     </div>
                 </form>
             </div>
-            <Footer />
         </div>
     );
 }

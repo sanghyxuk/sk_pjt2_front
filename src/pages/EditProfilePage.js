@@ -1,7 +1,5 @@
 // src/pages/EditProfilePage.js
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import '../styles/EditProfilePage.css';
 
 function EditProfilePage() {
@@ -31,7 +29,6 @@ function EditProfilePage() {
 
     return (
         <div className="outer-container">
-            <Header />
             <div className="main-content">
                 <div className="container">
                     <div className="sidebar-container">
@@ -143,7 +140,6 @@ function EditProfilePage() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

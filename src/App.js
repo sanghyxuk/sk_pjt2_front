@@ -2,7 +2,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navigation from './components/Navigation';  // Navbar가 아닌 Navigation
+//import Navigation from './components/Navigation';  // Navbar가 아닌 Navigation
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import ItemLists from './pages/ItemLists';
 import ItemDetail from './pages/ItemDetail';
@@ -40,7 +42,8 @@ function App() {
       <Router>
         <ThemeProvider>
           <AuthProvider>
-            <Navigation />
+            <Header />
+
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/items" element={<ItemLists />} />
@@ -58,6 +61,7 @@ function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/profile/edit" element={<EditProfilePage />} />
             </Routes>
+            <Footer />
           </AuthProvider>
         </ThemeProvider>
       </Router>
