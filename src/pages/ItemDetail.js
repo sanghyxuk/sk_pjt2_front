@@ -243,7 +243,7 @@ function ItemDetail() {
   if (!item) return <div>로딩 중...</div>;
 
   return (
-      <Container className="py-5">
+      <Container className="py-5" >
         <Row>
           <Col md={6}>
             <Card className="item-card">
@@ -303,6 +303,7 @@ function ItemDetail() {
             </Card>
           </Col>
         </Row>
+
         <Row className="mt-4">
           <Col>
             <Card className="comments-section">

@@ -120,7 +120,7 @@ function ItemLists() {
   };
 
   return (
-      <Container className="py-5">
+      <Container className="py-5" style={{ display: 'flex', flexDirection: 'column' }}>
         <h2 className="mb-4">모든 상품</h2>
 
         {/* 검색 폼 */}

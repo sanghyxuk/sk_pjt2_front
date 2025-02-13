@@ -1,6 +1,15 @@
+.container {
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 .product-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* 2열로 구성 */
   gap: 20px;
 }
 
@@ -12,6 +21,7 @@
   position: relative;
   background-color: #fff;
   transition: transform 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
 .product-card:hover {
@@ -20,7 +30,8 @@
 
 .product-card img {
   max-width: 100%;
-  height: auto;
+  height: 150px; /* 이미지 높이 고정 */
+  object-fit: cover; /* 이미지 비율 유지 */
   border-radius: 5px;
 }
 
@@ -38,6 +49,7 @@
 .price {
   font-size: 1.5rem;
   color: #333;
+  margin-top: 10px; /* 가격과 카드 내용 간격 조정 */
 }
 
 .rating {
@@ -51,8 +63,31 @@
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s; /* 배경색 변화에 애니메이션 추가 */
 }
 
 .btn-add-to-cart:hover {
   background-color: #0056b3;
+}
+
+.search-form {
+  margin-bottom: 20px;
+}
+
+.action-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end; /* 버튼 정렬 */
+}
+
+.action-buttons button {
+  margin-left: 10px; /* 버튼 간격 조정 */
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
 }
