@@ -1,4 +1,3 @@
-// src/pages/ItemLists.js
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -20,26 +19,30 @@ function ItemLists() {
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 0);
   const [totalPages, setTotalPages] = useState(0);
-  const [itemsPerPage] = useState(4);
+  const [itemsPerPage] = useState(4); // 페이지당 아이템 수 조정
 
   useEffect(() => {
-    loadPosts(currentPage);
+    // 로그인하지 않은 경우, 페이지 내용을 로드하지 않음
+    //if (!user) {
+    //  return;
+    //}
+
+    loadPosts(currentPage); // 현재 페이지에 맞는 포스트 로드
   }, [location.search, user]);
 
   const loadPosts = (page) => {
     const startIndex = page * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
+    // 검색어가 있을 경우 필터링
     const filtered = items.filter(item => {
       if (searchType === 'title') {
         return item.title.toLowerCase().includes(searchTerm.toLowerCase());
       } else if (searchType === 'content') {
         return item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase());
       } else if (searchType === 'titleContent') {
-        return (
-            item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
+        return (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase())));
       } else if (searchType === 'author') {
         return item.author && item.author.toLowerCase().includes(searchTerm.toLowerCase());
       }
@@ -51,10 +54,45 @@ function ItemLists() {
     setTotalPages(Math.ceil(filtered.length / itemsPerPage));
   };
 
+  // api 사용한 검색
+  /*
+  const loadPosts = async (page, search = '', type = 'title') => {
+    try {
+      let response;
+      // 검색 쿼리가 있는 경우 API 호출
+      if (search) {
+        response = await postsAPI.searchPosts(search.trim(), page, itemsPerPage, type);
+      } else {
+        // 검색 쿼리가 없는 경우 모든 포스트 가져오기
+        response = await postsAPI.getPostsList(page, itemsPerPage);
+      }
+
+      if (response?.data) {
+        const postsData = response.data.post.content;
+        const userData = response.data.user;
+
+        // 포스트와 사용자 정보를 결합
+        const postsWithUserInfo = postsData.map((post, index) => ({
+          ...post,
+          nickname: userData[index]?.nickname || '알 수 없음'
+        }));
+
+        setPosts(postsWithUserInfo);
+        setTotalPages(response.data.post.totalPages || 0);
+      }
+    } catch (error) {
+      console.error('Error loading posts:', error);
+      setPosts([]);
+      setTotalPages(0);
+    }
+  };
+  */
+
   const handleSearch = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
 
+    // 검색어가 있는 경우, URL 파라미터 설정
     if (searchTerm.trim()) {
       params.set('type', searchType);
       params.set('search', searchTerm.trim());
@@ -73,6 +111,11 @@ function ItemLists() {
   };
 
   const handleWriteClick = () => {
+    //if (!user) {
+    //  alert('로그인이 필요합니다.');
+    //  navigate('/login');
+    //  return;
+    //}
     navigate('/items/write');
   };
 
@@ -111,6 +154,7 @@ function ItemLists() {
           </Row>
         </Form>
 
+
         {/* 등록하기 버튼 */}
         <div className="d-flex justify-content-end mb-3">
           {(
@@ -143,8 +187,17 @@ function ItemLists() {
                 상품이 없습니다.
               </div>
           )}
-        </Container>
-      </div>
+        </div>
+
+        {/* 페이지네이션 */}
+        {totalPages > 0 && (
+            <Pagination
+                currentPage={currentPage + 1}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
+        )}
+      </Container>
   );
 }
 
