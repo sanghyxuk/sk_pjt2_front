@@ -1,70 +1,151 @@
-# Getting Started with Create React App
+🛒 Re:Use(리유즈) - 중고거래 플랫폼 기획서
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **📌 프로젝트 개요**
 
-## Available Scripts
+**프로젝트명**: Re:Use (리유즈)
 
-In the project directory, you can run:
+**프로젝트 기간: 2025.02.07 ~ 2025.02.18**
 
-### `npm start`
+**팀원 구성**: 백엔드 3명(김민석, 홍진우, 박성진) / 프론트엔드 3명 (표상혁, 백욱진, 송보민)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## **1. 프로젝트 주제**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- *Re:Use(리유즈)**는 **사용자 간 중고 물품을 쉽고 안전하게 거래**할 수 있도록 돕는 웹사이트임
+- 판매자는 간편하게 물품을 등록하고, 구매자는 원하는 물품을 찾아 댓글로 문의한 후 거래를 진행할 수 있음
 
-### `npm test`
+## **2. 기획 의도 / 배경**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 물가 상승으로 인해 합리적인 소비를 지향하는 사용자들이 증가함에 따라 편리한 중고거래를 위한 사이트의 필요성이 부각되고 있음
+- 각 사용자가 필요로 하는 물건을 보다 편리하게 구할 수 있는 플랫폼이 필요함
+- 거래가 안전해졌다고 하긴 하나 여전히 사기가 많아 중고 거래에 대한 거부감이 있음
+- 불필요한 자원 낭비를 줄여 환경 보호에 이바지하는 방안을 마련하고자 함
 
-### `npm run build`
+## **3. 타겟 선정 (주 고객층)**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **20~40대 직장인 및 대학생**: 실용적 소비를 중요하게 생각하는 사용자
+- **소규모 창업자**: 재고 처리를 위해 중고거래를 이용하는 사용자
+- **환경을 고려하는 소비자**: 지속 가능한 소비 패턴을 원하는 사용자
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## **4. 시장분석**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **국내 중고거래 시장 규모**: 2023년 기준 약 25조 원
+- **기존 서비스**: 당근마켓, 번개장터, 중고나라
+- **차별화 요소**:
 
-### `npm run eject`
+  ✅ **실시간 알림 (Kafka 기반)** → 거래 요청 및 댓글 알림 실시간 제공
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  ✅ **인기 상품 추천 (Redis 기반 캐싱)** → 자주 조회된 상품 추천
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  ✅ **AWS S3 기반 이미지 저장** → 안정적인 상품 등록
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## **5. 개발목표**
 
-## Learn More
+- 팀프로젝트 목표
+- 개별 팀원 목표
+    - 김민석: 채팅 서비스 구현 및 MS간 통신
+    - 홍진우: JWT 기반의 로그인/회원가입 구현
+    - 박성진: 상품페이지 구현
+    - 표상혁:   React 기반으로 API 연동을 최적화하여 사용자 경험을 개선
+    - 백욱진: frontend의  내용을 개발 부터 back과 연계시켜 API연동시키는 과정까지의 활용
+    - 송보민: 문의하기, 로그인/회원가입, 개인정보 수정 기능을 구현하고, API 연동 및 UI/UX 최적화를 통해 사용자 경험 개선.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 6. 개발 환경
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| 분야 | 사용 기술 |
+| --- | --- |
+| Front | React |
+| Backend | Spring Boot , Eureka Server/Client,  |
+| API Gateway | Eureka Gateway |
+|  인증 | JWT |
+| 비동기 메세징 | Kafka |
+| 캐싱 | Redis |
+| 파일 저장 | MySQL , Redis , AWS RDS |
+| CI/CD & 배포 | Git Action , AWS EC2 |
 
-### Code Splitting
+## 7. ERD
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- 역할
+    - 유저 인증 - 홍진우
 
-### Analyzing the Bundle Size
+      ![인증 부분 ERD.jpg](attachment:ea44571c-045c-492e-895b-b5f285418d91:인증_부분_ERD.jpg)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    - (마이, 프로필, 관리자) 페이지 - 추후 담당자 배정
 
-### Making a Progressive Web App
+      ![사용자 페이지.drawio.png](attachment:a94c075f-1726-4b47-a826-f0565b2b2b62:사용자_페이지.drawio.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    - 상품 페이지 - 박성진
 
-### Advanced Configuration
+      ![diagram-export-2025.-2.-7.-오후-3_17_56.png](attachment:05b0863a-7e1f-4838-88b3-8fdf794e08db:diagram-export-2025.-2.-7.-오후-3_17_56.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    - 1:1 대화 - 김민석
 
-### Deployment
+      ![vww.PNG](attachment:34acfb90-336c-4e60-8f59-326644fff61b:vww.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+## 8. 스토리보드 & UI/UX
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **메인 페이지** → 상품 목록 + 상품 검색
+
+- **로그인 / 회원가입** → JWT 기반 로그인
+
+- **마이페이지** → 자신이 올린 상품 목록 + 찜한 상품 목록 + 거래후기
+- **프로필페이지** → 타 유저의 상품리스트 + 신고버튼 +평균평점
+
+- **상품 상세 페이지** → 상품 정보 + 댓글 기능 + 찜하기
+- **상품 등록 페이지** → 판매자가 상품 등록
+- **상품 요청 페이지** → 구매자가 원하는 상품 등록 → 판매자가 물품 등록
+
+- **거래 요청(1:1 대화) 페이지** → 구매자가 거래 요청
+- **직거래 아닐시 상품 결제 페이지(실제결제X)** → 주소입력 + 결제방식 선택
+
+- UI/UX (피그마)
+
+[https://www.figma.com/design/ZWAy5PBFRnDRM33aYCpg4X/Re%3AUse-(version-1)?node-id=1-3&t=qbikq4ZmtMaRSUj4-1](https://www.figma.com/design/ZWAy5PBFRnDRM33aYCpg4X/Re%3AUse-(version-1)?node-id=1-3&t=qbikq4ZmtMaRSUj4-1)
+
+## 9. 업무분장
+
+| 이름 | 백 / 프론트 | 담당 |
+| --- | --- | --- |
+| 김민석 | 백 | 채팅 서비스 구현 |
+| 홍진우 | 백 | 로그인/회원가입 서비스 구현 |
+| 박성진 | 백 | 상품페이지 |
+| 표상혁 | 팀장/프론트 | 찜 목록/ 내가 판매한 물품/ 내가 구매한 물품/ 채팅 |
+| 백욱진 | 프론트 | 홈페이지/물품 목록/물품 상세 정보/물품 등록 |
+| 송보민 | 프론트 | 문의하기/ 로그인/ 회원가입/ 개인정보 수정 |
+
+## 10. 개발 일정
+
+| 날짜 | 백엔드 작업 | 프론트엔드 작업 | 공통 작업 |
+| --- | --- | --- | --- |
+| Day 1 / 0207 (기획 & 준비) | - ERD 설계 초안 작성 | - UI/UX 와이어프레임 제작 | - 팀 업무 분장 & 기획서 완성 |
+| Day 2 / 0210 (설계 & 환경 세팅) | - 프로젝트 기본 구조 설계- Spring Boot MSA 환경 설정- Eureka Server, API Gateway 설정 | - 프로젝트 기본 구조 설계- React 프로젝트 세팅 및 기본 컴포넌트 구성 | - Git Repository 및 브랜치 전략 설정 |
+| Day 3 / 0211 (기본 기능 개발 1) | - JWT 인증 & 사용자 서비스 구축- MySQL DB 설계 적용- Kafka & Redis 기본 설정 | - 로그인 & 회원가입 페이지 구현- 마이페이지 UI 구성 | 피드백 & 수정 |
+| Day 4 / 0212 (기본 기능 개발 2) | - 상품 서비스 개발 ( AWS S3 연동)- 상품 목록 조회 API 개발 | - 상품 목록 화면 구현 (조회 & 검색 기능 포함) | 피드백 & 수정 |
+| Day 5 / 0213 (거래 및 1:1 채팅 개발) | - 거래 서비스 개발 (거래 요청 및 상태 변경 API)- Kafka 이벤트 기반 알림 기능 개발 | - 상품 상세 페이지 구현 (찜하기, 댓글 기능 포함) | 피드백 & 수정 |
+| Day 6 / 0214 (최적화 및 연동 작업) | - Redis 기반 인기 상품 캐싱 적용- API Gateway 최적화 | - API 연동 (상품 CRUD, 거래 요청)- 프론트 UI 디자인 마무리 | - 성능 테스트 |
+| Day 7 / 0217 (배포 및 테스트) | - AWS EC2 & RDS 배포- CI/CD (GitHub Actions) 적용 | - 최종 UI 테스트 & 디버깅 | - 종합 테스트 (API 연동 최종 점검) |
+| Day 8 / 0218 (최종 점검 및 발표 준비) | - 버그 수정 & 코드 리팩토링 | - 최종 디자인 조정 | - 프로젝트 발표 자료 준비 |
+
+## 11.협업 툴 사용
+
+✅ 노션 (업무 관리, 문서 공유)
+
+✅ Github (소스코드 형상관리, 코드 리뷰)
+
+✅ Gather Town (팀원 간 소통)
+
+✅ Google Drive (팀원 간 파일 공유 및 자료 백업)
+
+## 12. 기대 효과 & 수익 구조
+
+- 기대 효과
+    1. 합리적인 소비 유도
+    2. 부가적인 일자리 창출 가능
+    3. 불필요한 쓰레기 감소로 인한 탄소 배출 감소 및 환경보호 가능
+    4. 지역 사회의 경기 활성화
+    5. 최신 트렌드 및 소비경향을 파악하여 수요 예측
+- 수익 구조
+    - 화면 내 광고 노출로 인한 수익
+    - 프로모션 진행으로 인한 수익
+    - 결제 수수료로 인한 수익
