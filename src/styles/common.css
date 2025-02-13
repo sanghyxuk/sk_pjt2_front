@@ -53,12 +53,12 @@
 }
 
 .page-item.active .page-link {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #DB4444;
+  border-color: #9a9191;
 }
 
 .page-link {
-  color: #0d6efd;
+  color: #000000;
 }
 
 /* 테이블 및 리스트 스타일 */
