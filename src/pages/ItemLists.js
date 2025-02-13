@@ -154,13 +154,12 @@ function ItemLists() {
           </Row>
         </Form>
 
-        <div className="divider"></div>
 
         {/* 등록하기 버튼 */}
         <div className="d-flex justify-content-end mb-3">
           {(
               //{user && (
-              <Button variant="primary" onClick={handleWriteClick}>
+              <Button variant="primary" onClick={handleWriteClick} style={{ minWidth: "150px" }}>
                 상품등록하기
               </Button>
           )}

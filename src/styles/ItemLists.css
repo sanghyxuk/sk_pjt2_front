@@ -57,7 +57,7 @@ h2 {
 }
 
 .btn-add-to-cart {
-  background-color: #007bff;
+  background-color: #DB4444;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -67,16 +67,11 @@ h2 {
 }
 
 .btn-add-to-cart:hover {
-  background-color: #0056b3;
+  background-color: #DB4444;
 }
 
 .search-form {
   margin-bottom: 20px;
-}
-
-.divider {
-  border-top: 2px solid rgba(221, 221, 221, 0.82); /* 더 두껍고 어두운 선 */
-  margin: 30px 0; /* 구분선 위아래에 더 많은 여백 추가 */
 }
 
 .action-buttons {
