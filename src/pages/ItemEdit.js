@@ -78,7 +78,7 @@ function ItemEdit() {
   };
 
   return (
-      <Container className="py-5">
+      <Container className="py-5 " style={{ display: 'flex', flexDirection: 'column' }}>
         <Card>
           <Card.Header>
             <h4>게시글 수정</h4>

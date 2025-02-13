@@ -244,7 +244,7 @@ function ItemDetail() {
 
   return (
       <Container className="py-5" style={{ display: 'flex', flexDirection: 'column' }}>
-        <Row>
+        <Row className="d-flex flex-row flex-nowrap justify-content-between align-items-start">
           <Col md={6}>
             <Card className="item-card">
               <Card.Body>

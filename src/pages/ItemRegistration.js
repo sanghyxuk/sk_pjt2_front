@@ -94,7 +94,7 @@ function ItemRegistration() {
   };
 
   return (
-      <Container className="py-4 item-registration-container">
+      <Container className="py-4 item-registration-container" style={{ display: 'flex', flexDirection: 'column' }}>
         <h2>{id ? '상품 수정' : '새 상품 등록'}</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
