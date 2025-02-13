@@ -81,7 +81,7 @@ function Home() {
                       <div className="rating">
                         {"★".repeat(5)} ({item.rating})
                       </div>
-                      <Button variant="dark" className="add-to-cart-btn">찜해두기</Button>
+                      <Button variant="dark" className="add-to-like-btn">찜해두기</Button>
                     </div>
                   </div>
               ))}
