@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaHeart, FaEye } from 'react-icons/fa';
+import { FaHeart, FaEye } from 'react-icons/fa';
 import { useHomeData } from '../hooks/useHome';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
 
 function Home() {
   const { homeData, loading, error } = useHomeData();
-  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const categories = [
@@ -19,12 +18,6 @@ function Home() {
     { name: "HeadPhones", icon: "🎧", link: "/category/headphones" },
     { name: "Gaming", icon: "🎮", link: "/category/gaming" }
   ];
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!searchTerm.trim()) return;
-    navigate(`/search?q=${searchTerm.trim()}`);
-  };
 
   if (loading) {
     return (
@@ -49,22 +42,6 @@ function Home() {
       <Container fluid className="py-4">
         <Row className="justify-content-center">
           <Col md={10} lg={9}>
-            <div className="mb-4">
-              <Form onSubmit={handleSearch}>
-                <InputGroup>
-                  <Form.Control
-                      type="text"
-                      placeholder="What are you looking for?"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <Button type="submit" variant="primary">
-                    <FaSearch /> Search
-                  </Button>
-                </InputGroup>
-              </Form>
-            </div>
-
             <div className="banner mb-4">
               <img src={advertisementBanner} alt="iPhone 14 Series" />
               <div className="banner-overlay">

@@ -120,7 +120,7 @@ function ItemLists() {
   };
 
   return (
-      <Container className="py-5" style={{ display: 'flex', flexDirection: 'column' }}>
+      <Container className="py-5" style={{display: 'flex', flexDirection: 'column'}}>
         <h2 className="mb-4">모든 상품</h2>
 
         {/* 검색 폼 */}
@@ -147,17 +147,19 @@ function ItemLists() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <Button type="submit" variant="primary">
-                  <FaSearch /> 검색
+                  <FaSearch/> 검색
                 </Button>
               </InputGroup>
             </Col>
           </Row>
         </Form>
 
+        <div className="divider"></div>
+
         {/* 등록하기 버튼 */}
         <div className="d-flex justify-content-end mb-3">
           {(
-          //{user && (
+              //{user && (
               <Button variant="primary" onClick={handleWriteClick}>
                 상품등록하기
               </Button>
@@ -173,7 +175,7 @@ function ItemLists() {
                         <div className="discount">-{item.discount}%</div>
                     )}
                     <Link to={`/items/${item.itemId}`}>
-                      <img src={item.imageUrl || 'default-image-url.jpg'} alt={item.title} />
+                      <img src={item.images || 'default-image-url.jpg'} alt={item.title}/>
                       <h5>{item.title}</h5>
                       <div className="price">${item.price}</div>
                       <div className="rating">⭐ {item.rating || 0}</div>
