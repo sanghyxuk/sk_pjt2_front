@@ -1,10 +1,18 @@
-import axios from "axios";
+//import axios from "axios";
+import api from "./axios";
+//const BASE_URL = "http://localhost:8080/mypurchase"; // 백엔드 API 주소
 
-const BASE_URL = "http://localhost:8080/mypurchase"; // 백엔드 API 주소
-
-export const getMyPurchaseItems = async (userId) => {
+export const getMyPurchaseItems = async (page = 0, size = 10, email) => {
     try {
-        const response = await axios.get(`${BASE_URL}/${userId}`);
+        const params = new URLSearchParams();
+        params.append('page', page);
+        params.append('size', size);
+
+        const response = await api.get(`/myPage//myPurchase/page=${page}&size=${size}`, {
+            headers: {
+                "X-Auth-User": email
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("구매한 물품을 불러오는 중 오류 발생:", error);

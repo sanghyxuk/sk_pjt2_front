@@ -6,14 +6,14 @@ import '../styles/MyPurchasePage.css';
 
 function MyPurchasePage() {
     const [myPurchases, setMyPurchases] = useState([]);
-    const userId = 1; // 임시 유저 ID
+    const email = 1; // 임시 유저 ID
 
     useEffect(() => {
         fetchMyPurchases();
     }, []);
 
     const fetchMyPurchases = async () => {
-        const data = await getMyPurchaseItems(userId);
+        const data = await getMyPurchaseItems(email);
         setMyPurchases(data);
     };
 
