@@ -8,7 +8,7 @@ export const getMySaleItems = async (page = 0, size = 10, email) => {
         params.append('page', page);
         params.append('size', size);
 
-        const response = await api.get(`/myPage//mySale?page=${page}&size=${size}`, {
+        const response = await api.get(`/myPage/mySale?page=${page}&size=${size}`, {
             headers: {
                 "X-Auth-User": email
             }

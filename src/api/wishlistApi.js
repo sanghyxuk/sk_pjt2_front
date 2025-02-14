@@ -1,22 +1,34 @@
 import axios from "axios";
+import api from "./axios";
+//const BASE_URL = "http://localhost:8080/mypurchase"; // 백엔드 API 주소
 
-const BASE_URL = "http://localhost:8080/wishlist"; // 백엔드 API 주소
-
-// 찜 목록 가져오기
-export const getWishlistItems = async (userId) => {
+export const getWishlistItems = async (page = 0, size = 10, email) => {
     try {
-        const response = await axios.get(`${BASE_URL}/${userId}`);
+        const params = new URLSearchParams();
+        params.append('page', page);
+        params.append('size', size);
+
+        const response = await api.get(`/myPage/wishList?page=${page}&size=${size}`, {
+            headers: {
+                "X-Auth-User": email
+            }
+        });
         return response.data;
     } catch (error) {
-        console.error("찜 목록을 불러오는 중 오류 발생:", error);
+        console.error("찜한 상품을 불러오는 중 오류 발생:", error);
         return [];
     }
 };
 
+
 // 찜 목록에서 삭제
-export const removeWishlistItem = async (userId, itemId) => {
+export const removeWishlistItem = async (page = 0, size = 10, email, itemId) => {
     try {
-        await axios.delete(`${BASE_URL}/${userId}/${itemId}`);
+        const params = new URLSearchParams();
+        params.append('page', page);
+        params.append('size', size);
+
+        await axios.delete(`/myPage/wishList?page=${page}&size=${size}`);
     } catch (error) {
         console.error("찜한 상품 삭제 중 오류 발생:", error);
     }
