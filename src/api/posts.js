@@ -1,11 +1,7 @@
 import api from './axios';
 
 export const postsAPI = {
-    // 아이템 목록 조회 (페이지네이션)
-    //getitemList: (page = 1, size = 3) =>
-    //    api.get(`/home/all?page=${page}&size=${size}`),
-
-
+    // 아이템 목록 조회 (페이지네이션) - homepage
     getitemList : async (page = 0, size = 10) => {
         console.log("함수실행");
         try {
@@ -13,16 +9,12 @@ export const postsAPI = {
             const params = new URLSearchParams();
             params.append('page', page);
             params.append('size', size);
-
     // 요청 보내고 응답 받기
             const response = await api.get(`/home/all?page=${page}&size=${size}`);
-
     // 응답 데이터 추출
             const data = response.data;
-
     // 데이터 출력
             console.log("Response Data:", data);
-
     // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
             return data;
         } catch (error) {
@@ -30,7 +22,12 @@ export const postsAPI = {
             console.error("Error fetching posts list:", error);
         }
     },
-    
+
+    // 아이템 검색 (검색 타입에 따라 다른 엔드포인트 사용)
+    searchPosts: (keyword, page = 0, size = 10, searchType = 'title') => {
+        return api.get(`//home/search?keyword=${keyword}&page=${page}&size=${size}`);
+        },
+
     // 아이템 상세 조회
     getPostDetail: (postId, isBackNavigation = false) => {
         const params = new URLSearchParams();
@@ -68,25 +65,8 @@ export const postsAPI = {
         }
         return api.post(`/posts/delete/${postId}`, formData);
     },
-    
-    // 게시글 검색 (검색 타입에 따라 다른 엔드포인트 사용)
-    searchPosts: (keyword, page = 0, size = 10, searchType = 'title') => {
-        switch(searchType) {
-            case 'title':
-                return api.get(`/posts/search/title?keyword=${keyword}&page=${page}&size=${size}`);
-            case 'content':
-                return api.get(`/posts/search/content?keyword=${keyword}&page=${page}&size=${size}`);
-            case 'titleContent':
-                return api.get(`/posts/search?keyword=${keyword}&page=${page}&size=${size}`);
-            case 'author':
-                return api.get(`/posts/search/nickname?nickname=${keyword}&page=${page}&size=${size}`);
-            default:
-                return api.get(`/posts/search/title?keyword=${keyword}&page=${page}&size=${size}`);
-        }
-    },
-    
- 
-    // 게시글 좋아요 상태 확인
+
+    // 아이템 찜 상태 확인
     checkLikeStatus: async (postId, username) => {
         try {
             const response = await api.get('/like/post', {
@@ -114,7 +94,7 @@ export const postsAPI = {
         }
     },
     
-    // 게시글 좋아요/취소
+    // 아이템 좋아요/취소
     likePost: (postId, username) => 
         api.post('/posts/like', null, {
             params: {
@@ -160,7 +140,7 @@ export const postsAPI = {
             params: { username }
         }),
     
-    // 댓글 관련 API 추가
+    // 후기 관련 API 추가
     createComment: (content, postId, username) => 
         api.post(`/api/comments/newcomment?content=${encodeURIComponent(content)}&postId=${postId}&username=${username}`),
     

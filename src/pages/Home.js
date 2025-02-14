@@ -78,8 +78,9 @@ function Home() {
                         <Link to={`/items/${item.itemId}`} className="product-title-link">{item.title}</Link>
                       </h6>
                       <div className="price-info">
-                        {/*<span className="current-price">${item.price}</span>*/}
-                        <span className="original-price">${item.itemprice}</span>
+                        {/*<span className="original-price">${item.price}</span>*/}
+                        <span className="current-price">${item.itemprice}</span>
+                        <span className="delivery-price">\3000</span>
                       </div>
                       {/*
                       <div className="rating">

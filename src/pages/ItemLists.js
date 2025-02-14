@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa';
+import {FaEye, FaHeart, FaSearch} from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { items } from '../data/dummyData';
+import { useHomeData } from '../hooks/useHome';
 import Pagination from '../components/Pagination';
 import '../styles/common.css';
 import '../styles/ItemLists.css';
 
 function ItemLists() {
+  const { homeData, loading, error } = useHomeData();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -29,6 +31,7 @@ function ItemLists() {
 
     loadPosts(currentPage); // 현재 페이지에 맞는 포스트 로드
   }, [location.search, user]);
+
 
   const loadPosts = (page) => {
     const startIndex = page * itemsPerPage;
@@ -159,13 +162,14 @@ function ItemLists() {
         <div className="d-flex justify-content-end mb-3">
           {(
               //{user && (
-              <Button variant="primary" onClick={handleWriteClick} style={{ minWidth: "150px" }}>
+              <Button variant="primary" onClick={handleWriteClick} style={{minWidth: "150px"}}>
                 상품등록하기
               </Button>
           )}
         </div>
 
         {/* 카드 형식의 상품 목록 */}
+
         <div className="product-list">
           {Array.isArray(filteredItems) && filteredItems.length > 0 ? (
               filteredItems.map((item) => (
