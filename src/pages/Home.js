@@ -6,6 +6,7 @@ import { useHomeData } from '../hooks/useHome';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
 
+
 function Home() {
   const { homeData, loading, error } = useHomeData();
   const navigate = useNavigate();
@@ -63,24 +64,28 @@ function Home() {
 
             <div className="product-grid mb-4">
               {homeData.recentItems.slice(0, 4).map((item) => (
+
                   <div key={item.itemId} className="product-grid-item">
+
                     <div className="product-poster">
                       <span className="discount-badge">-{item.discount}%</span>
                       <button className="wishlist-icon"><FaHeart /></button>
                       <button className="quick-view"><FaEye /></button>
-                      <img src={item.posterUrl} alt={item.title} />
+                      <img src={item.image} alt={item.title} />
                     </div>
                     <div className="product-info">
                       <h6>
                         <Link to={`/items/${item.itemId}`} className="product-title-link">{item.title}</Link>
                       </h6>
                       <div className="price-info">
-                        <span className="current-price">${item.price}</span>
-                        <span className="original-price">${item.price}</span>
+                        {/*<span className="current-price">${item.price}</span>*/}
+                        <span className="original-price">${item.itemprice}</span>
                       </div>
+                      {/*
                       <div className="rating">
                         {"★".repeat(5)} ({item.rating})
                       </div>
+                      */}
                       <Button variant="dark" className="add-to-like-btn">찜해두기</Button>
                     </div>
                   </div>

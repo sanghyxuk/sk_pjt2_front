@@ -1,11 +1,37 @@
 import api from './axios';
 
 export const postsAPI = {
-    // 게시글 목록 조회 (페이지네이션)
-    getPostsList: (page = 0, size = 10) => 
-        api.get(`/posts/list/page?page=${page}&size=${size}`),
+    // 아이템 목록 조회 (페이지네이션)
+    //getitemList: (page = 1, size = 3) =>
+    //    api.get(`/home/all?page=${page}&size=${size}`),
+
+
+    getitemList : async (page = 0, size = 10) => {
+        console.log("함수실행");
+        try {
+    // URL 쿼리 파라미터 생성
+            const params = new URLSearchParams();
+            params.append('page', page);
+            params.append('size', size);
+
+    // 요청 보내고 응답 받기
+            const response = await api.get(`/home/all?page=${page}&size=${size}`);
+
+    // 응답 데이터 추출
+            const data = response.data;
+
+    // 데이터 출력
+            console.log("Response Data:", data);
+
+    // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
+            return data;
+        } catch (error) {
+    // 에러 처리
+            console.error("Error fetching posts list:", error);
+        }
+    },
     
-    // 게시글 상세 조회
+    // 아이템 상세 조회
     getPostDetail: (postId, isBackNavigation = false) => {
         const params = new URLSearchParams();
         if (isBackNavigation) {
@@ -14,7 +40,7 @@ export const postsAPI = {
         return api.get(`/posts/${postId}${params.toString() ? `?${params.toString()}` : ''}`);
     },
     
-    // 게시글 작성
+    // 아이템 등록
     createPost: (title, content, files) => {
         const formData = new FormData();
         formData.append('title', title);
@@ -29,11 +55,11 @@ export const postsAPI = {
         });
     },
     
-    // 게시글 수정
+    // 아이템 수정
     updatePost: (postId, title, content) => 
         api.put(`/posts/update/${postId}?title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`),
     
-    // 게시글 삭제
+    // 아이템 삭제
     deletePost: (postId, currentUser) => {
         const formData = new FormData();
         formData.append('postId', postId);
