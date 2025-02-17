@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import {FaEye, FaHeart, FaSearch} from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-//import { items } from '../data/dummyData';
 import { useHomeData } from '../hooks/useHome';
 import { toggleWish, toggleWishdel } from '../api/wishlistApi';
 import Pagination from '../components/Pagination';
@@ -11,36 +10,35 @@ import '../styles/common.css';
 import '../styles/ItemLists.css';
 
 function ItemLists() {
-  const { homeData, handleSearch, setKeyword, keyword, loading } = useHomeData();
+  // 홈 데이터와 검색 핸들러를 가져옵니다.
+  const { homeData, handleSearch, loading } = useHomeData();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
   const searchParams = new URLSearchParams(location.search);
 
-  //const [filteredItems, setFilteredItems] = useState([]);
-  //const [searchType, setSearchType] = useState(searchParams.get('type') || 'title');
+  // 검색어와 현재 페이지 상태를 정의합니다.
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [itemsPerPage] = useState(4); // 페이지당 아이템 수 조정
+  const [totalPages, setTotalPages] = useState(4);
+  const [itemsPerPage] = useState(6); // 페이지당 아이템 수 조정
   const [wishlistItems, setWishlistItems] = useState(new Set());
 
+  // 위시리스트에 아이템 추가 또는 제거하는 함수
   const handleAddToWishlist = async (item) => {
-    const email = user?.email; // 실제 사용자 이메일로 대체해야 함
+    const email = user?.email;
     try {
       if (wishlistItems.has(item.itemId)) {
-        // 이미 찜한 상품인 경우 삭제
         await toggleWishdel(email, item.itemId);
         setWishlistItems((prev) => {
           const newWishlist = new Set(prev);
-          newWishlist.delete(item.itemId); // Set에서 제거
+          newWishlist.delete(item.itemId);
           return newWishlist;
         });
         alert("위시리스트에서 제거되었습니다!");
       } else {
-        // 찜하지 않은 상품인 경우 추가
-        const addedItem = await toggleWish(email, item.itemId, item.title, item.itemprice);
-        setWishlistItems((prev) => new Set(prev).add(item.itemId)); // Set에 추가
+        await toggleWish(email, item.itemId, item.title, item.itemprice);
+        setWishlistItems((prev) => new Set(prev).add(item.itemId));
         alert("위시리스트에 추가되었습니다!");
       }
     } catch (error) {
@@ -49,97 +47,15 @@ function ItemLists() {
     }
   };
 
+  // 페이지가 변경될 때마다 검색을 실행합니다.
   useEffect(() => {
-    // 로그인하지 않은 경우, 페이지 내용을 로드하지 않음
-    //if (!user) {
-    //  return;
-    //}
-
-    handleSearch(searchTerm, currentPage); // 현재 검색어와 페이지에 맞는 데이터 로드
+    handleSearch(searchTerm, currentPage);
   }, [location.search, user]);
 
-
-  {/*
-  const loadPosts = (page) => {
-    const startIndex = page * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    // 검색어가 있을 경우 필터링
-    const filtered = items.filter(item => {
-      if (searchType === 'title') {
-        return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-      } else if (searchType === 'content') {
-        return item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase());
-      } else if (searchType === 'titleContent') {
-        return (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (item.content && item.content.toLowerCase().includes(searchTerm.toLowerCase())));
-      } else if (searchType === 'author') {
-        return item.author && item.author.toLowerCase().includes(searchTerm.toLowerCase());
-      }
-      return false;
-    });
-
-    const paginatedItems = filtered.slice(startIndex, endIndex);
-    setFilteredItems(paginatedItems);
-    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
-  };
-*/}
-
-  // api 사용한 검색
-  {/*
-  const loadPosts = async (page = 0, search = '') => {
-    try {
-      setLoading(true);
-      let response;
-
-      // 검색 쿼리가 있는 경우 API 호출
-      if (search.trim) {
-        response = await postsAPI.searchPosts(search.trim(), page, itemsPerPage, type);
-      } else {
-        // 검색 쿼리가 없는 경우 모든 포스트 가져오기
-        response = await postsAPI.getPostsList(page, itemsPerPage);
-      }
-
-      if (response?.data) {
-        const postsData = response.data.post.content;
-        const userData = response.data.user;
-
-        // 포스트와 사용자 정보를 결합
-        const postsWithUserInfo = postsData.map((post, index) => ({
-          ...post,
-          nickname: userData[index]?.nickname || '알 수 없음'
-        }));
-
-        setPosts(postsWithUserInfo);
-        setTotalPages(response.data.post.totalPages || 0);
-      }
-    } catch (error) {
-      console.error('Error loading posts:', error);
-      setPosts([]);
-      setTotalPages(0);
-    }
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-
-    // 검색어가 있는 경우, URL 파라미터 설정
-    if (searchTerm.trim()) {
-      params.set('search', searchTerm.trim());
-      params.set('page', '0');
-      navigate(`/items?${params.toString()}`);
-    } else {
-      navigate('/items');
-    }
-  };
-  */}
   // 검색 실행 함수
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
-
-    // 검색어가 있는 경우, URL 파라미터 설정
     if (searchTerm.trim()) {
       params.set('search', searchTerm.trim());
       params.set('page', '0');
@@ -149,6 +65,7 @@ function ItemLists() {
     }
   };
 
+  // 페이지 변경 핸들러
   const handlePageChange = (pageNumber) => {
     const params = new URLSearchParams(location.search);
     params.set('page', pageNumber - 1);
@@ -156,36 +73,13 @@ function ItemLists() {
     setCurrentPage(pageNumber - 1);
   };
 
-  const handleWriteClick = () => {
-    //if (!user) {
-    //  alert('로그인이 필요합니다.');
-    //  navigate('/login');
-    //  return;
-    //}
-    navigate('/items/write');
-  };
-
   return (
-      <Container className="py-5" style={{display: 'flex', flexDirection: 'column'}}>
+      <Container className="py-5" style={{ display: 'flex', flexDirection: 'column' }}>
         <h2 className="mb-4">모든 상품</h2>
 
         {/* 검색 폼 */}
         <Form onSubmit={handleSearchSubmit} className="mb-4">
           <Row className="align-items-center">
-            {/*
-            <Col md={3}>
-              <Form.Select
-                  value={searchType}
-                  onChange={(e) => setSearchType(e.target.value)}
-                  className="mb-2 mb-md-0"
-              >
-                <option value="title">상품이름</option>
-                <option value="content">내용</option>
-                <option value="titleContent">상품이름+내용</option>
-                <option value="author">작성자</option>
-              </Form.Select>
-            </Col>
-            */}
             <Col md={9}>
               <InputGroup>
                 <Form.Control
@@ -195,32 +89,27 @@ function ItemLists() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <Button type="submit" variant="primary">
-                  <FaSearch/> 검색
+                  <FaSearch /> 검색
                 </Button>
               </InputGroup>
             </Col>
           </Row>
         </Form>
 
-
         {/* 등록하기 버튼 */}
         <div className="d-flex justify-content-end mb-3">
-          {(
-              //{user && (
-              <Button variant="primary" onClick={handleWriteClick} style={{minWidth: "150px"}}>
-                상품등록하기
-              </Button>
-          )}
+          <Button variant="primary" onClick={() => navigate('/items/write')} style={{ minWidth: "150px" }}>
+            상품등록하기
+          </Button>
         </div>
 
         {/* 카드 형식의 상품 목록 */}
-
         <div className="product-list">
           {Array.isArray(homeData.searchResults) && homeData.searchResults.length > 0 ? (
               homeData.searchResults.map((item) => (
                   <div className="product-card" key={item.itemId}>
                     <Link to={`/items/${item.itemId}`}>
-                      <img src={item.images || 'default-image-url.jpg'} alt={item.title}/>
+                      <img src={item.image || 'default-image-url.jpg'} alt={item.title} />
                       <h5>{item.title}</h5>
                       <div className="price">\{item.itemprice}</div>
                     </Link>
@@ -231,9 +120,9 @@ function ItemLists() {
               ))
           ) : (
               searchTerm.trim() !== '' && (
-              <div className="text-center py-4">
-                검색된 상품이 없습니다.
-              </div>
+                  <div className="text-center py-4">
+                    검색된 상품이 없습니다.
+                  </div>
               )
           )}
         </div>
