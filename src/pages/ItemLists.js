@@ -206,9 +206,11 @@ function ItemLists() {
                   </div>
               ))
           ) : (
+              searchTerm.trim() !== '' && (
               <div className="text-center py-4">
-                상품이 없습니다.
+                검색된 상품이 없습니다.
               </div>
+              )
           )}
         </div>
 
