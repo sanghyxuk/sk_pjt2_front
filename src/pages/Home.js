@@ -68,9 +68,10 @@ function Home() {
                   <div key={item.itemId} className="product-grid-item">
 
                     <div className="product-poster">
-                      <span className="discount-badge">-{item.discount}%</span>
+                      {/*
                       <button className="wishlist-icon"><FaHeart /></button>
                       <button className="quick-view"><FaEye /></button>
+                      */}
                       <img src={item.image} alt={item.title} />
                     </div>
                     <div className="product-info">
@@ -79,8 +80,8 @@ function Home() {
                       </h6>
                       <div className="price-info">
                         {/*<span className="original-price">${item.price}</span>*/}
-                        <span className="current-price">${item.itemprice}</span>
-                        <span className="delivery-price">\3000</span>
+                        <span className="current-price">가격: \{item.itemprice} |</span>
+                        <span className="delivery-price"> 배달비: \3000</span>
                       </div>
                       {/*
                       <div className="rating">
@@ -88,6 +89,7 @@ function Home() {
                       </div>
                       */}
                       <Button variant="dark" className="add-to-like-btn">찜해두기</Button>
+                      <Button variant="dark" className="add-to-like-btn">장바구니 담기</Button>
                     </div>
                   </div>
               ))}

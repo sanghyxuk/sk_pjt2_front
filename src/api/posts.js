@@ -5,28 +5,28 @@ export const postsAPI = {
     getitemList : async (page = 0, size = 10) => {
         console.log("함수실행");
         try {
-    // URL 쿼리 파라미터 생성
+            // URL 쿼리 파라미터 생성
             const params = new URLSearchParams();
             params.append('page', page);
             params.append('size', size);
-    // 요청 보내고 응답 받기
+            // 요청 보내고 응답 받기
             const response = await api.get(`/home/all?page=${page}&size=${size}`);
-    // 응답 데이터 추출
+            // 응답 데이터 추출
             const data = response.data;
-    // 데이터 출력
+            // 데이터 출력
             console.log("Response Data:", data);
-    // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
+            // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
             return data;
         } catch (error) {
-    // 에러 처리
+            // 에러 처리
             console.error("Error fetching posts list:", error);
         }
     },
 
     // 아이템 검색 (검색 타입에 따라 다른 엔드포인트 사용)
     searchPosts: (keyword, page = 0, size = 10) => {
-        return api.get(`//home/search?keyword=${keyword}&page=${page}&size=${size}`);
-        },
+        return api.get(`/home/search?keyword=${keyword}&page=${page}&size=${size}`);
+    },
 
     // 아이템 상세 조회
     getPostDetail: (postId, isBackNavigation = false) => {
@@ -36,7 +36,7 @@ export const postsAPI = {
         }
         return api.get(`/posts/${postId}${params.toString() ? `?${params.toString()}` : ''}`);
     },
-    
+
     // 아이템 등록
     createPost: (title, content, files) => {
         const formData = new FormData();
@@ -51,11 +51,11 @@ export const postsAPI = {
             }
         });
     },
-    
+
     // 아이템 수정
-    updatePost: (postId, title, content) => 
+    updatePost: (postId, title, content) =>
         api.put(`/posts/update/${postId}?title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`),
-    
+
     // 아이템 삭제
     deletePost: (postId, currentUser) => {
         const formData = new FormData();
@@ -76,9 +76,9 @@ export const postsAPI = {
                     page: 0
                 }
             });
-            
+
             console.log('Like status response:', response.data);
-            
+
             // post 배열에서 post_id로 매칭
             const likedPosts = response.data.post || [];
             return likedPosts.some(post => {
@@ -93,16 +93,16 @@ export const postsAPI = {
             return false;
         }
     },
-    
+
     // 아이템 좋아요/취소
-    likePost: (postId, username) => 
+    likePost: (postId, username) =>
         api.post('/posts/like', null, {
             params: {
                 itemId: postId,
                 username
             }
         }),
-    
+
     // 팔로우 상태 확인
     checkFollowStatus: async (currentUsername, targetUsername) => {
         try {
@@ -113,19 +113,19 @@ export const postsAPI = {
                     page: 0
                 }
             });
-            
+
             console.log('Follow status response:', response.data);
-            
+
             // users 배열에서 id로 매칭
             const followingUsers = response.data.users || [];
             const isFollowing = followingUsers.some(user => {
                 console.log('Comparing usernames:', user.id, targetUsername);
                 return user.id === targetUsername;
             });
-            
+
             // 로컬 스토리지에 상태 저장
             localStorage.setItem(`follow_${currentUsername}_${targetUsername}`, isFollowing);
-            
+
             return isFollowing;
         } catch (error) {
             console.error('Check follow status error:', error);
@@ -133,20 +133,20 @@ export const postsAPI = {
             return localStorage.getItem(`follow_${currentUsername}_${targetUsername}`) === 'true';
         }
     },
-    
+
     // 팔로우/언팔로우
-    followUser: (username) => 
+    followUser: (username) =>
         api.post('/follow', null, {
             params: { username }
         }),
-    
+
     // 후기 관련 API 추가
-    createComment: (content, postId, username) => 
+    createComment: (content, postId, username) =>
         api.post(`/api/comments/newcomment?content=${encodeURIComponent(content)}&postId=${postId}&username=${username}`),
-    
-    updateComment: (commentId, content) => 
+
+    updateComment: (commentId, content) =>
         api.put(`/api/comments/${commentId}?content=${encodeURIComponent(content)}`),
-    
+
     deleteComment: (commentId, currentUser) => {
         const params = {};
         if (currentUser.role === 'ROLE_ADMIN') {
@@ -154,17 +154,17 @@ export const postsAPI = {
         }
         return api.delete(`/api/comments/${commentId}`, { params });
     },
-    
+
     // 전체 게시글 목록 조회 (페이지네이션 없이)
-    getAllPosts: () => 
+    getAllPosts: () =>
         api.get('/posts/list/all'),
-    
+
     // 유저 정보 조회
-    getUserInfo: (username) => 
+    getUserInfo: (username) =>
         api.get(`/userPage?username=${username}`),
-    
+
     // 유저가 작성한 게시글 목록 (username으로 검색)
-    getUserPosts: (username) => 
+    getUserPosts: (username) =>
         api.get(`/posts/search/username`, {
             params: {
                 username: username,
@@ -172,9 +172,9 @@ export const postsAPI = {
                 size: 100
             }
         }),
-    
+
     // 팔로워 목록 조회
-    getFollowers: (username) => 
+    getFollowers: (username) =>
         api.get(`/followerList`, {
             params: {
                 username: username,
@@ -182,9 +182,9 @@ export const postsAPI = {
                 page: 0
             }
         }),
-    
+
     // 팔로잉 목록 조회
-    getFollowing: (username) => 
+    getFollowing: (username) =>
         api.get(`/followingList`, {
             params: {
                 username: username,
