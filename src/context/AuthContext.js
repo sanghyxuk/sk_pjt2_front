@@ -1,5 +1,6 @@
+// src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../api/auth'; // 실제 API를 사용할 경우 주석 해제
+import { authAPI } from '../api/auth';
 
 const AuthContext = createContext(null);
 
@@ -8,13 +9,11 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const checkAuthStatus = async () => {
-        // 인증 상태를 확인하는 로직 (API 호출)
         try {
             console.log('Starting checkAuth with current user:', user);
-            // const response = await authAPI.checkAuth(); // 실제 API 호출 (주석 해제 시 사용)
-
-            // 주석 처리된 부분으로 API 호출을 대체
-            const response = { data: user }; // 예시로 현재 사용자 상태를 반환
+            // 실제 API 호출 시 주석 해제:
+            // const response = await authAPI.checkAuth();
+            const response = { data: user }; // 예시
             if (response.data) {
                 setUser(prevUser => {
                     const updatedUser = {
@@ -29,42 +28,42 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Auth check error:', error);
-            if (user) {
-                console.log('Keeping existing user state on error');
-            } else {
-                setUser(null);
-            }
+            if (!user) setUser(null);
         } finally {
             setLoading(false);
         }
     };
 
-
-  const login = async (credentials) => {
-      try {
-          const response = await authAPI.login(credentials.id, credentials.password); // 실제 로그인 API 호출 (주석 해제 시 사용)
-          console.log('Login response:', response.data);
-
-          if (response.data) {
-              const userData = {
-                  ...response.data,
-                  userId: response.data.userId || response.data.user,
-                  role: response.data.role || 'ROLE_USER'
-              };
-              console.log('Login processed user data:', userData);
-              setUser(userData);
-              return response.data;
-          }
-          throw new Error('로그인 데이터가 없습니다.');
-      } catch (error) {
-          console.error('Login error:', error);
-          throw error;
-      }
-  };
+    const login = async (credentials) => {
+        try {
+            const response = await authAPI.login(credentials);//post 요청
+            console.log('Login response:', response.data);
+            if (response) {
+                // 헤더에서 인증 정보를 추출합니다.
+                const xAuthUser = response.headers['x-auth-user'];
+                const accessToken = response.headers['accesstoken'];
+                const userData = {
+                    ...response.data,
+                    userId: response.data.userId || response.data.user,
+                    email: xAuthUser,            // 헤더에서 받은 사용자 이메일
+                    accessToken,                 // 헤더에서 받은 액세스 토큰
+                    role: response.data.role || 'ROLE_USER',
+                };
+                console.log('Login processed user data:', userData);
+                setUser(userData);
+                return response;
+            }
+            throw new Error('로그인 데이터가 없습니다.');
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
+    };
 
     const logout = async () => {
         try {
-            // await authAPI.logout(); // 실제 API 호출 (주석 해제 시 사용)
+            // 실제 API 호출 시 주석 해제:
+            // await authAPI.logout();
             setUser(null);
         } catch (error) {
             console.error('Logout error:', error);
@@ -116,14 +115,11 @@ export const useAuth = () => {
     return context;
 };
 
-// 로그인 버튼 컴포넌트 예시
 const LoginButton = () => {
     const { login } = useAuth();
-
     const handleLogin = () => {
-        login({ id: 'testUser', password: 'password' }); // 실제 로그인 API 호출 시 사용
+        login({ id: 'testUser', password: 'password' });
     };
-
     return (
         <button onClick={handleLogin}>
             로그인
