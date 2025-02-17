@@ -5,7 +5,7 @@ let boardLikes = [];   // { userId, boardId }
 let commentLikes = []; // { userId, commentId }
 
 // 위시리스트 추가 API
-export const toggleFavorite = async (userId, movieId) => {
+export const toggleWish = async (userId, movieId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       // 실제로는 DB에서 처리할 로직
@@ -16,7 +16,7 @@ export const toggleFavorite = async (userId, movieId) => {
 };
 
 // 장바구니 추가 API
-export const toggleFavorite = async (userId, movieId) => {
+export const toggleCart = async (userId, movieId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       // 실제로는 DB에서 처리할 로직

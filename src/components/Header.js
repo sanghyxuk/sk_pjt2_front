@@ -29,7 +29,7 @@ function Header() {
         }
     };
 
-    // 🔹 검색 기능 추가
+    // 검색 기능 추가
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         const params = new URLSearchParams();

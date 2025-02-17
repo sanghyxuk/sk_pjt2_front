@@ -3,13 +3,17 @@ import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bo
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHeart, FaEye } from 'react-icons/fa';
 import { useHomeData } from '../hooks/useHome';
+import { toggleWish, toggleWishdel } from '../api/wishlistApi';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
+import {useAuth} from "../context/AuthContext";
 
 
 function Home() {
   const { homeData, loading, error } = useHomeData();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [wishlistItems, setWishlistItems] = useState(new Set());
 
   const categories = [
     { name: "Phones", icon: "📱", link: "/category/phones" },
@@ -19,6 +23,30 @@ function Home() {
     { name: "HeadPhones", icon: "🎧", link: "/category/headphones" },
     { name: "Gaming", icon: "🎮", link: "/category/gaming" }
   ];
+
+  const handleAddToWishlist = async (item) => {
+    const email = user?.email; // 실제 사용자 이메일로 대체해야 함
+    try {
+      if (wishlistItems.has(item.itemId)) {
+        // 이미 찜한 상품인 경우 삭제
+        await toggleWishdel(email, item.itemId);
+        setWishlistItems((prev) => {
+          const newWishlist = new Set(prev);
+          newWishlist.delete(item.itemId); // Set에서 제거
+          return newWishlist;
+        });
+        alert("위시리스트에서 제거되었습니다!");
+      } else {
+        // 찜하지 않은 상품인 경우 추가
+        const addedItem = await toggleWish(email, item.itemId, item.title, item.itemprice);
+        setWishlistItems((prev) => new Set(prev).add(item.itemId)); // Set에 추가
+        alert("위시리스트에 추가되었습니다!");
+      }
+    } catch (error) {
+      console.error("위시리스트 처리 중 오류 발생:", error);
+      alert("위시리스트 처리 중 오류가 발생했습니다.");
+    }
+  };
 
   if (loading) {
     return (
@@ -88,8 +116,9 @@ function Home() {
                         {"★".repeat(5)} ({item.rating})
                       </div>
                       */}
-                      <Button variant="dark" className="add-to-like-btn">찜해두기</Button>
-                      <Button variant="dark" className="add-to-like-btn">장바구니 담기</Button>
+                      <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
+                        {wishlistItems.has(item.itemId) ? "찜취소" : "찜해두기"}
+                      </Button>
                     </div>
                   </div>
               ))}
