@@ -19,7 +19,7 @@
   font-weight: bold;
 }
 
-/* 카드 스타일 */
+/* 카드 스타일! */
 .card {
   background-color: var(--card-bg);
   color: var(--text-color);
@@ -43,8 +43,8 @@
 }
 
 .btn-primary:hover {
-  background-color: #bb3838;
-  border-color: #bb3838;
+  background-color: #bb3838 !important;
+  border-color: #bb3838 !important;
 }
 
 /* 페이지네이션 스타일 */
@@ -53,12 +53,12 @@
 }
 
 .page-item.active .page-link {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #DB4444;
+  border-color: #9a9191;
 }
 
 .page-link {
-  color: #0d6efd;
+  color: #000000;
 }
 
 /* 테이블 및 리스트 스타일 */

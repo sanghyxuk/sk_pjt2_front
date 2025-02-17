@@ -6,14 +6,14 @@ import '../styles/MySalePage.css';
 
 function MySalePage() {
     const [mySales, setMySales] = useState([]);
-    const userId = 1; // 임시 유저 ID
+    const email = 1; // 임시 유저 ID
 
     useEffect(() => {
         fetchMySales();
     }, []);
 
     const fetchMySales = async () => {
-        const data = await getMySaleItems(userId);
+        const data = await getMySaleItems(email);
         setMySales(data);
     };
 

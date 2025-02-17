@@ -6,14 +6,14 @@ import '../styles/WishlistPage.css';
 
 function WishListPage() {
     const [wishlist, setWishlist] = useState([]);
-    const userId = 1; // 임시 유저 ID
+    const email = 1; // 임시 유저 ID
 
     useEffect(() => {
         fetchWishlist();
     }, []);
 
     const fetchWishlist = async () => {
-        const data = await getWishlistItems(userId);
+        const data = await getWishlistItems(email);
         setWishlist(data);
     };
 

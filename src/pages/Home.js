@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaHeart, FaEye } from 'react-icons/fa';
+import { FaHeart, FaEye } from 'react-icons/fa';
 import { useHomeData } from '../hooks/useHome';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
 
+
 function Home() {
   const { homeData, loading, error } = useHomeData();
-  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const categories = [
@@ -19,12 +19,6 @@ function Home() {
     { name: "HeadPhones", icon: "🎧", link: "/category/headphones" },
     { name: "Gaming", icon: "🎮", link: "/category/gaming" }
   ];
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!searchTerm.trim()) return;
-    navigate(`/search?q=${searchTerm.trim()}`);
-  };
 
   if (loading) {
     return (
@@ -49,22 +43,6 @@ function Home() {
       <Container fluid className="py-4">
         <Row className="justify-content-center">
           <Col md={10} lg={9}>
-            <div className="mb-4">
-              <Form onSubmit={handleSearch}>
-                <InputGroup>
-                  <Form.Control
-                      type="text"
-                      placeholder="What are you looking for?"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <Button type="submit" variant="primary">
-                    <FaSearch /> Search
-                  </Button>
-                </InputGroup>
-              </Form>
-            </div>
-
             <div className="banner mb-4">
               <img src={advertisementBanner} alt="iPhone 14 Series" />
               <div className="banner-overlay">
@@ -86,25 +64,30 @@ function Home() {
 
             <div className="product-grid mb-4">
               {homeData.recentItems.slice(0, 4).map((item) => (
+
                   <div key={item.itemId} className="product-grid-item">
+
                     <div className="product-poster">
                       <span className="discount-badge">-{item.discount}%</span>
                       <button className="wishlist-icon"><FaHeart /></button>
                       <button className="quick-view"><FaEye /></button>
-                      <img src={item.posterUrl} alt={item.title} />
+                      <img src={item.image} alt={item.title} />
                     </div>
                     <div className="product-info">
                       <h6>
                         <Link to={`/items/${item.itemId}`} className="product-title-link">{item.title}</Link>
                       </h6>
                       <div className="price-info">
-                        <span className="current-price">${item.price}</span>
-                        <span className="original-price">${item.price}</span>
+                        {/*<span className="original-price">${item.price}</span>*/}
+                        <span className="current-price">${item.itemprice}</span>
+                        <span className="delivery-price">\3000</span>
                       </div>
+                      {/*
                       <div className="rating">
                         {"★".repeat(5)} ({item.rating})
                       </div>
-                      <Button variant="dark" className="add-to-cart-btn">찜해두기</Button>
+                      */}
+                      <Button variant="dark" className="add-to-like-btn">찜해두기</Button>
                     </div>
                   </div>
               ))}

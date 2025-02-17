@@ -35,6 +35,16 @@ h2 {
   border-radius: 5px;
 }
 
+.product-card a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: black; /* 글자색 검정 */
+}
+
+.product-card a:hover {
+  color: black; /* hover 시에도 검정 유지 */
+}
+
+
 .discount {
   position: absolute;
   top: 10px;
@@ -57,7 +67,7 @@ h2 {
 }
 
 .btn-add-to-cart {
-  background-color: #007bff;
+  background-color: #DB4444;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -67,7 +77,7 @@ h2 {
 }
 
 .btn-add-to-cart:hover {
-  background-color: #0056b3;
+  background-color: #DB4444;
 }
 
 .search-form {

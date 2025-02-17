@@ -1,26 +1,38 @@
-// src/pages/RegisterPage.js
 import React, { useState } from 'react';
 import KakaoIcon from '../assets/free-icon-black-oval-speech-bubble-54466.png';
 import GoogleIcon from '../assets/free-icon-google-300221.png';
 import '../styles/RegisterPage.css';
+import { Link, useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { authAPI } from '../api/auth';
 
 function RegisterPage() {
+    // 회원가입에 필요한 필드를 JSON 스펙에 맞게 email, userName, password로 수정
     const [userInput, setUserInput] = useState({
-        name: '',
-        phoneOrEmail: '',
+        email: '',
+        userName: '',
         password: '',
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserInput((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('회원가입 요청:', userInput);
-        alert('회원가입 완료(예시)');
-        setUserInput({ name: '', phoneOrEmail: '', password: '' });
+        try {
+            // authAPI.signup을 통해 JSON 형식의 데이터 전송
+            const response = await authAPI.signup(userInput);
+            console.log('회원가입 응답:', response.data);
+            alert('회원가입이 완료되었습니다.');
+            navigate('/login');
+            setUserInput({ email: '', userName: '', password: '' });
+        } catch (error) {
+            console.error('회원가입 오류:', error);
+            alert('회원가입에 실패했습니다.');
+        }
     };
 
     return (
@@ -30,20 +42,21 @@ function RegisterPage() {
                     <h1 className="title">회원가입</h1>
                     <p className="sub-title">Enter your details below</p>
 
-                    <label className="label">Name</label>
+                    <label className="label">Email</label>
                     <input
                         className="input"
-                        name="name"
-                        value={userInput.name}
+                        name="email"
+                        type="email"
+                        value={userInput.email}
                         onChange={handleChange}
                         required
                     />
 
-                    <label className="label">Email or Phone Number</label>
+                    <label className="label">Username</label>
                     <input
                         className="input"
-                        name="phoneOrEmail"
-                        value={userInput.phoneOrEmail}
+                        name="userName"
+                        value={userInput.userName}
                         onChange={handleChange}
                         required
                     />
