@@ -1,34 +1,37 @@
-import axios from "axios";
+// src/api/wishlistApi.js
 import api from "./axios";
-//const BASE_URL = "http://localhost:8080/mypurchase"; // 백엔드 API 주소
 
-export const getWishlistItems = async (page = 0, size = 10, email) => {
+export const getWishlistItems = async (page = 1, size = 3, authData) => {
     try {
-        const params = new URLSearchParams();
-        params.append('page', page);
-        params.append('size', size);
-
-        const response = await api.get(`/myPage/wishList?page=${page}&size=${size}`, {
+        const response = await api.get('/myPage/wishList', {
+            params: { page, size },
             headers: {
-                "X-Auth-User": email
+                "X-Auth-User": authData.email,
+                "Authorization": authData.accessToken
             }
         });
+        console.log('Using headers:', {
+            "X-Auth-User": authData.email,
+            "Authorization": authData.accessToken
+        });
+        console.log('page:', page, 'size:', size);
         return response.data;
     } catch (error) {
         console.error("찜한 상품을 불러오는 중 오류 발생:", error);
-        return [];
+        return { totalPages: 0, wishlist: [] };
     }
 };
 
-
-// 찜 목록에서 삭제
-export const removeWishlistItem = async (page = 0, size = 10, email, itemId) => {
+// (옵션) 찜 목록에서 삭제
+export const removeWishlistItem = async (page = 1, size = 8, authData, itemId) => {
     try {
-        const params = new URLSearchParams();
-        params.append('page', page);
-        params.append('size', size);
-
-        await axios.delete(`/myPage/wishList?page=${page}&size=${size}`);
+        await api.delete('/myPage/wishList', {
+            params: { page, size, itemId },
+            headers: {
+                "X-Auth-User": authData.email,
+                "Authorization": authData.accessToken
+            }
+        });
     } catch (error) {
         console.error("찜한 상품 삭제 중 오류 발생:", error);
     }

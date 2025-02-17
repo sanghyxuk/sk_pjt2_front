@@ -1,4 +1,4 @@
-/* ✅ 전체 페이지 스타일 */
+/*  전체 페이지 스타일 */
 .wishlist-container {
     display: flex;
     justify-content: center;
@@ -9,7 +9,7 @@
     padding: 50px 20px;
 }
 
-/* ✅ 컨텐츠 정렬 */
+/*  컨텐츠 정렬 */
 .wishlist-content {
     display: flex;
     max-width: 1080px;
@@ -17,7 +17,7 @@
     gap: 20px;
 }
 
-/* ✅ 사이드바 스타일 (My sale, My purchase와 동일) */
+/*  사이드바 스타일 (My sale, My purchase와 동일) */
 .sidebar-container {
     width: 250px;
     padding: 20px;
@@ -26,13 +26,13 @@
     background: #fff;
 }
 
-/* ✅ 사이드바 타이틀 */
+/*  사이드바 타이틀 */
 .sidebar-title {
     font-weight: 600;
     margin-bottom: 10px;
 }
 
-/* ✅ 사이드바 메뉴 */
+/*  사이드바 메뉴 */
 .sidebar-menu {
     list-style: none;
     padding-left: 0;
@@ -67,7 +67,7 @@
     color: #555;
 }
 
-/* ✅ 메인 컨텐츠 스타일 */
+/*  메인 컨텐츠 스타일 */
 .wishlist-main {
     flex: 1;
     padding: 20px;
@@ -76,7 +76,7 @@
     background: #fff;
 }
 
-/* ✅ 상품 목록 그리드 */
+/*  상품 목록 그리드 */
 .item-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -91,7 +91,7 @@
     text-align: center;
 }
 
-/* ✅ 할인 태그 */
+/*  할인 태그 */
 .discount {
     position: absolute;
     top: 10px;
@@ -102,7 +102,7 @@
     border-radius: 3px;
 }
 
-/* ✅ 상품 이미지 */
+/*  상품 이미지 */
 .item-card img {
     max-width: 100%;
     height: 120px;
@@ -110,14 +110,14 @@
     margin-bottom: 10px;
 }
 
-/* ✅ 가격 스타일 */
+/*  가격 스타일 */
 .price {
     color: #333;
     font-weight: bold;
     margin: 10px 0;
 }
 
-/* ✅ 장바구니 버튼 */
+/*  장바구니 버튼 */
 .add-to-cart-btn {
     background-color: #007bff;
     color: #fff;
@@ -131,7 +131,7 @@
     background-color: #0056b3;
 }
 
-/* ✅ 찜한 상품이 없을 때 */
+/*  찜한 상품이 없을 때 */
 .empty-message {
     color: #999;
     text-align: center;

@@ -1,8 +1,7 @@
 // src/api/mysaleApi.js
 import api from './axios';
 
-
-export const getMySaleItems = async (page, size, authData) => {
+export const getMySaleItems = async (page = 1, size = 3, authData) => {
     try {
         // get 요청
         const response = await api.get('/myPage/mySale', {
@@ -11,10 +10,16 @@ export const getMySaleItems = async (page, size, authData) => {
                 'X-Auth-User': authData.email,
                 'Authorization': authData.accessToken,
             },
+
         });
-        return response.data.sales; // sales 배열 반환
+        console.log('Using headers:', {
+            "X-Auth-User": authData.email,
+            "Authorization": authData.accessToken
+        });
+        console.log('page:', page, 'size:', size);
+        return response.data;
     } catch (error) {
-        console.error("판매한 물품을 불러오는 중 오류 발생:", error);
-        return [];
+        console.error('판매한 물품을 불러오는 중 오류 발생:', error);
+        return { totalPages: 0, sales: [] };
     }
 };
