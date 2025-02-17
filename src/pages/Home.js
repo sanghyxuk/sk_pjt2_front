@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHeart, FaEye } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
 import { useHomeData } from '../hooks/useHome';
 import { toggleWish, toggleWishdel } from '../api/wishlistApi';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
-import {useAuth} from "../context/AuthContext";
 
 
 function Home() {
   const { homeData, loading, error } = useHomeData();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [wishlistItems, setWishlistItems] = useState(new Set());
+  const { user } = useAuth();
 
   const categories = [
     { name: "Phones", icon: "📱", link: "/category/phones" },
@@ -24,22 +24,21 @@ function Home() {
     { name: "Gaming", icon: "🎮", link: "/category/gaming" }
   ];
 
+  // 위시리스트에 아이템 추가 또는 제거하는 함수
   const handleAddToWishlist = async (item) => {
-    const email = user?.email; // 실제 사용자 이메일로 대체해야 함
+    const email = user?.email;
     try {
       if (wishlistItems.has(item.itemId)) {
-        // 이미 찜한 상품인 경우 삭제
         await toggleWishdel(email, item.itemId);
         setWishlistItems((prev) => {
           const newWishlist = new Set(prev);
-          newWishlist.delete(item.itemId); // Set에서 제거
+          newWishlist.delete(item.itemId);
           return newWishlist;
         });
         alert("위시리스트에서 제거되었습니다!");
       } else {
-        // 찜하지 않은 상품인 경우 추가
-        const addedItem = await toggleWish(email, item.itemId, item.title, item.itemprice);
-        setWishlistItems((prev) => new Set(prev).add(item.itemId)); // Set에 추가
+        await toggleWish(email, item.itemId, item.title, item.itemprice);
+        setWishlistItems((prev) => new Set(prev).add(item.itemId));
         alert("위시리스트에 추가되었습니다!");
       }
     } catch (error) {

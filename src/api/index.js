@@ -50,8 +50,8 @@ export const getBoardComments = async (boardId) => {
 export const searchMovies = async (query) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const searchResults = Object.values(movies).filter(movie => 
-        movie.title.toLowerCase().includes(query.toLowerCase())
+      const searchResults = Object.values(movies).filter(movie =>
+          movie.title.toLowerCase().includes(query.toLowerCase())
       );
       resolve(searchResults);
     }, 500);
@@ -64,22 +64,22 @@ export const getHomeData = async () => {
     setTimeout(() => {
       // 평점순으로 정렬된 상위 10개 영화
       const topMovies = Object.values(movies)
-        .sort((a, b) => b.star - a.star)
-        .slice(0, 10);
+          .sort((a, b) => b.star - a.star)
+          .slice(0, 10);
 
       // 최신순으로 정렬된 상위 5개 영화
       const recentMovies = Object.values(movies)
-        .sort((a, b) => new Date(b.created) - new Date(a.created))
-        .slice(0, 5);
+          .sort((a, b) => new Date(b.created) - new Date(a.created))
+          .slice(0, 5);
 
       // 최신 게시글 15개로 변경 (작성자 정보 포함)
       const recentPosts = boards
-        .sort((a, b) => new Date(b.created) - new Date(a.created))
-        .slice(0, 15)
-        .map(post => ({
-          ...post,
-          author: getUserById(post.userId)?.id
-        }));
+          .sort((a, b) => new Date(b.created) - new Date(a.created))
+          .slice(0, 15)
+          .map(post => ({
+            ...post,
+            author: getUserById(post.userId)?.id
+          }));
 
       resolve({
         topMovies,
@@ -95,11 +95,11 @@ export const getMovieReviews = async (movieId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const movieReviews = reviews
-        .filter(review => review.movieId === parseInt(movieId))
-        .map(review => ({
-          ...review,
-          author: getUserById(review.userId)?.id
-        }));
+          .filter(review => review.movieId === parseInt(movieId))
+          .map(review => ({
+            ...review,
+            author: getUserById(review.userId)?.id
+          }));
       resolve(movieReviews);
     }, 500);
   });
@@ -170,14 +170,14 @@ export const toggleReviewReaction = async (reviewId, userId, type) => {
     setTimeout(() => {
       // 이전 반응 찾기
       const existingReaction = reviewLikes.find(
-        r => r.reviewId === reviewId && r.userId === userId
+          r => r.reviewId === reviewId && r.userId === userId
       );
 
       if (existingReaction) {
         // 같은 타입이면 취소
         if (existingReaction.type === type) {
           reviewLikes = reviewLikes.filter(
-            r => !(r.reviewId === reviewId && r.userId === userId)
+              r => !(r.reviewId === reviewId && r.userId === userId)
           );
           resolve({ action: 'removed', type });
         } else {
@@ -209,13 +209,13 @@ export const toggleBoardLike = async (boardId, userId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const existingLike = boardLikes.find(
-        like => like.boardId === parseInt(boardId) && like.userId === userId
+          like => like.boardId === parseInt(boardId) && like.userId === userId
       );
 
       if (existingLike) {
         // 이미 추천한 경우 추천 취소
         boardLikes = boardLikes.filter(
-          like => !(like.boardId === parseInt(boardId) && like.userId === userId)
+            like => !(like.boardId === parseInt(boardId) && like.userId === userId)
         );
         resolve({ action: 'removed' });
       } else {
@@ -242,13 +242,13 @@ export const toggleCommentLike = async (commentId, userId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const existingLike = commentLikes.find(
-        like => like.commentId === commentId && like.userId === userId
+          like => like.commentId === commentId && like.userId === userId
       );
 
       if (existingLike) {
         // 이미 추천한 경우 추천 취소
         commentLikes = commentLikes.filter(
-          like => !(like.commentId === commentId && like.userId === userId)
+            like => !(like.commentId === commentId && like.userId === userId)
         );
         resolve({ action: 'removed' });
       } else {

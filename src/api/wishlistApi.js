@@ -1,22 +1,25 @@
+// src/api/wishlistApi.js
 import axios from "axios";
 import api from "./axios";
-//const BASE_URL = "http://localhost:8080/mypurchase"; // 백엔드 API 주소
 
-export const getWishlistItems = async (page = 0, size = 10, email) => {
+export const getWishlistItems = async (page = 1, size = 3, authData) => {
     try {
-        const params = new URLSearchParams();
-        params.append('page', page);
-        params.append('size', size);
-
-        const response = await api.get(`/myPage/wishList?page=${page}&size=${size}`, {
+        const response = await api.get('/myPage/wishList', {
+            params: { page, size },
             headers: {
-                "X-Auth-User": email
+                "X-Auth-User": authData.email,
+                "Authorization": authData.accessToken
             }
         });
+        console.log('Using headers:', {
+            "X-Auth-User": authData.email,
+            "Authorization": authData.accessToken
+        });
+        console.log('page:', page, 'size:', size);
         return response.data;
     } catch (error) {
         console.error("찜한 상품을 불러오는 중 오류 발생:", error);
-        return [];
+        return { totalPages: 0, wishlist: [] };
     }
 };
 
