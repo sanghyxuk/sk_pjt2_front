@@ -193,16 +193,13 @@ function ItemLists() {
           {Array.isArray(homeData.searchResults) && homeData.searchResults.length > 0 ? (
               homeData.searchResults.map((item) => (
                   <div className="product-card" key={item.itemId}>
-                    {item.discount && (
-                        <div className="discount">-{item.discount}%</div>
-                    )}
                     <Link to={`/items/${item.itemId}`}>
                       <img src={item.images || 'default-image-url.jpg'} alt={item.title}/>
                       <h5>{item.title}</h5>
-                      <div className="price">${item.price}</div>
-                      <div className="rating">⭐ {item.rating || 0}</div>
+                      <div className="price">\{item.itemprice}</div>
                     </Link>
                     <Button className="btn-add-to-cart">찜해두기</Button>
+                    <Button className="btn-add-to-cart">장바구니 담기</Button>
                   </div>
               ))
           ) : (

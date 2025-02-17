@@ -4,6 +4,29 @@ import { movies, reviews, comments, boards, getUserById } from '../data/dummyDat
 let boardLikes = [];   // { userId, boardId }
 let commentLikes = []; // { userId, commentId }
 
+// 위시리스트 추가 API
+export const toggleFavorite = async (userId, movieId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // 실제로는 DB에서 처리할 로직
+      const isFavorite = true; // API 응답 예시
+      resolve(isFavorite);
+    }, 500);
+  });
+};
+
+// 장바구니 추가 API
+export const toggleFavorite = async (userId, movieId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // 실제로는 DB에서 처리할 로직
+      const isFavorite = true; // API 응답 예시
+      resolve(isFavorite);
+    }, 500);
+  });
+};
+
+
 // 영화 관련 API
 export const getMovieById = async (id) => {
   return new Promise((resolve) => {
@@ -82,16 +105,7 @@ export const getMovieReviews = async (movieId) => {
   });
 };
 
-// 찜하기 API
-export const toggleFavorite = async (userId, movieId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // 실제로는 DB에서 처리할 로직
-      const isFavorite = true; // API 응답 예시
-      resolve(isFavorite);
-    }, 500);
-  });
-};
+
 
 // 찜한 영화 목록 가져오기
 export const getFavorites = async (userId) => {

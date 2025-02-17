@@ -89,6 +89,7 @@ function Home() {
                       </div>
                       */}
                       <Button variant="dark" className="add-to-like-btn">찜해두기</Button>
+                      <Button variant="dark" className="add-to-like-btn">장바구니 담기</Button>
                     </div>
                   </div>
               ))}

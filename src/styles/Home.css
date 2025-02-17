@@ -124,6 +124,13 @@
   text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
+.add-to-like-btn {
+  white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  margin: 5px 5px; /* 버튼 사이의 간격 */
+  padding: 10px 10px; /* 버튼 내부 패딩 */
+}
+
+
 .more-button {
   display: block;
   margin: 20px auto; /* 버튼을 가운데로 정렬 */
