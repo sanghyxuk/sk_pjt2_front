@@ -24,7 +24,7 @@ export const postsAPI = {
     },
 
     // 아이템 검색 (검색 타입에 따라 다른 엔드포인트 사용)
-    searchPosts: (keyword, page = 0, size = 10, searchType = 'title') => {
+    searchPosts: (keyword, page = 0, size = 10) => {
         return api.get(`//home/search?keyword=${keyword}&page=${page}&size=${size}`);
         },
 

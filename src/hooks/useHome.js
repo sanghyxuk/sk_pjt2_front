@@ -71,29 +71,24 @@ export function useHomeData() {
   }, []);
 
   //검색 실행 함수
-  const handleSearch = async () => {
+  const handleSearch = async (searchKeyword, searchPage = 0) => {
     try {
       setLoading(true);
+      const response = await postsAPI.searchPosts(searchKeyword, searchPage, size);
 
-      // 검색 API 호출
-      const response = await postsAPI.searchPosts([],0, 4);
-      if (!response.ok) {
-        throw new Error('검색에 실패했습니다.');
+      if (response?.data) {
+        const searchResults = response.data.products.map((searchitem) => ({
+          itemId: searchitem.pdtId,
+          title: searchitem.pdtName,
+          itemprice: searchitem.price,
+          image: searchitem.imageUrl[0] || '알 수 없음',
+        }));
+
+        setHomeData(prevData => ({
+          ...prevData,
+          searchResults: searchResults,
+        }));
       }
-      const data = await response.json();
-
-      // 검색 결과를 searchResults에 저장
-      const searchResults = data.products.map((searchitem) => ({
-        itemId: searchitem.pdtId,
-        title: searchitem.pdtName,
-        itemprice: searchitem.price,
-        image: searchitem.imageUrl[0] || '알 수 없음',
-      }));
-
-      setHomeData((prevData) => ({
-        ...prevData,
-        searchResults: searchResults,
-      }));
     } catch (err) {
       setError(err);
       console.error('Error fetching search results:', err);
@@ -112,5 +107,6 @@ export function useHomeData() {
     setPage,
     size,
     setSize,
-    handleSearch, };
+    handleSearch,
+  };
 }

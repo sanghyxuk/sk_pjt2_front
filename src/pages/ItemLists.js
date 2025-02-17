@@ -3,21 +3,21 @@ import { Container, Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {FaEye, FaHeart, FaSearch} from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { items } from '../data/dummyData';
+//import { items } from '../data/dummyData';
 import { useHomeData } from '../hooks/useHome';
 import Pagination from '../components/Pagination';
 import '../styles/common.css';
 import '../styles/ItemLists.css';
 
 function ItemLists() {
-  const { homeData, loading, error } = useHomeData();
+  const { homeData, handleSearch, setKeyword, keyword, loading } = useHomeData();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
   const searchParams = new URLSearchParams(location.search);
 
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [searchType, setSearchType] = useState(searchParams.get('type') || 'title');
+  //const [filteredItems, setFilteredItems] = useState([]);
+  //const [searchType, setSearchType] = useState(searchParams.get('type') || 'title');
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 0);
   const [totalPages, setTotalPages] = useState(0);
@@ -29,10 +29,11 @@ function ItemLists() {
     //  return;
     //}
 
-    loadPosts(currentPage); // 현재 페이지에 맞는 포스트 로드
+    handleSearch(searchTerm, currentPage); // 현재 검색어와 페이지에 맞는 데이터 로드
   }, [location.search, user]);
 
 
+  {/*
   const loadPosts = (page) => {
     const startIndex = page * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -56,14 +57,17 @@ function ItemLists() {
     setFilteredItems(paginatedItems);
     setTotalPages(Math.ceil(filtered.length / itemsPerPage));
   };
+*/}
 
   // api 사용한 검색
-  /*
-  const loadPosts = async (page, search = '', type = 'title') => {
+  {/*
+  const loadPosts = async (page = 0, search = '') => {
     try {
+      setLoading(true);
       let response;
+
       // 검색 쿼리가 있는 경우 API 호출
-      if (search) {
+      if (search.trim) {
         response = await postsAPI.searchPosts(search.trim(), page, itemsPerPage, type);
       } else {
         // 검색 쿼리가 없는 경우 모든 포스트 가져오기
@@ -89,7 +93,6 @@ function ItemLists() {
       setTotalPages(0);
     }
   };
-  */
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -97,7 +100,21 @@ function ItemLists() {
 
     // 검색어가 있는 경우, URL 파라미터 설정
     if (searchTerm.trim()) {
-      params.set('type', searchType);
+      params.set('search', searchTerm.trim());
+      params.set('page', '0');
+      navigate(`/items?${params.toString()}`);
+    } else {
+      navigate('/items');
+    }
+  };
+  */}
+  // 검색 실행 함수
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+
+    // 검색어가 있는 경우, URL 파라미터 설정
+    if (searchTerm.trim()) {
       params.set('search', searchTerm.trim());
       params.set('page', '0');
       navigate(`/items?${params.toString()}`);
@@ -127,8 +144,9 @@ function ItemLists() {
         <h2 className="mb-4">모든 상품</h2>
 
         {/* 검색 폼 */}
-        <Form onSubmit={handleSearch} className="mb-4">
+        <Form onSubmit={handleSearchSubmit} className="mb-4">
           <Row className="align-items-center">
+            {/*
             <Col md={3}>
               <Form.Select
                   value={searchType}
@@ -141,6 +159,7 @@ function ItemLists() {
                 <option value="author">작성자</option>
               </Form.Select>
             </Col>
+            */}
             <Col md={9}>
               <InputGroup>
                 <Form.Control
@@ -171,8 +190,8 @@ function ItemLists() {
         {/* 카드 형식의 상품 목록 */}
 
         <div className="product-list">
-          {Array.isArray(filteredItems) && filteredItems.length > 0 ? (
-              filteredItems.map((item) => (
+          {Array.isArray(homeData.searchResults) && homeData.searchResults.length > 0 ? (
+              homeData.searchResults.map((item) => (
                   <div className="product-card" key={item.itemId}>
                     {item.discount && (
                         <div className="discount">-{item.discount}%</div>

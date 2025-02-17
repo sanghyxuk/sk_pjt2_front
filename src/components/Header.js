@@ -1,8 +1,9 @@
 // src/components/Header.js
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useHomeData } from '../hooks/useHome';
 import HeartIcon from '../assets/free-icon-heart-1077035.png';
 import ProfileIcon from '../assets/free-icon-person-2815428.png';
 import '../styles/Header.css';
@@ -10,6 +11,10 @@ import '../styles/Header.css';
 function Header() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
 
     useEffect(() => {
         console.log('Current user:', user);
@@ -24,7 +29,18 @@ function Header() {
         }
     };
 
-
+    // 🔹 검색 기능 추가
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+        if (searchTerm.trim()) {
+            params.set('search', searchTerm.trim());
+            params.set('page', '0');
+            navigate(`/items?${params.toString()}`);
+        } else {
+            navigate('/items');
+        }
+    };
 
     return (
         <Navbar bg="light" expand="lg" className="custom-navbar">
@@ -43,14 +59,18 @@ function Header() {
                     </Nav>
                     {/* 우측: 검색바와 인증 버튼 */}
                     <div className="right-section ms-auto">
-                        <div className="search-box">
+                        {/* 검색 기능 */}
+                        <form onSubmit={handleSearchSubmit} className="search-box">
                             <input
                                 type="text"
                                 className="search-input"
                                 placeholder="What are you looking for?"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                             />
-                            <button className="search-button" />
-                        </div>
+                            <button type="submit" className="search-button"></button>
+                        </form>
+
                         <Nav className="auth-links">
                             {user ? (
                                 <div className="auth-buttons">
