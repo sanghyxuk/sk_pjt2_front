@@ -1,19 +1,18 @@
-//import axios from "axios";
-import api from "./axios";
-//const BASE_URL = "http://localhost:8080/mypurchase"; // 백엔드 API 주소
+// src/api/mysaleApi.js
+import api from './axios';
 
-export const getMySaleItems = async (page = 0, size = 10, email) => {
+
+export const getMySaleItems = async (page, size, authData) => {
     try {
-        const params = new URLSearchParams();
-        params.append('page', page);
-        params.append('size', size);
-
-        const response = await api.get(`/myPage/mySale?page=${page}&size=${size}`, {
+        // get 요청
+        const response = await api.get('/myPage/mySale', {
+            params: { page, size },
             headers: {
-                "X-Auth-User": email
-            }
+                'X-Auth-User': authData.email,
+                'Authorization': authData.accessToken,
+            },
         });
-        return response.data;
+        return response.data.sales; // sales 배열 반환
     } catch (error) {
         console.error("판매한 물품을 불러오는 중 오류 발생:", error);
         return [];
