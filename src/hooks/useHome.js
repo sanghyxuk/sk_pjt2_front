@@ -10,8 +10,10 @@ export function useHomeData() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [keyword, setKeyword] = useState('');
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(3);
+  const [page, setPage] = useState(2);
+  const [size, setSize] = useState(6);
+  const [itemsPerPage] = useState(6); // 페이지당 아이템 수 정의
+  const [totalPages, setTotalPages] = useState(1); // 총 페이지 수 정의
 
   useEffect(() => {
     console.log("출력중");
@@ -20,7 +22,7 @@ export function useHomeData() {
         setLoading(true);
 
         // getItemsList API 호출
-        const response = await postsAPI.getitemList(0, 4);
+        const response = await postsAPI.getitemList(0, size);
         console.log('API Response:', response); // 응답 구조 확인
 
         // 응답 구조에 맞게 recentItems 설정
@@ -53,7 +55,7 @@ export function useHomeData() {
   const handleSearch = async (searchKeyword, searchPage = 0) => {
     try {
       setLoading(true);
-      const response = await postsAPI.searchPosts(searchKeyword, searchPage, size);
+      const response = await postsAPI.searchPosts(searchKeyword, searchPage, itemsPerPage);
 
       if (response?.data?.products) {
         const searchResults = response.data.products.map((searchitem) => ({
@@ -64,14 +66,21 @@ export function useHomeData() {
         }));
 
         setHomeData(prevData => ({
-          ...prevData,  // 🔥 기존 recentItems 유지
+          ...prevData,
           searchResults: searchResults,
         }));
+
+        // 검색 결과의 길이를 사용하여 총 페이지 수 계산
+        const totalCount = searchResults.length; // 검색 결과의 길이
+        const calculatedTotalPages = Math.ceil(totalCount / itemsPerPage); // 총 페이지 수 계산
+        setTotalPages(calculatedTotalPages); // 총 페이지 수 설정
+        console.log('Total Pages:', calculatedTotalPages, totalCount, itemsPerPage); // 로그 출력
       } else {
         setHomeData(prevData => ({
           ...prevData,
           searchResults: [],
         }));
+        setTotalPages(0); // 검색 결과가 없을 경우 총 페이지 수 초기화
       }
     } catch (err) {
       setError(err);
@@ -80,6 +89,7 @@ export function useHomeData() {
         ...prevData,
         searchResults: [],
       }));
+      setTotalPages(0); // 오류 발생 시 총 페이지 수 초기화
     } finally {
       setLoading(false);
     }
@@ -95,6 +105,7 @@ export function useHomeData() {
     setPage,
     size,
     setSize,
+    //totalPages,
     handleSearch,
   };
 }
