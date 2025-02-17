@@ -62,12 +62,6 @@ function EditProfilePage() {
             return;
         }
 
-        // 2. 현재 비밀번호는 항상 필수: currentPassword가 비어 있으면 경고 메시지 출력 후 중단
-        if (!form.currentPassword.trim()) {
-            alert('회원 확인을 위해 현재 비밀번호를 입력해주세요.');
-            return;
-        }
-
         // 기본 업데이트 데이터 (비밀번호 관련 필드는 제외)
         let updatedProfile = {
             email: form.email,
@@ -76,14 +70,13 @@ function EditProfilePage() {
             address: form.address,
         };
 
-        // "New Password"와 "Confirm New Password"에 "Current Password" 값을 채워서 전송.
-        if (form.newPassword.trim() === '' && form.confirmPassword.trim() === '') {
-            updatedProfile.prevPassword = form.currentPassword;
-            updatedProfile.newPassword = form.currentPassword;
-        } else {
-            // 사용자가 새 비밀번호를 입력한 경우,
-            // 모든 비밀번호 필드가 입력되어 있어야 하며, 새 비밀번호와 확인 비밀번호가 일치.
-            if (!form.newPassword.trim() || !form.confirmPassword.trim()) {
+        // 비밀번호 변경을 원하는 경우에만, 모든 비밀번호 필드가 입력되었는지 검증 후 추가
+        if (
+            form.currentPassword.trim() !== '' ||
+            form.newPassword.trim() !== '' ||
+            form.confirmPassword.trim() !== ''
+        ) {
+            if (!form.currentPassword.trim() || !form.newPassword.trim() || !form.confirmPassword.trim()) {
                 alert('비밀번호 변경을 위해 모든 비밀번호 필드를 입력해주세요.');
                 return;
             }
@@ -91,8 +84,11 @@ function EditProfilePage() {
                 alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
                 return;
             }
-            updatedProfile.prevPassword = form.currentPassword;
-            updatedProfile.newPassword = form.newPassword;
+            updatedProfile = {
+                ...updatedProfile,
+                prevPassword: form.currentPassword,
+                newPassword: form.newPassword,
+            };
         }
 
         console.log('전송할 업데이트 데이터:', updatedProfile);
@@ -101,7 +97,7 @@ function EditProfilePage() {
             const response = await profileAPI.updateProfile(updatedProfile, {
                 email: user.email,
                 accessToken: user.accessToken,
-            });// post
+            }); //post요청
             console.log('프로필 업데이트 응답:', response.data);
             alert('개인정보가 수정되었습니다!');
         } catch (error) {
