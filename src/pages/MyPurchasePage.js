@@ -16,16 +16,11 @@ function MyPurchasePage() {
     const size = 3;
 
     useEffect(() => {
+        // user가 있고, email, token이 있다면
         if (user && user.email && user.accessToken) {
-            fetchPurchases(1); // 1-based, 실제 백엔드는 page=0
+             fetchPurchases(currentPage);
         }
-    }, [user]);
-
-    useEffect(() => {
-        if (currentPage > 1 && user && user.email && user.accessToken) {
-            fetchPurchases(currentPage);
-        }
-    }, [currentPage]);
+    }, [user, currentPage]);
 
     const fetchPurchases = async (frontPage) => {
         try {

@@ -29,42 +29,76 @@ export const postsAPI = {
     },
 
     // 아이템 상세 조회
-    getPostDetail: (postId, isBackNavigation = false) => {
+    getPostDetail: (pdtId, isBackNavigation = false) => {
         const params = new URLSearchParams();
         if (isBackNavigation) {
             params.append('skipCount', 'true');
         }
-        return api.get(`/posts/${postId}${params.toString() ? `?${params.toString()}` : ''}`);
+        return api.get(`/pdts/detail/${pdtId}`);
+    },
+
+    //카테고리별로 아이템 조회
+    getcategoryList : async (category, page = 0, size = 10) => {
+        console.log("함수실행");
+        try {
+            // URL 쿼리 파라미터 생성
+            const params = new URLSearchParams();
+            params.append('page', page);
+            params.append('size', size);
+            params.append('category', category);
+            // 요청 보내고 응답 받기
+            const response = await api.get(`/home/category?${params.toString()}`);
+            // 응답 데이터 추출
+            const data = response.data;
+            // 데이터 출력
+            console.log("Response Data:", data);
+            // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
+            return data;
+        } catch (error) {
+            // 에러 처리
+            console.error("Error fetching category list:", error);
+        }
     },
 
     // 아이템 등록
-    createPost: (title, content, files) => {
+    registItems: ({pdtPrice, pdtName, pdtQuantity, description, dtype, images, user}) => {
+
         const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        if (files) {
-            files.forEach(file => formData.append('files', file));
+        const jsonData = {
+            pdtPrice,
+            pdtName,
+            pdtQuantity,
+            description,
+            dtype,
+            email: user.email
+        };
+        formData.append("productDetailJson", JSON.stringify(jsonData));
+        console.log("json:" + jsonData);
+        if (images.length > 0) {
+            images.forEach(file => formData.append('images', file));
         }
-        return api.post('/posts/write', formData, {
+        console.log("user정보:" + user);
+        return api.post('/pdts/register', formData,{
             headers: {
+                "X-Auth-User": user.email,
+                "Authorization": user.accessToken,
                 'Content-Type': 'multipart/form-data'
             }
         });
+    },
+
+
+    // 아이템 삭제
+    deleteItem: (productId) => {
+        const formData = new FormData();
+        formData.append('productId', productId);
+        return api.post(`/pdts/delete/${productId}`, formData);
     },
 
     // 아이템 수정
     updatePost: (postId, title, content) =>
         api.put(`/posts/update/${postId}?title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`),
 
-    // 아이템 삭제
-    deletePost: (postId, currentUser) => {
-        const formData = new FormData();
-        formData.append('postId', postId);
-        if (currentUser.role === 'ROLE_ADMIN') {
-            formData.append('isAdmin', true);
-        }
-        return api.post(`/posts/delete/${postId}`, formData);
-    },
 
     // 아이템 찜 상태 확인
     checkLikeStatus: async (postId, username) => {

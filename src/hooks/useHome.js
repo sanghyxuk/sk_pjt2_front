@@ -17,6 +17,7 @@ export function useHomeData() {
 
   const [totalPages, setTotalPages] = useState(0);
 
+  //최근 아이템 데이터
   useEffect(() => {
     console.log("출력중 - recent items");
     const fetchHomeData = async () => {
@@ -47,6 +48,7 @@ export function useHomeData() {
     fetchHomeData();
   }, [size]);
 
+  // 검색기능
   const handleSearch = async (searchKeyword, searchPage = 0) => {
     try {
       setLoading(true);
@@ -90,6 +92,48 @@ export function useHomeData() {
     }
   };
 
+  // 카테고리 데이터 가져오기
+  const fetchCategoryData = async (category, page = 0) => {
+    try {
+      setLoading(true);
+      const response = await postsAPI.getcategoryList(category, page, size);
+
+      if (response?.products) {
+        const categoryResults = response.products.map(item => ({
+          itemId: item.pdtId,
+          title: item.pdtName,
+          itemprice: item.price,
+          image: item.imageUrl?.[0] || '알 수 없음',
+        }));
+
+        setHomeData(prevData => ({
+          ...prevData,
+          searchResults: categoryResults,
+        }));
+
+        const serverTotalPages = response.totalPages;
+        console.log('serverTotalPages from category response:', serverTotalPages);
+        setTotalPages(serverTotalPages);
+      } else {
+        setHomeData(prevData => ({
+          ...prevData,
+          searchResults: [],
+        }));
+        setTotalPages(0);
+      }
+    } catch (err) {
+      setError(err);
+      console.error('Error fetching category results:', err);
+      setHomeData(prevData => ({
+        ...prevData,
+        searchResults: [],
+      }));
+      setTotalPages(0);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     homeData,
     loading,
@@ -100,11 +144,9 @@ export function useHomeData() {
     setPage,
     size,
     setSize,
-
-    // 🔥 수정: totalPages를 외부에 제공
     totalPages,
-
     handleSearch,
+    fetchCategoryData,
   };
 
 }

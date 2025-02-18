@@ -17,16 +17,10 @@ function WishListPage() {
     const size = 3; // 예시
 
     useEffect(() => {
-        if (user && user.email && user.accessToken) {
-            fetchWishlist(1);
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (currentPage > 1 && user && user.email && user.accessToken) {
+        if (user && user.email && user.accessToken && currentPage >= 1) {
             fetchWishlist(currentPage);
         }
-    }, [currentPage]);
+    }, [user, currentPage]);
 
     const fetchWishlist = async (frontPage) => {
         try {

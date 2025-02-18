@@ -1,5 +1,5 @@
 // src/components/Header.js
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -29,7 +29,6 @@ function Header() {
         }
     };
 
-    // 검색 기능 추가
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         const params = new URLSearchParams();
@@ -48,18 +47,17 @@ function Header() {
                 <Navbar.Brand as={Link} to="/" className="fs-4">Re:Use</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    {/* 좌측: 네비게이션 링크 */}
-                    <Nav className="navigation-links">
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/items">Product</Nav.Link>
-                        <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
-                        {user?.role === 'ROLE_ADMIN' && (
-                            <Nav.Link as={Link} to="/admin/users">관리자 페이지</Nav.Link>
-                        )}
-                    </Nav>
-                    {/* 우측: 검색바와 인증 버튼 */}
-                    <div className="right-section ms-auto">
-                        {/* 검색 기능 */}
+                    <div className="left-nav">
+                        <Nav className="navigation-links">
+                            <Nav.Link as={Link} to="/">Home</Nav.Link>
+                            <Nav.Link as={Link} to="/items">Product</Nav.Link>
+                            <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+                            {user?.role === 'ROLE_ADMIN' && (
+                                <Nav.Link as={Link} to="/admin/users">관리자 페이지</Nav.Link>
+                            )}
+                        </Nav>
+                    </div>
+                    <div className="right-section">
                         <form onSubmit={handleSearchSubmit} className="search-box">
                             <input
                                 type="text"
@@ -70,25 +68,22 @@ function Header() {
                             />
                             <button type="submit" className="search-button"></button>
                         </form>
-
-                        <Nav className="auth-links">
-                            {user ? (
-                                <div className="auth-buttons">
-                                    <button onClick={handleLogout} className="logout-button">로그아웃</button>
-                                    <Nav.Link as={Link} to="/wishlist">
-                                        <img className="icon-image" src={HeartIcon} alt="Wishlist" />
-                                    </Nav.Link>
-                                    <Nav.Link as={Link} to="/profile/edit">
-                                        <img className="icon-image" src={ProfileIcon} alt="My Profile" />
-                                    </Nav.Link>
-                                </div>
-                            ) : (
-                                <>
-                                    <Nav.Link as={Link} to="/login">로그인</Nav.Link>
-                                    <Nav.Link as={Link} to="/register">회원가입</Nav.Link>
-                                </>
-                            )}
-                        </Nav>
+                        {user ? (
+                            <div className="auth-buttons">
+                                <Nav.Link as={Link} to="/wishlist">
+                                    <img className="icon-image" src={HeartIcon} alt="Wishlist" />
+                                </Nav.Link>
+                                <Nav.Link as={Link} to="/profile/edit">
+                                    <img className="icon-image" src={ProfileIcon} alt="My Profile" />
+                                </Nav.Link>
+                                <button onClick={handleLogout} className="logout-button">로그아웃</button>
+                            </div>
+                        ) : (
+                            <>
+                                <Nav.Link as={Link} to="/login">로그인</Nav.Link>
+                                <Nav.Link as={Link} to="/register">회원가입</Nav.Link>
+                            </>
+                        )}
                     </div>
                 </Navbar.Collapse>
             </Container>

@@ -95,7 +95,9 @@
     font-size: 1.2rem;
   }
 }
-
+.content-wrap {
+  min-height: calc(100vh - 100px); /* 헤더와 푸터 높이를 고려 */
+}
 /* 추천상품 */
 .products {
   text-align: center;
@@ -112,6 +114,20 @@
   border: 1px solid #ddd;
   padding: 15px;
   text-align: center;
+}
+
+.product-poster img {
+  /* 필요에 따라 고정 크기나 최대 크기를 설정 */
+  max-width: 200px;   /* 최대 너비 */
+  max-height: 200px;  /* 최대 높이 */
+
+  /* 이미지를 잘라서라도 비율을 맞추고 싶다면 */
+  object-fit: cover;
+
+  /* 혹은 비율 유지를 위해 높이는 자동, 너비만 제한하고 싶다면 */
+  /* max-width: 100%;
+     height: auto;
+  */
 }
 
 .product-title-link {
