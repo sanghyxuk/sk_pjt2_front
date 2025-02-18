@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import ItemLists from './pages/ItemLists';
 import ItemDetail from './pages/ItemDetail';
 import ItemRegistration from './pages/ItemRegistration';
-import ItemEdit from './pages/ItemEdit';
 import MySalePage from './pages/MySalePage';
 import MyPurchasePage from './pages/MyPurchasePage';
 import WishlistPage from './pages/WishlistPage';
@@ -18,6 +17,9 @@ import EditProfilePage from './pages/EditProfilePage';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+
+import Chat from "./pages/Chat";
+
 import './styles/common.css';
 
 // 보호된 라우트 컴포넌트 (예시)
@@ -54,6 +56,9 @@ function App() {
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/profile/edit" element={<EditProfilePage />} />
+
+                  <Route path="/chat" element={<Chat />} />
+
                 </Routes>
               </div>
 

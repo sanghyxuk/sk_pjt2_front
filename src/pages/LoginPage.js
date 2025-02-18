@@ -33,6 +33,13 @@ function LoginPage() {
             const AccessToken = response.headers['accesstoken'];
             console.log('로그인 응답:', XAuthUser);
             console.log('로그인 응답:', AccessToken);
+
+            if (XAuthUser) {
+                localStorage.setItem("X-Auth-User", XAuthUser); // ✅ 저장
+            } else {
+                console.warn("❌ X-Auth-User 헤더가 없습니다.");
+            }
+
             setUserInput({ email: '', password: '' });
             navigate('/'); // 추가: 로그인 성공 후 홈 화면으로 이동
         } catch (error) {

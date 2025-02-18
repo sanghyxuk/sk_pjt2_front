@@ -1,9 +1,7 @@
-// src/components/Header.js
 import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useHomeData } from '../hooks/useHome';
 import HeartIcon from '../assets/free-icon-heart-1077035.png';
 import ProfileIcon from '../assets/free-icon-person-2815428.png';
 import '../styles/Header.css';
@@ -13,17 +11,21 @@ function Header() {
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
 
     useEffect(() => {
         console.log('Current user:', user);
     }, [user]);
 
+    // ✅ 로그아웃 시 WebSocket 해제 + 로컬스토리지 삭제
     const handleLogout = async () => {
         try {
-            await logout();
-            navigate('/', { replace: true });
+            await logout();  // ✅ AuthContext에서 로그아웃 실행
+            localStorage.removeItem("X-Auth-User");
+            localStorage.removeItem("AccessToken");
+            window.dispatchEvent(new Event("logout"));
+            alert("로그아웃 되었습니다.");
+            navigate('/login', { replace: true });
         } catch (error) {
             console.error('Logout error:', error);
         }
@@ -47,16 +49,19 @@ function Header() {
                 <Navbar.Brand as={Link} to="/" className="fs-4">Re:Use</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <div className="left-nav">
-                        <Nav className="navigation-links">
-                            <Nav.Link as={Link} to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/items">Product</Nav.Link>
-                            <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
-                            {user?.role === 'ROLE_ADMIN' && (
-                                <Nav.Link as={Link} to="/admin/users">관리자 페이지</Nav.Link>
-                            )}
-                        </Nav>
-                    </div>
+                    {/* 좌측: 네비게이션 링크 */}
+                    <Nav className="navigation-links">
+                        <Nav.Link as={Link} to="/">Home</Nav.Link>
+                        <Nav.Link as={Link} to="/items">Product</Nav.Link>
+                        <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+                        <Nav.Link as={Link} to="/chat">Chat</Nav.Link>  {/* ✅ 추가된 부분 */}
+                        {user?.role === 'ROLE_ADMIN' && (
+                            <Nav.Link as={Link} to="/admin/users">관리자 페이지</Nav.Link>
+                        )}
+                    </Nav>
+
+                    {/* 우측: 검색바와 인증 버튼 */}
+
                     <div className="right-section">
                         <form onSubmit={handleSearchSubmit} className="search-box">
                             <input
