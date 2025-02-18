@@ -43,8 +43,8 @@
 }
 
 .btn-primary:hover {
-  background-color: #bb3838 !important;
-  border-color: #bb3838 !important;
+  background-color: #bb3838 ;
+  border-color: #bb3838 ;
 }
 
 /* 페이지네이션 스타일 */

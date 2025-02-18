@@ -24,11 +24,23 @@ function ItemLists() {
   const [itemsPerPage] = useState(6); // 페이지당 아이템 수 조정
   const [wishlistItems, setWishlistItems] = useState(new Set());
 
+  // 로컬 스토리지에서 찜 상태 불러오기
+  useEffect(() => {
+    const storedWishlist = JSON.parse(localStorage.getItem('wishlistItems')) || [];
+    setWishlistItems(new Set(storedWishlist));
+  }, []);
+
+  // 찜 상태가 변경될 때마다 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem('wishlistItems', JSON.stringify(Array.from(wishlistItems)));
+  }, [wishlistItems]);
+
   // 위시리스트에 아이템 추가 또는 제거하는 함수
   const handleAddToWishlist = async (item) => {
     const email = user?.email;
     try {
       if (wishlistItems.has(item.itemId)) {
+        // 위시리스트에서 제거
         await toggleWishdel(email, item.itemId);
         setWishlistItems((prev) => {
           const newWishlist = new Set(prev);
@@ -37,6 +49,7 @@ function ItemLists() {
         });
         alert("위시리스트에서 제거되었습니다!");
       } else {
+        // 위시리스트에 추가
         await toggleWish(email, item.itemId, item.title, item.itemprice);
         setWishlistItems((prev) => new Set(prev).add(item.itemId));
         alert("위시리스트에 추가되었습니다!");

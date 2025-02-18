@@ -128,8 +128,14 @@
   white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
   margin: 5px 5px; /* 버튼 사이의 간격 */
   padding: 10px 10px; /* 버튼 내부 패딩 */
+  background-color: black;
 }
 
+.add-to-like-btn:hover {
+  background-color: black !important;
+  border-color: black !important;
+  color: white !important;
+}
 
 .more-button {
   display: block;

@@ -115,7 +115,7 @@ function Home() {
                         {"★".repeat(5)} ({item.rating})
                       </div>
                       */}
-                      <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
+                      <Button className="add-to-like-btn" style={{ backgroundColor: 'black', borderColor: 'black' }} onClick={() => handleAddToWishlist(item)}>
                         {wishlistItems.has(item.itemId) ? "찜취소" : "찜해두기"}
                       </Button>
                     </div>

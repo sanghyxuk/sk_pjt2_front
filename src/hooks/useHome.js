@@ -30,7 +30,7 @@ export function useHomeData() {
           itemId: item.pdtId,
           title: item.pdtName,
           itemprice: item.price,
-          image: item.imageUrl?.[0] || '알 수 없음'
+          image: item.imageUrl?.[0] || 'https://via.placeholder.com/150'
         })) || [];
 
         console.log('Extracted Data:', recentItems);
@@ -62,7 +62,7 @@ export function useHomeData() {
           itemId: searchitem.pdtId,
           title: searchitem.pdtName,
           itemprice: searchitem.price,
-          image: searchitem.imageUrl?.[0] || '알 수 없음',
+          image: searchitem.imageUrl?.[0] || 'https://via.placeholder.com/150',
         }));
 
         setHomeData(prevData => ({
