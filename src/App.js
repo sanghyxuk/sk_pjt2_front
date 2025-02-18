@@ -13,8 +13,6 @@ import ItemEdit from './pages/ItemEdit';
 import MySalePage from "./pages/MySalePage";
 import MyPurchasePage from "./pages/MyPurchasePage";
 import WishlistPage from "./pages/WishlistPage";
-import ChatListPage from "./pages/ChatListPage";
-import ChatPage from "./pages/ChatPage";
 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -53,8 +51,6 @@ function App() {
               <Route path="/mysale" element={<MySalePage />} />
               <Route path="/mypurchase" element={<MyPurchasePage />} />
               <Route path="/wishlist" element={<WishlistPage />} />
-              <Route path="/chat" element={<ChatListPage />} />
-              <Route path="/chat/:roomId" element={<ChatPage />} />
               <Route path="/" element={<LoginPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
