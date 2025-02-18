@@ -7,6 +7,7 @@ import { toggleWish, toggleWishdel } from '../api/wishlistApi';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
 
+
 function Home() {
   const { homeData, loading, error } = useHomeData();
   const navigate = useNavigate();
@@ -97,7 +98,9 @@ function Home() {
 
             <div className="product-grid mb-4">
               {homeData.recentItems.slice(0, 4).map((item) => (
+
                   <div key={item.itemId} className="product-grid-item">
+
                     <div className="product-poster">
                       <img src={item.image} alt={item.title} />
                     </div>
