@@ -26,7 +26,7 @@ export const getWishlistItems = async (page = 1, size = 3, authData) => {
 // 위시리스트 추가 API
 export const toggleWish = async (email, pdtId, pdtName, pdtPrice) => {
     try {
-        const response = await api.post('http://13.208.145.12:8080/wishlist', {
+        const response = await api.post('/wishlist', {
             email: email,
             pdtId: pdtId,
             pdtName: pdtName,
@@ -42,14 +42,22 @@ export const toggleWish = async (email, pdtId, pdtName, pdtPrice) => {
 // 찜 목록에서 삭제
 export const toggleWishdel = async (email, id) => {
     try {
-        const response = await api.delete(`http://13.208.145.12:8080/wishlist/${id}`, {
+        console.log("위시리스트 삭제 요청:", {
+            url: `/wishlist/${id}`,
+            headers: { "X-Auth-User": email }
+        });
+
+        const response = await api.delete(`/wishlist/${id}`, {
             headers: {
                 "X-Auth-User": email
             }
         });
-        return response.data; // 삭제된 위시리스트 항목 반환
+
+        console.log("위시리스트 삭제 응답:", response.data);
+        return response.data;
     } catch (error) {
-        console.error("위시리스트 삭제 중 오류 발생:", error);
-        throw error; // 오류 발생 시 예외를 던짐
+        console.error("위시리스트 삭제 중 오류 발생:", error.response?.data || error.message);
+        throw error;
     }
 };
+

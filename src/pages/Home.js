@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaHeart, FaEye } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { useHomeData } from '../hooks/useHome';
 import { toggleWish, toggleWishdel } from '../api/wishlistApi';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
-
 
 function Home() {
   const { homeData, loading, error } = useHomeData();
@@ -16,20 +14,27 @@ function Home() {
   const { user } = useAuth();
 
   const categories = [
-    { name: "Phones", icon: "📱", link: "/category/phones" },
-    { name: "Computers", icon: "💻", link: "/category/computers" },
-    { name: "SmartWatch", icon: "⌚", link: "/category/smartwatch" },
-    { name: "Camera", icon: "📷", link: "/category/camera" },
-    { name: "HeadPhones", icon: "🎧", link: "/category/headphones" },
-    { name: "Gaming", icon: "🎮", link: "/category/gaming" }
+    { name: "Phones", icon: "\ud83d\udcf1", link: "/category/phones" },
+    { name: "Computers", icon: "\ud83d\udcbb", link: "/category/computers" },
+    { name: "SmartWatch", icon: "\u231a", link: "/category/smartwatch" },
+    { name: "Camera", icon: "\ud83d\udcf7", link: "/category/camera" },
+    { name: "HeadPhones", icon: "\ud83c\udfa7", link: "/category/headphones" },
+    { name: "Gaming", icon: "\ud83c\udfae", link: "/category/gaming" }
   ];
 
   // 위시리스트에 아이템 추가 또는 제거하는 함수
   const handleAddToWishlist = async (item) => {
+    if (!user) {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate("/login");
+      return;
+    }
+
     const email = user?.email;
     try {
       if (wishlistItems.has(item.itemId)) {
-        await toggleWishdel(email, item.itemId);
+        console.log("찜 취소 요청:", email, item.itemId); // 로그 추가
+        await toggleWishdel(email, [item.itemId]); // API 호출
         setWishlistItems((prev) => {
           const newWishlist = new Set(prev);
           newWishlist.delete(item.itemId);
@@ -37,7 +42,8 @@ function Home() {
         });
         alert("위시리스트에서 제거되었습니다!");
       } else {
-        await toggleWish(email, item.itemId, item.title, item.itemprice);
+        console.log("찜하기 요청:", email, item.itemId); // 로그 추가
+        await toggleWish(email, item.itemId, item.title, item.itemprice); // API 호출
         setWishlistItems((prev) => new Set(prev).add(item.itemId));
         alert("위시리스트에 추가되었습니다!");
       }
@@ -91,14 +97,8 @@ function Home() {
 
             <div className="product-grid mb-4">
               {homeData.recentItems.slice(0, 4).map((item) => (
-
                   <div key={item.itemId} className="product-grid-item">
-
                     <div className="product-poster">
-                      {/*
-                      <button className="wishlist-icon"><FaHeart /></button>
-                      <button className="quick-view"><FaEye /></button>
-                      */}
                       <img src={item.image} alt={item.title} />
                     </div>
                     <div className="product-info">
@@ -106,15 +106,9 @@ function Home() {
                         <Link to={`/items/${item.itemId}`} className="product-title-link">{item.title}</Link>
                       </h6>
                       <div className="price-info">
-                        {/*<span className="original-price">${item.price}</span>*/}
                         <span className="current-price">가격: \{item.itemprice} |</span>
                         <span className="delivery-price"> 배달비: \3000</span>
                       </div>
-                      {/*
-                      <div className="rating">
-                        {"★".repeat(5)} ({item.rating})
-                      </div>
-                      */}
                       <Button className="add-to-like-btn" style={{ backgroundColor: 'black', borderColor: 'black' }} onClick={() => handleAddToWishlist(item)}>
                         {wishlistItems.has(item.itemId) ? "찜취소" : "찜해두기"}
                       </Button>
