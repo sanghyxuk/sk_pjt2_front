@@ -89,10 +89,14 @@ export const postsAPI = {
 
 
     // 아이템 삭제
-    deleteItem: (productId) => {
-        const formData = new FormData();
-        formData.append('productId', productId);
-        return api.post(`/pdts/delete/${productId}`, formData);
+    deleteItem: (productId, user) => {
+        console.log(user);
+        return api.delete(`/pdts/delete/${productId}`,{
+            headers: {
+                "X-Auth-User": user.email,
+                "Authorization": user.accessToken,
+            }
+        });
     },
 
     // 아이템 수정

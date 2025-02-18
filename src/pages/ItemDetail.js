@@ -62,6 +62,7 @@ function ItemDetail() {
     try {
       const response = await postsAPI.getPostDetail(id, isBackNavigation);
       console.log("response: " + JSON.stringify(response.data, null, 2));
+      console.log(user);
       setItem(response.data);
 
     } catch (error) {
@@ -125,7 +126,7 @@ function ItemDetail() {
                     </Button>
                   </div>
                   <div>
-                    <Button variant="primary" className="me-2" onClick={() => postsAPI.deleteItem(item.itemId)}>
+                    <Button variant="primary" className="me-2" onClick={() => postsAPI.deleteItem(item.pdtId, user)}>
                       상품삭제
                     </Button>
                   </div>
