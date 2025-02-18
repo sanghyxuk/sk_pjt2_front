@@ -117,6 +117,10 @@
 .product-title-link {
   color: black; /* 상품 이름 색상을 검정색으로 설정 */
   text-decoration: none; /* 밑줄 제거 */
+  display: block; /* 블록 요소로 변경하여 여백 적용 */
+  margin-top: 15px; /* 위쪽 간격 조정 */
+  font-size: 1.2rem; /* 글자 크기 키우기 */
+  font-weight: bold; /* 글자 두껍게 */
 }
 
 .product-title-link:hover {
