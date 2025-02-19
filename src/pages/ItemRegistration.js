@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col, Image } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 //import { items } from '../data/dummyData'; // 더미 데이터 임포트
@@ -107,6 +107,19 @@ function ItemRegistration() {
     navigate('/items'); // 아이템 목록으로 이동
   };
 
+  // 이미지 삭제 핸들러
+  const handleImageDelete = (index) => {
+    const updatedImages = images.filter((_, i) => i !== index); // 선택한 이미지 삭제
+    setImages(updatedImages);
+  };
+
+  // 이미지 업로드 저장소
+  const handleImageUpload = (e) => {
+    const newImages = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...newImages]); // 기존 이미지를 유지하고 새 이미지를 추가
+  };
+
+
   return (
       <Container className="py-4 item-registration-container" style={{ display: 'flex', flexDirection: 'column' }}>
         <h2>{id ? '상품 수정' : '새 상품 등록'}</h2>
@@ -171,10 +184,25 @@ function ItemRegistration() {
                 <Form.Control
                     type="file"
                     multiple
-                    onChange={(e) => setImages(Array.from(e.target.files))}
+                    onChange={handleImageUpload} // 이미지 업로드 핸들러 연결
                 />
               </Form.Group>
           )}
+
+          {/* 이미지 미리보기 및 삭제 */}
+          <Form.Group className="mb-3">
+            <Form.Label>첨부된 이미지</Form.Label>
+            <div>
+              {images.map((image, index) => (
+                  <div key={index} className="image-preview-container">
+                    <Image src={URL.createObjectURL(image)} alt="preview" thumbnail width={100} />
+                    <Button variant="danger" onClick={() => handleImageDelete(index)} className="ms-2">
+                      삭제
+                    </Button>
+                  </div>
+              ))}
+            </div>
+          </Form.Group>
 
           <Row>
             <Col className="d-flex justify-content-end gap-2">
