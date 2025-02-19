@@ -54,6 +54,24 @@
     gap: 5px;
 }
 
+/* .action-buttons의 버튼들 중앙 정렬 */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px; /* 버튼들 사이의 간격 */
+    margin: 0 5px; /* 버튼들 간의 여백 */
+}
+
+/* 배달/직거래 버튼들을 붙여서 나란히 배치 */
+.action-buttons.delivery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0; /* 버튼들 간의 간격을 0으로 설정 */
+}
+
 .comments-section {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -162,23 +162,13 @@ function ItemDetail() {
 
                 <div className="like-section">
                   <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
-                    {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
-                  </Button>
-                  <Button
-                      variant={isLiked ? "primary" : "outline-primary"}
-                      onClick={() => {
-                        setIsLiked(!isLiked);
-                        setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-                      }}
-                      className="like-btn"
-                  >
-                    찜하기
-                    <FaHeart/> {likeCount}
+                    <FaHeart/>
+                    {wishlistItems.has(item.pdtId) ? ' 찜취소' : ' 찜하기'}
                   </Button>
                 </div>
+
+
                 <div className="action-buttons mt-3">
-                  <Button variant="success">배달 \3000</Button>
-                  <Button variant="success">직거래</Button>
                   <div>
                     <Button variant="primary" className="me-2" onClick={() => navigate('/chat')}>
                       채팅하기
@@ -201,9 +191,13 @@ function ItemDetail() {
                     >
                       상품삭제
                     </Button>
-
                   </div>
                 </div>
+                <div className="action-buttons delivery mt-3">
+                  <Button variant="success">배달 \3000</Button>
+                  <Button variant="success">직거래</Button>
+                </div>
+
                 <div className="item-meta">
                   <span className="item-date">2020.2.2.</span>
                   <span className="item-views">조회수: 3</span>
