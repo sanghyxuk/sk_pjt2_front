@@ -1,22 +1,23 @@
 // src/pages/Home.js
-
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getWishlistItems, toggleWish, toggleWishdel } from '../api/wishlistApi';
 import { useHomeData } from '../hooks/useHome';
+import { getMySaleItems } from '../api/mysaleApi';
 import '../styles/Home.css';
 import advertisementBanner from '../assets/advertisement_banner.jpg';
 
 function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
-
   const { homeData, loading, error } = useHomeData();
 
   // 찜 목록 state
   const [wishlistItems, setWishlistItems] = useState(new Set());
+  // 내 판매 목록의 상품 ID들을 저장할 state
+  const [mySaleIds, setMySaleIds] = useState([]);
 
   const categories = [
     { name: "디지털기기", icon: "📱" },
@@ -27,10 +28,9 @@ function Home() {
     { name: "기타", icon: "📦" }
   ];
 
-  // 마운트 시 내 위시리스트 불러오기
+  // 내 위시리스트 불러오기
   useEffect(() => {
     if (!user || !user.email || !user.accessToken) return;
-
     getWishlistItems(0, 999, {
       email: user.email,
       accessToken: user.accessToken,
@@ -42,7 +42,21 @@ function Home() {
         .catch((err) => console.error('위시리스트 로딩 오류:', err));
   }, [user]);
 
-  // 찜하기/취소 버튼
+  // 내 판매 목록 불러오기 (내가 등록한 상품 ID 목록)
+  useEffect(() => {
+    if (!user || !user.email || !user.accessToken) return;
+    getMySaleItems(0, 999, {
+      email: user.email,
+      accessToken: user.accessToken,
+    })
+        .then((data) => {
+          const saleIds = data.sales?.map((item) => item.pdtId) || [];
+          setMySaleIds(saleIds);
+        })
+        .catch((err) => console.error('내 판매목록 로딩 오류:', err));
+  }, [user]);
+
+  // 찜하기/찜취소 버튼 로직
   const handleToggleWishlist = async (item) => {
     if (!user) {
       alert('로그인이 필요한 서비스입니다.');
@@ -80,7 +94,7 @@ function Home() {
     const params = new URLSearchParams();
     params.set('category', category);
     params.set('page', '0'); // 첫 페이지로 이동
-    navigate(`/items?${params.toString()}`); // 카테고리 데이터 가져오기
+    navigate(`/items?${params.toString()}`);
   };
 
   if (loading) {
@@ -106,9 +120,8 @@ function Home() {
       <Container fluid className="py-4">
         <Row className="justify-content-center">
           <Col md={10} lg={9}>
-            {/* 🔸 배너 부분 */}
+            {/* 배너 영역 */}
             <div className="banner mb-4">
-              {/* 원래 이미지가 깨졌다면? => 아래처럼 넣거나, 다른 스타일로 대체 */}
               <img src={advertisementBanner} alt="iPhone 14 Series" />
               <div className="banner-overlay">
                 <div className="apple-logo">
@@ -119,7 +132,7 @@ function Home() {
               </div>
             </div>
 
-            {/* 추천상품 */}
+            {/* 추천상품 영역 */}
             <div className="section-header d-flex justify-content-between align-items-center mb-3">
               <div className="d-flex align-items-center">
                 <div className="red-marker"></div>
@@ -140,15 +153,25 @@ function Home() {
                         </Link>
                       </h6>
                       <div className="price-info">
-                        <span className="current-price">가격: \{item.itemprice} </span>
+                    <span className="current-price">
+                      가격: ₩{Number(item.itemprice).toLocaleString()} 원
+                    </span>
                       </div>
-                      <Button
-                          className="add-to-like-btn"
-                          style={{ backgroundColor: 'black', borderColor: 'black' }}
-                          onClick={() => handleToggleWishlist(item)}
-                      >
-                        {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
-                      </Button>
+                      {user && mySaleIds.includes(item.itemId) ? (
+                          // 내 판매 목록에 있으면 내 상품 -> MySalePage와 동일한 UI의 상품 상세보기 버튼 노출
+                          <button
+                              className="add-to-cart-btn"
+                              onClick={() => navigate(`/items/${item.itemId}`)}
+                              style={{ fontSize: '15px' }}
+                          >
+                            상품 상세보기
+                          </button>
+                      ) : (
+                          // 그렇지 않으면 찜하기 버튼 노출
+                          <Button className="btn-add-to-cart" onClick={() => handleToggleWishlist(item)}>
+                            {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
+                          </Button>
+                      )}
                     </div>
                   </div>
               ))}
@@ -175,15 +198,16 @@ function Home() {
                     }}
                 >
                   <span>📦</span>
-                  <Link to="/items" className="category-link" style={{color: 'white'}}>
+                  <Link to="/items" className="category-link" style={{ color: 'white' }}>
                     모두 보기
                   </Link>
                 </div>
-
                 {categories.map((category, index) => (
                     <div key={index} className="category-item">
                       <span>{category.icon}</span>
-                      <Link to={`/items?category=${category.name}`} className="category-link">{category.name}</Link>
+                      <Link to={`/items?category=${category.name}`} className="category-link">
+                        {category.name}
+                      </Link>
                     </div>
                 ))}
               </div>

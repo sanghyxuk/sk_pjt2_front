@@ -10,7 +10,7 @@ import { getWishlistItems, toggleWish, toggleWishdel } from '../api/wishlistApi'
 
 // 홈데이터 훅 (상품 검색)
 import { useHomeData } from '../hooks/useHome';
-
+import { getMySaleItems } from '../api/mysaleApi';
 // 페이지네이션 컴포넌트
 import Pagination from '../components/Pagination';
 
@@ -38,6 +38,8 @@ function ItemLists() {
   // 🔹 페이지 초기화 시 서버에서 내 위시리스트를 불러와서 유지
   const [wishlistItems, setWishlistItems] = useState(new Set());
 
+  const [mySaleIds, setMySaleIds] = useState([]);
+
   // 1) 마운트/유저 바뀔 때 “전체” 찜 목록 GET
   useEffect(() => {
     if (!user || !user.email || !user.accessToken) return;
@@ -53,6 +55,20 @@ function ItemLists() {
         .catch((err) => {
           console.error('위시리스트 로딩 오류:', err);
         });
+  }, [user]);
+
+  // 2) 내 판매 목록 불러오기 (내가 등록한 상품의 pdtId 목록)
+  useEffect(() => {
+    if (!user || !user.email || !user.accessToken) return;
+    getMySaleItems(0, 999, {
+      email: user.email,
+      accessToken: user.accessToken,
+    })
+        .then((data) => {
+          const saleIds = data.sales?.map((item) => item.pdtId) || [];
+          setMySaleIds(saleIds);
+        })
+        .catch((err) => console.error('내 판매목록 로딩 오류:', err));
   }, [user]);
 
   // 2) 검색 로직: location.search or user 바뀔 때 handleSearch
@@ -89,7 +105,7 @@ function ItemLists() {
   };
 
   // 3) 찜하기/취소 버튼 로직
-  const handleAddToWishlist = async (item) => {
+  const handleToggleWishlist = async (item) => {
     if (!user) {
       alert('로그인이 필요합니다.');
       navigate('/login');
@@ -206,11 +222,17 @@ function ItemLists() {
                     <Link to={`/items/${item.itemId}`}>
                       <img src={item.image || 'default-image-url.jpg'} alt={item.title} />
                       <h5>{item.title}</h5>
-                      <div className="price">\{item.itemprice}</div>
+                      <div className="price">₩{Number(item.itemprice).toLocaleString()}</div>
                     </Link>
-                    <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
-                      {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
-                    </Button>
+                    {user && mySaleIds.includes(item.itemId) ? (
+                        <button className="add-to-cart-btn" onClick={() => navigate(`/items/${item.itemId}`)} style={{ fontSize: '15px' }}>
+                          상품 상세보기
+                        </button>
+                    ) : (
+                        <Button className="btn-add-to-cart" onClick={() => handleToggleWishlist(item)}>
+                          {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
+                        </Button>
+                    )}
                   </div>
               ))
           ) : (

@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import "../styles/Chat.css";
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
+import { useLocation } from "react-router-dom"; // URL에서 파라미터 가져오기
 
 const Chat = () => {
+    const location = useLocation();
     const [selectedChat, setSelectedChat] = useState(null);
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
@@ -11,6 +13,16 @@ const Chat = () => {
     const [userEmail, setUserEmail] = useState(null);
     const chatEndRef = useRef(null);
     const stompClientRef = useRef(null);
+
+    useEffect(() => {
+        // ✅ URL에서 `roomUUID` 가져오기
+        const queryParams = new URLSearchParams(location.search);
+        const roomUUID = queryParams.get("roomUUID");
+
+        if (roomUUID) {
+            setSelectedChat(roomUUID);
+        }
+    }, [location]);
 
     // ✅ 로그인한 사용자 이메일 가져오기
     useEffect(() => {

@@ -9,6 +9,7 @@ import { getWishlistItems, toggleWish, toggleWishdel } from '../api/wishlistApi'
 import Pagination from '../components/Pagination';
 import '../styles/common.css';
 import '../styles/ItemDetail.css';
+import axios from "axios";
 import { hasDeletePermission } from '../utils/authUtils';
 
 function ItemDetail() {
@@ -127,6 +128,92 @@ function ItemDetail() {
     }
   };
 
+  const handleCreateOrJoinChat = async () => {
+    if (!user || !user.email) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    if (!item || !item.email) {
+      alert("판매자 정보를 불러올 수 없습니다.");
+      return;
+    }
+
+    const sellerEmail = item.email; // ✅ 상품을 등록한 판매자의 이메일
+
+    try {
+      console.log("🔎 기존 채팅방 확인 요청...");
+      console.log("🟢 로그인된 사용자 이메일:", user.email);
+      console.log("🟢 채팅하려는 상대방 이메일 (판매자):", sellerEmail);
+
+      // ✅ 1️⃣ 기존 채팅방 확인
+      const response = await axios.get("http://13.208.145.12:8080/room/list", {
+        headers: { "X-Auth-User": user.email }
+      });
+
+      console.log("✅ 채팅방 목록 응답:", response.data);
+
+      const existingRoom = response.data.find(room => {
+        const userList = room.users || room.members || room.participants || [];
+        return userList.includes(user.email) && userList.includes(sellerEmail);
+      });
+
+      if (existingRoom) {
+        console.log("✅ 기존 채팅방 발견:", existingRoom.roomUUID);
+        navigate(`/chat?roomUUID=${existingRoom.roomUUID}`);  // ✅ 기존 채팅방으로 이동
+        return;
+      }
+
+      // ✅ 2️⃣ 기존 채팅방이 없으면 새로운 채팅방 생성
+      console.log("🚀 기존 채팅방 없음 → 새로운 채팅방 생성 요청");
+      const createResponse = await axios.post(
+          `http://13.208.145.12:8080/room/create`,
+          {}, // ✅ Spring Boot에서 params만 읽도록 빈 객체 전달
+          {
+            headers: {
+              "X-Auth-User": user.email, // ✅ 로그인한 사용자 이메일
+              "Content-Type": "application/json"
+            },
+            params: { user: sellerEmail } // ✅ 판매자 이메일을 쿼리 파라미터로 전달
+          }
+      );
+
+      console.log("📢 백엔드 응답 전체:", createResponse.data);
+
+      // ✅ 3️⃣ 생성된 채팅방의 `roomUUID` 즉시 가져오기
+      let newRoomUUID = null;
+
+      // 🔹 `room_user`의 응답 구조에서 `roomUUID` 찾기
+      if (Array.isArray(createResponse.data) && createResponse.data.length > 0) {
+        newRoomUUID = createResponse.data[0]?.roomUUID || createResponse.data[0]?.room?.roomUUID;
+      } else if (createResponse.data?.roomUUID) {
+        newRoomUUID = createResponse.data.roomUUID;
+      } else if (createResponse.data?.room) {
+        newRoomUUID = createResponse.data.room.roomUUID;
+      }
+
+      if (!newRoomUUID) {
+        console.warn("⚠ 채팅방이 생성되었으나 UUID를 찾을 수 없음.");
+        console.log("🔍 백엔드 응답 데이터:", createResponse.data);
+        alert("채팅방을 생성하는데 실패했습니다.");
+        return;
+      }
+
+      console.log("✅ 채팅방 생성 성공! 이동합니다. roomUUID:", newRoomUUID);
+      navigate(`/chat?roomUUID=${newRoomUUID}`);  // ✅ 새 채팅방으로 이동
+
+    } catch (error) {
+      console.error("❌ 채팅방 생성 또는 조회 중 오류 발생:", error);
+
+      if (error.response) {
+        console.error("❌ 서버 응답 데이터:", error.response.data);
+      }
+
+      alert("채팅방을 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
+
   if (!item) return <div>로딩 중...</div>;
 
   return (
@@ -170,35 +257,46 @@ function ItemDetail() {
 
                 <div className="action-buttons mt-3">
                   <div>
-                    <Button variant="primary" className="me-2" onClick={() => navigate('/chat')}>
+
+                    <Button
+                        variant="primary"
+                        className="me-2"
+                        onClick={() => handleCreateOrJoinChat(item.sellerEmail)}
+                    >
                       채팅하기
                     </Button>
+
                   </div>
                   <div>
 
-                    {user && item && hasDeletePermission(user, item) && (
-                        <Button
-                            variant="primary"
-                            className="me-2"
-                            onClick={async () => {
-                              const confirmDelete = window.confirm("정말로 상품을 삭제하시겠습니까?");
-                              if (!confirmDelete) return;
-
-                              try {
-                                await postsAPI.deleteItem(item.pdtId, user);
-                                alert("상품이 삭제되었습니다.");
-                                navigate(-1);
-                              } catch (error) {
-                                alert("상품 삭제에 실패했습니다.");
-                                console.error(error);
-                              }
-                            }}
-                        >
-                          상품삭제
-                        </Button>
+                    {user && item.email === user.email && (
+                        <>
+                          <Button
+                              variant="primary"
+                              className="me-2"
+                              onClick={async () => {
+                                const confirmDelete = window.confirm("정말로 상품을 삭제하시겠습니까?");
+                                if (!confirmDelete) return;
+                                try {
+                                  await postsAPI.deleteItem(item.pdtId, user);
+                                  alert("상품이 삭제되었습니다.");
+                                  navigate(-1);
+                                } catch (error) {
+                                  alert("상품 삭제에 실패했습니다.");
+                                  console.error(error);
+                                }
+                              }}
+                          >
+                            상품삭제
+                          </Button>
+                          <Button
+                              variant="primary"
+                              onClick={() => navigate(`/items/edit/${item.pdtId}`)}
+                          >
+                            수정하기
+                          </Button>
+                        </>
                     )}
-
-
                   </div>
                 </div>
                 <div className="action-buttons delivery mt-3">

@@ -23,31 +23,34 @@ function ItemRegistration() {
   // 수정 모드일 경우 기존 아이템 데이터 로드
   useEffect(() => {
     if (id) {
+      const loadPost = async () => {
+        try {
+          const response = await postsAPI.getPostDetail(id);
+          // 권한 확인: 수정할 상품의 userId와 현재 사용자의 email 비교
+          if (!user || user.userId !== response.data.email) {
+            alert('수정 권한이 없습니다.');
+            navigate('/items');
+            return;
+          }
+          // 기존 상품 정보를 폼에 채워 넣음
+          setPdtName(response.data.pdtName);
+          setPdtQuantity(response.data.pdtQuantity);
+          setPdtPrice(response.data.pdtPrice);
+          setDescription(response.data.description);
+          setDtype(response.data.dtype);
+          if (response.data.imageUrls) {
+            setImages(response.data.imageUrls);
+          }
+        } catch (error) {
+          console.error('Error loading product:', error);
+          alert('상품 정보를 불러오는데 실패했습니다.');
+          navigate('/items');
+        }
+      };
       loadPost();
     }
-  }, [id]);
+  }, [id, user, navigate]);
 
-  const loadPost = async () => {
-    try {
-      const response = await postsAPI.getPostDetail(id);
-      if (response?.data?.post) {
-        const post = response.data.post;
-        // userId를 Number로 변환하여 비교
-        if (Number(user?.userId) !== Number(post.userId)) {
-          alert('수정 권한이 없습니다.');
-          navigate('/items');
-          return;
-        }
-        setPdtName(post.pdtName);
-        setPdtQuantity(post.pdtQuantity);
-        setPdtPrice(post.pdtPrice)
-      }
-    } catch (error) {
-      console.error('Error loading post:', error);
-      alert('게시글을 불러오는데 실패했습니다.');
-      navigate('/items');
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -190,19 +193,27 @@ function ItemRegistration() {
           )}
 
           {/* 이미지 미리보기 및 삭제 */}
-          <Form.Group className="mb-3">
-            <Form.Label>첨부된 이미지</Form.Label>
-            <div>
-              {images.map((image, index) => (
-                  <div key={index} className="image-preview-container">
-                    <Image src={URL.createObjectURL(image)} alt="preview" thumbnail width={100} />
-                    <Button variant="danger" onClick={() => handleImageDelete(index)} className="ms-2">
-                      삭제
-                    </Button>
-                  </div>
-              ))}
-            </div>
-          </Form.Group>
+          {images && images.length > 0 && (
+              <Form.Group className="mb-3">
+                <Form.Label>첨부된 이미지</Form.Label>
+                <div>
+                  {images.map((image, index) => (
+                      <div key={index} className="image-preview-container">
+                        <Image
+                            src={image instanceof File ? URL.createObjectURL(image) : image}
+                            alt={`preview-${index}`}
+                            thumbnail
+                            width={100}
+                        />
+                        <Button variant="danger" onClick={() => handleImageDelete(index)} className="ms-2">
+                          삭제
+                        </Button>
+                      </div>
+                  ))}
+                </div>
+              </Form.Group>
+          )}
+
 
           <Row>
             <Col className="d-flex justify-content-end gap-2">

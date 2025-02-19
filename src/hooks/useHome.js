@@ -30,7 +30,9 @@ export function useHomeData() {
           itemId: item.pdtId,
           title: item.pdtName,
           itemprice: item.price,
-          image: item.imageUrl?.[0] || '알 수 없음'
+          image: item.imageUrl?.[0] || '알 수 없음',
+          email: item.email,    // 판매자 이메일 추가
+          userId: item.userId,
         })) || [];
 
         setHomeData(prevData => ({
