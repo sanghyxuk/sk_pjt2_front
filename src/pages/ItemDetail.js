@@ -67,21 +67,21 @@ function ItemDetail() {
     }
     const email = user.email;
     try {
-      if (wishlistItems.has(item.itemId)) {
+      if (wishlistItems.has(item.pdtId)) {
         // 찜취소
-        await toggleWishdel(email, item.itemId);
+        await toggleWishdel(email, item.pdtId);
         setWishlistItems((prev) => {
           const newSet = new Set(prev);
-          newSet.delete(item.itemId);
+          newSet.delete(item.pdtId);
           return newSet;
         });
         alert('위시리스트에서 제거되었습니다!');
       } else {
         // 찜하기
-        await toggleWish(email, item.itemId, item.title, item.itemprice);
+        await toggleWish(email, item.pdtId, item.pdtName, item.pdtPrice);
         setWishlistItems((prev) => {
           const newSet = new Set(prev);
-          newSet.add(item.itemId);
+          newSet.add(item.pdtId);
           return newSet;
         });
         alert('위시리스트에 추가되었습니다!');
