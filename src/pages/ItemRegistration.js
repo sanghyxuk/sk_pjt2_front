@@ -57,7 +57,7 @@ function ItemRegistration() {
       return;
     }
 
-    if (!pdtName.trim() || !pdtQuantity.trim()) {
+    if (!pdtName.trim() || !description.trim()) {
       alert('상품이름과 설명을 모두 입력해주세요.');
       return;
     }
@@ -121,14 +121,16 @@ function ItemRegistration() {
 
           <Form.Group className="mb-3">
             <Form.Label>카테고리 *</Form.Label>
-            <Form.Control
-                type="text"
-                value={dtype}
-                onChange={(e) => setDtype(e.target.value)}
-                placeholder="카테고리 입력하세요"
-                required
-            />
-          </Form.Group>
+            <Form.Select value={dtype} onChange={(e) => setDtype(e.target.value)} required>
+              <option value="">카테고리를 선택하세요</option>
+              <option value="phones">Phones</option>
+              <option value="computers">Computers</option>
+              <option value="smartwatch">Smartwatch</option>
+              <option value="camera">Camera</option>
+              <option value="전기">전기</option>
+              <option value="기타">기타</option>
+            </Form.Select>
+          </Form.Group>카
 
           <Form.Group className="mb-3">
             <Form.Label>가격 *</Form.Label>
@@ -143,15 +145,13 @@ function ItemRegistration() {
 
           <Form.Group className="mb-3">
             <Form.Label>택배비 *</Form.Label>
-            <Form.Control
-                type="number"
-                placeholder="택배비를 입력하세요"
-                required
-            />
+            <Form.Select required>
+              <option value="3000">₩3,000</option>
+            </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>상품 설명</Form.Label>
+            <Form.Label>상품 설명 *</Form.Label>
             <Form.Control
                 as="textarea"
                 rows={5}
