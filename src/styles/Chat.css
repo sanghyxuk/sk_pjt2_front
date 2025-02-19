@@ -1,0 +1,73 @@
+/* 채팅 페이지 기본 스타일 */
+.chat-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* 왼쪽 채팅방 리스트 스타일 */
+.chat-list {
+    width: 30%;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+}
+
+.chat-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.chat-list li {
+    cursor: pointer;
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background 0.2s ease-in-out;
+}
+
+.chat-list li:hover {
+    background: #f0f0f0;
+}
+
+/* 오른쪽 채팅창 스타일 */
+.chat-window {
+    width: 70%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+    height: 400px;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.chat-input button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background 0.2s ease-in-out;
+}
+
+.chat-input button:hover {
+    background: #0056b3;
+}

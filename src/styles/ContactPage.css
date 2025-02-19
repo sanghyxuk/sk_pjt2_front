@@ -1,0 +1,110 @@
+/* src/pages/ContactPage.css */
+.outer-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #fff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.main-content {
+    flex: 1;
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.sub-nav {
+    color: #666;
+    margin: 50px 0 60px;
+    font-size: 16px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.left-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card-box {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    margin: 5px 0;
+}
+
+.right-form {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.input-row > * {
+    flex: 1;
+}
+
+.input-field {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+}
+
+.input-field:focus {
+    border: 2px solid #000;
+}
+
+.textarea {
+    padding: 15px;
+    font-size: 18px;
+    font-family: inherit;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    height: 180px;
+    outline: none;
+}
+
+.textarea:focus {
+    border: 2px solid #000;
+}
+
+.send-button {
+    align-self: flex-start;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}

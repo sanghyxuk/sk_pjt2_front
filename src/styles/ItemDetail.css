@@ -1,0 +1,115 @@
+.item-image-card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-images img {
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.item-detail-card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.item-price {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.item-description {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.divider {
+    border-top: 2px solid rgba(221, 221, 221, 0.82); /* 더 두껍고 어두운 선 */
+    margin: 30px 0; /* 구분선 위아래에 더 많은 여백 추가 */
+}
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.like-section {
+    text-align: center;
+}
+
+.like-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* .action-buttons의 버튼들 중앙 정렬 */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px; /* 버튼들 사이의 간격 */
+    margin: 0 5px; /* 버튼들 간의 여백 */
+}
+
+/* 배달/직거래 버튼들을 붙여서 나란히 배치 */
+.action-buttons.delivery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0; /* 버튼들 간의 간격을 0으로 설정 */
+}
+
+.comments-section {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.comment-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-size: 0.9em;
+}
+
+.comment-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.comment-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.comment-content {
+    font-size: 0.9em;
+    color: #333;
+}
