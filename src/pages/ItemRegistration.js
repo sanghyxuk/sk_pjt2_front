@@ -51,6 +51,9 @@ function ItemRegistration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("서버로 보낼 dtype 값:", dtype); // 콘솔에 dtype 값 출력
+
     if (!user) {
       alert('로그인이 필요합니다.');
       navigate('/login');
@@ -130,7 +133,8 @@ function ItemRegistration() {
               <option value="전기">전기</option>
               <option value="기타">기타</option>
             </Form.Select>
-          </Form.Group>카
+          </Form.Group>
+
 
           <Form.Group className="mb-3">
             <Form.Label>가격 *</Form.Label>
