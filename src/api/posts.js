@@ -88,15 +88,22 @@ export const postsAPI = {
     },
 
 
-    // 아이템 삭제
-    deleteItem: (productId, user) => {
-        console.log(user);
-        return api.delete(`/pdts/delete/${productId}`,{
-            headers: {
-                "X-Auth-User": user.email,
-                "Authorization": user.accessToken,
-            }
-        });
+    // 아이템 삭제 - 오류때문에 수정했음
+    deleteItem: async (productId, user) => {
+        try {
+            console.log("Deleting product:", productId);
+            const response = await api.delete(`/pdts/delete/${productId}`, {
+                headers: {
+                    'X-Auth-User': user.email,
+                    'Authorization': user.accessToken,
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error("상품 삭제 실패:", error);
+            throw error;
+        }
     },
 
     // 아이템 수정
