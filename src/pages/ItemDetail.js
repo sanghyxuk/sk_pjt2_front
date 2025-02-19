@@ -94,6 +94,7 @@ function ItemDetail() {
 
   // 더미 데이터에서 item 가져오기
   {/*
+  //
   useEffect(() => {
     if (true) {
       // 댓글 예시 데이터 추가
