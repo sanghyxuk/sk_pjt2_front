@@ -175,22 +175,27 @@ function ItemDetail() {
                     </Button>
                   </div>
                   <div>
-                    <Button
-                        variant="primary"
-                        className="me-2"
-                        onClick={async () => {
-                          try {
-                            await postsAPI.deleteItem(item.pdtId, user);
-                            alert("삭제 완료");
-                            navigate("/items");
-                          } catch (error) {
-                            console.error("삭제 실패:", error);
-                            alert("삭제 실패. 다시 시도해주세요.");
-                          }
-                        }}
-                    >
-                      상품삭제
-                    </Button>
+                    {user && item && hasDeletePermission(user, item) && (
+                        <Button
+                            variant="primary"
+                            className="me-2"
+                            onClick={async () => {
+                              const confirmDelete = window.confirm("정말로 상품을 삭제하시겠습니까?");
+                              if (!confirmDelete) return;
+                              try {
+                                await postsAPI.deleteItem(item.pdtId, user);
+                                alert("상품이 삭제되었습니다.");
+                                navigate(-1);
+                              } catch (error) {
+                                alert("상품 삭제에 실패했습니다.");
+                                console.error(error);
+                              }
+                            }}
+                        >
+                          상품삭제
+                        </Button>
+                    )}
+
                   </div>
                 </div>
                 <div className="action-buttons delivery mt-3">
