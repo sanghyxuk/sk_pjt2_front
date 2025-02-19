@@ -2,9 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import "../styles/Chat.css";
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
-import { useLocation } from "react-router-dom"; // URL에서 파라미터 가져오기
+// import { useLocation } from "react-router-dom"; // URL에서 파라미터 가져오기
+// import { useNavigate, useLocation } from "react-router-dom"; // ✅ useNavigate 추가
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ useNavigate & useLocation 함께 임포트
+
 
 const Chat = () => {
+    const navigate = useNavigate(); // ✅ 페이지 이동을 위한 useNavigate 추가
     const location = useLocation();
     const [selectedChat, setSelectedChat] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -31,8 +35,9 @@ const Chat = () => {
             setUserEmail(storedUserEmail);
         } else {
             console.warn("⚠ 로그인한 사용자 정보를 찾을 수 없습니다.");
+            navigate("/login"); // ✅ 로그인 안 되어 있으면 로그인 페이지로 이동
         }
-    }, []);
+    },[navigate]); // ✅ navigate를 useEffect 의존성에 추가
 
     // ✅ 채팅방 목록 불러오기
     useEffect(() => {
