@@ -94,7 +94,6 @@ function ItemDetail() {
 
   // 더미 데이터에서 item 가져오기
   {/*
-  //
   useEffect(() => {
     if (true) {
       // 댓글 예시 데이터 추가
@@ -176,6 +175,7 @@ function ItemDetail() {
                     </Button>
                   </div>
                   <div>
+
                     {user && item && hasDeletePermission(user, item) && (
                         <Button
                             variant="primary"
@@ -183,6 +183,7 @@ function ItemDetail() {
                             onClick={async () => {
                               const confirmDelete = window.confirm("정말로 상품을 삭제하시겠습니까?");
                               if (!confirmDelete) return;
+
                               try {
                                 await postsAPI.deleteItem(item.pdtId, user);
                                 alert("상품이 삭제되었습니다.");
@@ -196,6 +197,7 @@ function ItemDetail() {
                           상품삭제
                         </Button>
                     )}
+
 
                   </div>
                 </div>
