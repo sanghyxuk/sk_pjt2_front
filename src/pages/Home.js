@@ -163,13 +163,30 @@ function Home() {
             <section className="categories">
               <h3 className="text-start">Browse By Category</h3>
               <div className="category-grid">
+                <div
+                    className="category-item"
+                    style={{
+                      backgroundColor: '#007bff',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      borderRadius: '8px',
+                      padding: '10px',
+                      textAlign: 'center'
+                    }}
+                >
+                  <span>📦</span>
+                  <Link to="/items" className="category-link" style={{color: 'white'}}>
+                    모두 보기
+                  </Link>
+                </div>
+
                 {categories.map((category, index) => (
                     <div key={index} className="category-item">
                       <span>{category.icon}</span>
                       <Link to={`/items?category=${category.name}`} className="category-link">{category.name}</Link>
                     </div>
-                    ))}
-                </div>
+                ))}
+              </div>
             </section>
           </Col>
         </Row>
