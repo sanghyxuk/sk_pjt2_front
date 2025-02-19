@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FaTrash, FaThumbsUp, FaHeart } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { postsAPI } from '../api/posts';
+import { getWishlistItems, toggleWish, toggleWishdel } from '../api/wishlistApi';
 //import { items } from '../data/dummyData'; // 더미 데이터 import
 import Pagination from '../components/Pagination';
 import '../styles/common.css';
@@ -37,7 +38,62 @@ function ItemDetail() {
     setCurrentCommentPage(pageNumber);
   };
 
+  // 🔹 페이지 초기화 시 서버에서 내 위시리스트를 불러와서 유지
+  const [wishlistItems, setWishlistItems] = useState(new Set());
+
+  // 1) 마운트/유저 바뀔 때 “전체” 찜 목록 GET
+  useEffect(() => {
+    if (!user || !user.email || !user.accessToken) return;
+
+    getWishlistItems(0, 999, {
+      email: user.email,
+      accessToken: user.accessToken,
+    })
+        .then((res) => {
+          const itemIds = res.wishlist?.map((w) => w.pdtId) || [];
+          setWishlistItems(new Set(itemIds));
+        })
+        .catch((err) => {
+          console.error('위시리스트 로딩 오류:', err);
+        });
+  }, [user]);
+
+  // 3) 찜하기/취소 버튼 로직
+  const handleAddToWishlist = async (item) => {
+    if (!user) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+      return;
+    }
+    const email = user.email;
+    try {
+      if (wishlistItems.has(item.itemId)) {
+        // 찜취소
+        await toggleWishdel(email, item.itemId);
+        setWishlistItems((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(item.itemId);
+          return newSet;
+        });
+        alert('위시리스트에서 제거되었습니다!');
+      } else {
+        // 찜하기
+        await toggleWish(email, item.itemId, item.title, item.itemprice);
+        setWishlistItems((prev) => {
+          const newSet = new Set(prev);
+          newSet.add(item.itemId);
+          return newSet;
+        });
+        alert('위시리스트에 추가되었습니다!');
+      }
+    } catch (error) {
+      console.error('위시리스트 처리 중 오류 발생:', error);
+      alert('위시리스트 처리 중 오류가 발생했습니다.');
+    }
+  };
+
   // 더미 데이터에서 item 가져오기
+  {/*
   useEffect(() => {
     if (true) {
       // 댓글 예시 데이터 추가
@@ -47,7 +103,7 @@ function ItemDetail() {
       ]);
     }
   }, [id]);
-
+*/}
 
   useEffect(() => {
     const navigationEntries = performance.getEntriesByType("navigation");
@@ -105,6 +161,9 @@ function ItemDetail() {
                 <div className="divider"></div>
 
                 <div className="like-section">
+                  <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
+                    {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
+                  </Button>
                   <Button
                       variant={isLiked ? "primary" : "outline-primary"}
                       onClick={() => {
