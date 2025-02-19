@@ -83,7 +83,7 @@ function MyPurchasePage() {
 
                     <div className="profile-container">
                         <div className="main-area">
-                            <h1 className="page-title">My purchase (0-based backend)</h1>
+                            <h1 className="page-title">My purchase</h1>
                             {myPurchases.length > 0 ? (
                                 <>
                                     <div className="item-grid">

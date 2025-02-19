@@ -83,7 +83,7 @@ function WishListPage() {
 
                     <div className="profile-container">
                         <div className="main-area">
-                            <h1 className="page-title">My WishList (0-based)</h1>
+                            <h1 className="page-title">My WishList</h1>
                             {wishlist.length > 0 ? (
                                 <>
                                     <div className="item-grid">

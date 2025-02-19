@@ -102,7 +102,7 @@ function MySalePage() {
 
                     <div className="profile-container">
                         <div className="main-area">
-                            <h1 className="page-title">My sale (0-based 백엔드)</h1>
+                            <h1 className="page-title">My sale</h1>
 
                             {mySales.length > 0 ? (
                                 <>
