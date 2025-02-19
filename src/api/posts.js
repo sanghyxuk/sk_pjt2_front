@@ -86,8 +86,7 @@ export const postsAPI = {
             }
         });
     },
-
-
+    
     // 아이템 삭제 - 오류때문에 수정했음
     deleteItem: async (productId, user) => {
         try {
@@ -98,10 +97,6 @@ export const postsAPI = {
                     'Authorization': user.accessToken,
                 },
             });
-<<<<<<< HEAD
-=======
-
->>>>>>> 996b7676cd600ef0ce19aa9f4be68f8c1cf57e19
             return response.data;
         } catch (error) {
             console.error("상품 삭제 실패:", error);
