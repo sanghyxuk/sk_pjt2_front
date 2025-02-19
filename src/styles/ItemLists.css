@@ -7,6 +7,21 @@ h2 {
   margin-bottom: 30px;
 }
 
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-buttons .btn {
+  display: flex; /* flexbox 사용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+  min-width: 120px; /* 최소 너비 설정 (조정 가능) */
+  padding: 8px 16px; /* 내부 여백 설정 */
+}
+
 .product-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2열로 구성 */

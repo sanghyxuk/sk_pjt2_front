@@ -19,12 +19,12 @@ function Home() {
   const [wishlistItems, setWishlistItems] = useState(new Set());
 
   const categories = [
-    { name: "Phones", icon: "\ud83d\udcf1" },
-    { name: "Computers", icon: "\ud83d\udcbb" },
-    { name: "SmartWatch", icon: "\u231a" },
-    { name: "Camera", icon: "\ud83d\udcf7" },
-    { name: "전기", icon: "\ud83c\udfa7" },
-    { name: "기타", icon: "\ud83c\udfae" }
+    { name: "디지털기기", icon: "📱" },
+    { name: "가구/인테리어", icon: "🛋️" },
+    { name: "의류", icon: "👕" },
+    { name: "생활가전", icon: "🔌" },
+    { name: "뷰티/미용", icon: "💄" },
+    { name: "기타", icon: "📦" }
   ];
 
   // 마운트 시 내 위시리스트 불러오기

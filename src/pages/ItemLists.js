@@ -148,27 +148,25 @@ function ItemLists() {
               : '모든 상품'}
         </h2>
 
-        {/* 카테고리 버튼 */}
-        <div className="mb-4">
-          <Button
-              variant="secondary"
-              onClick={handleShowAllProducts}
-              style={{ backgroundColor: '#007bff', color: 'white' }}
-              className="me-2"
-          >
-            All
-          </Button>
-          {['Phones', 'Computers', 'SmartWatch', 'Camera', '전기', '기타'].map(category => (
+          {/* 카테고리 버튼 */}
+          <div className="mb-4 category-buttons">
               <Button
-                  key={category}
                   variant="secondary"
-                  onClick={() => handleCategoryClick(category)}
-                  className="me-2"
+                  onClick={handleShowAllProducts}
+                  style={{ backgroundColor: '#007bff', color: 'white' }}
               >
-                {category}
+                  All
               </Button>
-          ))}
-        </div>
+              {['디지털기기', '가구/인테리어', '의류', '생활가전', '뷰티/미용', '기타'].map(category => (
+                  <Button
+                      key={category}
+                      variant="secondary"
+                      onClick={() => handleCategoryClick(category)}
+                  >
+                      {category}
+                  </Button>
+              ))}
+          </div>
 
         {/* 검색 폼 */}
         <Form onSubmit={handleSearchSubmit} className="mb-4">
