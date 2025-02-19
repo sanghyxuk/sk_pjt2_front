@@ -131,12 +131,33 @@ function ItemLists() {
     await fetchCategoryData(category);
   };
 
+  // "모든 상품" 버튼 클릭 핸들러
+  const handleShowAllProducts = () => {
+    const params = new URLSearchParams();
+    params.set('category', ''); // 카테고리 필터링 해제
+    params.set('page', '0'); // 첫 페이지로 이동
+    navigate(`/items?${params.toString()}`);
+    handleSearch('', 0); // 검색어도 초기화
+  };
+
   return (
       <Container className="py-5" style={{ display: 'flex', flexDirection: 'column' }}>
-        <h2 className="mb-4">모든 상품</h2>
+        <h2 className="mb-4">
+          {searchParams.get('category')
+              ? `${searchParams.get('category')} 카테고리`
+              : '모든 상품'}
+        </h2>
 
         {/* 카테고리 버튼 */}
         <div className="mb-4">
+          <Button
+              variant="secondary"
+              onClick={handleShowAllProducts}
+              style={{ backgroundColor: '#007bff', color: 'white' }}
+              className="me-2"
+          >
+            All
+          </Button>
           {['Phones', 'Computers', 'SmartWatch', 'Camera', '전기', '기타'].map(category => (
               <Button
                   key={category}
