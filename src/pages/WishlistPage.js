@@ -1,6 +1,6 @@
 // src/pages/WishListPage.js
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getWishlistItems } from '../api/wishlistApi';
 import Pagination from '../components/Pagination';
@@ -38,6 +38,13 @@ function WishListPage() {
 
     const handlePageChange = (pageNum) => {
         setCurrentPage(pageNum);
+    };
+
+    const navigate = useNavigate();  // useNavigate 훅을 사용하여 navigate 함수 생성
+
+    const handleViewDetails = (pdtId) => {
+        // 클릭 시 해당 상품의 상세 페이지로 이동
+        navigate(`/items/${pdtId}`);
     };
 
     return (
@@ -88,7 +95,13 @@ function WishListPage() {
                                                 />
                                                 <h3>{item.pdtName}</h3>
                                                 <p className="price">${item.price}</p>
-                                                <button className="add-to-cart-btn">Add To Cart</button>
+                                                <button
+                                                    className="add-to-cart-btn"
+                                                    onClick={() => handleViewDetails(item.pdtId)}  // 버튼 클릭 시 해당 함수 실행
+                                                    style={{ fontSize: '15px' }}
+                                                >
+                                                    상품 상세보기
+                                                </button>
                                             </div>
                                         ))}
                                     </div>
