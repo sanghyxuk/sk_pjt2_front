@@ -126,9 +126,23 @@ function ItemDetail() {
                     </Button>
                   </div>
                   <div>
-                    <Button variant="primary" className="me-2" onClick={() => postsAPI.deleteItem(item.pdtId, user)}>
+                    <Button
+                        variant="primary"
+                        className="me-2"
+                        onClick={async () => {
+                          try {
+                            await postsAPI.deleteItem(item.pdtId, user);
+                            alert("삭제 완료");
+                            navigate("/items");
+                          } catch (error) {
+                            console.error("삭제 실패:", error);
+                            alert("삭제 실패. 다시 시도해주세요.");
+                          }
+                        }}
+                    >
                       상품삭제
                     </Button>
+
                   </div>
                 </div>
                 <div className="item-meta">
