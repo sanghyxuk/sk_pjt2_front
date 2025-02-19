@@ -5,14 +5,16 @@ import { authAPI } from '../api/auth';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    //  초기 상태를 로컬 스토리지에서 복원
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
     const [loading, setLoading] = useState(true);
 
     const checkAuthStatus = async () => {
         try {
             console.log('Starting checkAuth with current user:', user);
-            // 실제 API 호출 시 주석 해제:
-            // const response = await authAPI.checkAuth();
             const response = { data: user }; // 예시
             if (response.data) {
                 setUser(prevUser => {
@@ -28,7 +30,8 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Auth check error:', error);
-            if (!user) setUser(null);
+            setUser(null);
+            localStorage.removeItem('user');
         } finally {
             setLoading(false);
         }
@@ -36,21 +39,22 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const response = await authAPI.login(credentials);//post 요청
+            const response = await authAPI.login(credentials); // POST 요청
             console.log('Login response:', response.data);
             if (response) {
-                // 헤더에서 인증 정보를 추출합니다.
                 const xAuthUser = response.headers['x-auth-user'];
                 const accessToken = response.headers['accesstoken'];
                 const userData = {
                     ...response.data,
                     userId: response.data.userId || response.data.user,
-                    email: xAuthUser,            // 헤더에서 받은 사용자 이메일
-                    accessToken,                 // 헤더에서 받은 액세스 토큰
+                    email: xAuthUser,
+                    accessToken,
                     role: response.data.role || 'ROLE_USER',
                 };
                 console.log('Login processed user data:', userData);
+                // [수정] 로그인 성공 시 state와 로컬 스토리지에 전체 userData 저장
                 setUser(userData);
+                localStorage.setItem('user', JSON.stringify(userData));
                 return response;
             }
             throw new Error('로그인 데이터가 없습니다.');
@@ -62,9 +66,10 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            // 실제 API 호출 시 주석 해제:
-            // await authAPI.logout();
+
+            // 로그아웃 시 state와 로컬 스토리지에서 user 제거
             setUser(null);
+            localStorage.removeItem('user');
         } catch (error) {
             console.error('Logout error:', error);
             throw error;
@@ -77,26 +82,8 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         console.log('User state changed:', user);
-        if (user?.userId) {
-            console.log('Current userId:', user.userId);
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (user?.userId) {
-            localStorage.setItem('userId', user.userId);
-            console.log('Saved userId to localStorage:', user.userId);
-        }
-    }, [user]);
-
-    useEffect(() => {
-        const savedUserId = localStorage.getItem('userId');
-        if (savedUserId && user && !user.userId) {
-            setUser(prevUser => ({
-                ...prevUser,
-                userId: savedUserId
-            }));
-            console.log('Restored userId from localStorage:', savedUserId);
+        if (user) {
+            console.log('Current user:', user);
         }
     }, [user]);
 
