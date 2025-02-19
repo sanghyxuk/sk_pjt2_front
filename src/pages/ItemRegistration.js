@@ -155,8 +155,8 @@ function ItemRegistration() {
             <Form.Control
                 as="textarea"
                 rows={5}
-                value={pdtQuantity}
-                onChange={(e) => setPdtQuantity(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 placeholder="상품 설명을 입력하세요"
             />
           </Form.Group>
