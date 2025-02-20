@@ -83,17 +83,6 @@ function LoginPage() {
                             Forget Password?
                         </a>
                     </div>
-
-                    <button className="kakao-button" type="button">
-                        <img className="kakao-img" src={KakaoIcon} alt="Kakao Icon" />
-                        카카오로 시작
-                    </button>
-
-                    <button className="google-button" type="button">
-                        <img className="google-img" src={GoogleIcon} alt="Google Icon" />
-                        Sign up with Google
-                    </button>
-
                     <div className="sign-up-link">
                         Don't have an account? <Link to="/register">Sign Up</Link>
                     </div>

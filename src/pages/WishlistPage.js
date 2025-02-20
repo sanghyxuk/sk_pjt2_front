@@ -9,12 +9,10 @@ import '../styles/WishlistPage.css';
 function WishListPage() {
     const [wishlist, setWishlist] = useState([]);
     const { user } = useAuth();
-
-    // 1-based
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-
-    const size = 3; // 예시
+    const size = 3;
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user && user.email && user.accessToken && currentPage >= 1) {
@@ -27,7 +25,7 @@ function WishListPage() {
             const realPage = frontPage - 1;
             const data = await getWishlistItems(realPage, size, {
                 email: user.email,
-                accessToken: user.accessToken
+                accessToken: user.accessToken,
             });
             setWishlist(data.wishlist || []);
             setTotalPages(data.totalPages || 1);
@@ -40,13 +38,6 @@ function WishListPage() {
         setCurrentPage(pageNum);
     };
 
-    const navigate = useNavigate();  // useNavigate 훅을 사용하여 navigate 함수 생성
-
-    const handleViewDetails = (pdtId) => {
-        // 클릭 시 해당 상품의 상세 페이지로 이동
-        navigate(`/items/${pdtId}`);
-    };
-
     return (
         <div className="outer-container">
             <div className="main-content">
@@ -56,9 +47,7 @@ function WishListPage() {
                             <h3 className="sidebar-title">Manage My Account</h3>
                             <ul className="sidebar-menu">
                                 <li className="menu-item">
-                                    <Link to="/profile/edit" className="sidebar-link">
-                                        Edit My Profile
-                                    </Link>
+                                    <Link to="/profile/edit" className="sidebar-link">Edit My Profile</Link>
                                 </li>
                             </ul>
                             <h3 className="sidebar-title">My Items</h3>
@@ -73,9 +62,7 @@ function WishListPage() {
                             <h3 className="sidebar-title">My WishList</h3>
                             <ul className="sidebar-menu">
                                 <li className="menu-item active">
-                                    <Link to="/wishlist" className="sidebar-link">
-                                        My WishList
-                                    </Link>
+                                    <Link to="/wishlist" className="sidebar-link">My WishList</Link>
                                 </li>
                             </ul>
                         </div>
@@ -89,26 +76,20 @@ function WishListPage() {
                                     <div className="item-grid">
                                         {wishlist.map((item) => (
                                             <div className="item-card" key={item.pdtId}>
-                                                <img
-                                                    src={item.imageUrl?.[0] || ''}
-                                                    alt={item.pdtName}
-                                                />
-                                                <h3>{item.pdtName}</h3>
-                                                <p className="price">${item.price}</p>
-                                                <button
-                                                    className="add-to-cart-btn"
-                                                    onClick={() => handleViewDetails(item.pdtId)}  // 버튼 클릭 시 해당 함수 실행
-                                                    style={{ fontSize: '15px' }}
-                                                >
-                                                    상품 상세보기
-                                                </button>
+                                                <Link to={`/items/${item.pdtId}`} style={{ textDecoration: 'none', color: 'black' }}>
+                                                    <img src={item.imageUrl?.[0] || 'default-image-url.jpg'} alt={item.pdtName} />
+                                                    <h3 style={{ textDecoration: 'none', color: 'black' }}>
+                                                        {item.pdtName}
+                                                    </h3>
+                                                </Link>
+                                                <p className="price">₩{Number(item.price).toLocaleString()}</p>
                                             </div>
                                         ))}
                                     </div>
                                     <Pagination
-                                        currentPage={currentPage} // 1-based
+                                        currentPage={currentPage}
                                         totalPages={totalPages}
-                                        onPageChange={setCurrentPage}
+                                        onPageChange={handlePageChange}
                                     />
                                 </>
                             ) : (
