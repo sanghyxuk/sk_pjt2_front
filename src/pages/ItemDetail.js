@@ -250,7 +250,7 @@ function ItemDetail() {
                 <div className="like-section">
                   <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
                     <FaHeart/>
-                    {wishlistItems.has(item.pdtId) ? ' 찜취소' : ' 찜하기'}
+                    {wishlistItems.has(item.pdtId) ? ' 찜취소' : ' 찜해두기'}
                   </Button>
                 </div>
 

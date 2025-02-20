@@ -75,16 +75,6 @@ function RegisterPage() {
                         Create Account
                     </button>
 
-                    <button className="kakao-button" type="button">
-                        <img className="kakao-img" src={KakaoIcon} alt="Kakao Icon" />
-                        카카오로 시작
-                    </button>
-
-                    <button className="google-button" type="button">
-                        <img className="google-img" src={GoogleIcon} alt="Google Icon" />
-                        Sign up with Google
-                    </button>
-
                     <div className="login-link">
                         Already have an account? <a href="/login">Log in</a>
                     </div>

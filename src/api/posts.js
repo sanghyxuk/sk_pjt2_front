@@ -1,29 +1,24 @@
+// src/api/posts.js
 import api from './axios';
 
 export const postsAPI = {
     // 아이템 목록 조회 (페이지네이션) - homepage
-    getitemList : async (page = 0, size = 10) => {
-        console.log("함수실행");
+    getitemList: async (page = 0, size = 10) => {
+        console.log("getitemList 함수실행");
         try {
-            // URL 쿼리 파라미터 생성
             const params = new URLSearchParams();
             params.append('page', page);
             params.append('size', size);
-            // 요청 보내고 응답 받기
             const response = await api.get(`/home/all?page=${page}&size=${size}`);
-            // 응답 데이터 추출
             const data = response.data;
-            // 데이터 출력
             console.log("Response Data:", data);
-            // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
             return data;
         } catch (error) {
-            // 에러 처리
             console.error("Error fetching posts list:", error);
         }
     },
 
-    // 아이템 검색 (검색 타입에 따라 다른 엔드포인트 사용)
+    // 아이템 검색
     searchPosts: (keyword, page = 0, size = 10) => {
         return api.get(`/home/search?keyword=${keyword}&page=${page}&size=${size}`);
     },
@@ -37,48 +32,47 @@ export const postsAPI = {
         return api.get(`/pdts/detail/${pdtId}`);
     },
 
-    //카테고리별로 아이템 조회
-    getcategoryList : async (category, page = 0, size = 10) => {
-        console.log("함수실행");
+    // 카테고리별 아이템 조회
+    getcategoryList: async (category, page = 0, size = 10) => {
+        console.log("getcategoryList 함수실행");
         try {
-            // URL 쿼리 파라미터 생성
             const params = new URLSearchParams();
             params.append('page', page);
             params.append('size', size);
             params.append('category', category);
-            // 요청 보내고 응답 받기
             const response = await api.get(`/home/category?${params.toString()}`);
-            // 응답 데이터 추출
             const data = response.data;
-            // 데이터 출력
             console.log("Response Data:", data);
-            // 데이터 반환 (필요시 호출한 곳에서 사용할 수 있음)
             return data;
         } catch (error) {
-            // 에러 처리
             console.error("Error fetching category list:", error);
         }
     },
 
-    // 아이템 등록
-    registItems: ({pdtPrice, pdtName, pdtQuantity, description, dtype, images, user}) => {
-
+    // ★ 신규 등록 API (pdtId가 null이면 등록)
+    registItems: ({ pdtPrice, pdtName, pdtQuantity, description, dtype, images, user, pdtId }) => {
         const formData = new FormData();
+        // 기존 이미지 URL과 새 이미지 File 객체 분리
+        const existingImages = images.filter(img => typeof img === 'string');
+        const newImages = images.filter(img => img instanceof File);
+        // 수정 모드가 아니라면 pdtId는 null
         const jsonData = {
+            pdtId: pdtId ?? null,
             pdtPrice,
             pdtName,
             pdtQuantity,
             description,
             dtype,
-            email: user.email
+            email: user.email,
+            imageUrls: existingImages
         };
         formData.append("productDetailJson", JSON.stringify(jsonData));
-        console.log("json:" + jsonData);
-        if (images.length > 0) {
-            images.forEach(file => formData.append('images', file));
+        console.log("registItems json:", JSON.stringify(jsonData));
+        if (newImages.length > 0) {
+            newImages.forEach(file => formData.append('images', file));
         }
-        console.log("user정보:" + user);
-        return api.post('/pdts/register', formData,{
+        console.log("registItems user정보:", JSON.stringify(user));
+        return api.post('/pdts/register', formData, {
             headers: {
                 "X-Auth-User": user.email,
                 "Authorization": user.accessToken,
@@ -86,8 +80,41 @@ export const postsAPI = {
             }
         });
     },
-    
-    // 아이템 삭제 - 오류때문에 수정했음
+
+    // ★ 업데이트 API (수정 모드: pdtId가 존재하는 경우)
+    updateItem: ({ pdtPrice, pdtName, pdtQuantity, description, dtype, images, user, pdtId }) => {
+        const formData = new FormData();
+        // 기존 이미지 URL과 새 이미지 File 객체 분리
+        const existingImages = images.filter(img => typeof img === 'string');
+        const newImages = images.filter(img => img instanceof File);
+        // 수정할 때는 pdtId가 반드시 있어야 함
+        const jsonData = {
+            pdtId,  // 수정 모드이면 pdtId를 포함
+            pdtPrice,
+            pdtName,
+            pdtQuantity,
+            description,
+            dtype,
+            email: user.email,
+            imageUrls: existingImages
+        };
+        formData.append("productDetailJson", JSON.stringify(jsonData));
+        console.log("updateItem json:", JSON.stringify(jsonData));
+        if (newImages.length > 0) {
+            newImages.forEach(file => formData.append('images', file));
+        }
+        console.log("updateItem user정보:", JSON.stringify(user));
+        // PUT 요청을 통해 업데이트 (엔드포인트: /pdts/update/{pdtId})
+        return api.put(`/pdts/update/${pdtId}`, formData, {
+            headers: {
+                "X-Auth-User": user.email,
+                "Authorization": user.accessToken,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    },
+
+    // 아이템 삭제 API
     deleteItem: async (productId, user) => {
         try {
             console.log("Deleting product:", productId);
@@ -104,10 +131,9 @@ export const postsAPI = {
         }
     },
 
-    // 아이템 수정
+    // 아이템 수정 (기존 updatePost 함수; 필요 시 사용)
     updatePost: (postId, title, content) =>
         api.put(`/posts/update/${postId}?title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`),
-
 
     // 아이템 찜 상태 확인
     checkLikeStatus: async (postId, username) => {
@@ -119,13 +145,9 @@ export const postsAPI = {
                     page: 0
                 }
             });
-
             console.log('Like status response:', response.data);
-
-            // post 배열에서 post_id로 매칭
             const likedPosts = response.data.post || [];
             return likedPosts.some(post => {
-                // 둘 다 숫자로 변환하여 비교
                 const likedPostId = Number(post.post_id);
                 const currentPostId = Number(postId);
                 console.log('Comparing postIds:', likedPostId, currentPostId);
@@ -156,23 +178,16 @@ export const postsAPI = {
                     page: 0
                 }
             });
-
             console.log('Follow status response:', response.data);
-
-            // users 배열에서 id로 매칭
             const followingUsers = response.data.users || [];
             const isFollowing = followingUsers.some(user => {
                 console.log('Comparing usernames:', user.id, targetUsername);
                 return user.id === targetUsername;
             });
-
-            // 로컬 스토리지에 상태 저장
             localStorage.setItem(`follow_${currentUsername}_${targetUsername}`, isFollowing);
-
             return isFollowing;
         } catch (error) {
             console.error('Check follow status error:', error);
-            // 로컬 스토리지에서 이전 상태 확인
             return localStorage.getItem(`follow_${currentUsername}_${targetUsername}`) === 'true';
         }
     },
@@ -183,13 +198,11 @@ export const postsAPI = {
             params: { username }
         }),
 
-    // 후기 관련 API 추가
+    // 후기 관련 API
     createComment: (content, postId, username) =>
         api.post(`/api/comments/newcomment?content=${encodeURIComponent(content)}&postId=${postId}&username=${username}`),
-
     updateComment: (commentId, content) =>
         api.put(`/api/comments/${commentId}?content=${encodeURIComponent(content)}`),
-
     deleteComment: (commentId, currentUser) => {
         const params = {};
         if (currentUser.role === 'ROLE_ADMIN') {
@@ -235,4 +248,6 @@ export const postsAPI = {
                 page: 0
             }
         }),
-}; 
+};
+
+export default postsAPI;
