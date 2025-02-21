@@ -18,7 +18,7 @@ function ItemRegistration() {
     const [description, setDescription] = useState('');
     const [dtype, setDtype] = useState('');
 
-    // 수정 시 기존 이미지는 읽기 전용으로 표시(전송하지 않음)
+    // 수정 시 기존 이미지는 읽기 전용으로 표시 (전송하지 않음)
     const [existingImages, setExistingImages] = useState([]);
     // 실제 등록(새 이미지)로 전송할 File 객체 배열
     const [newImages, setNewImages] = useState([]);
@@ -42,7 +42,7 @@ function ItemRegistration() {
                     setDescription(response.data.description || '');
                     setDtype(response.data.dtype || '');
                     if (response.data.imageUrls) {
-                        setExistingImages(response.data.imageUrls); // 기존 이미지는 읽기 전용
+                        setExistingImages(response.data.imageUrls); // 기존 이미지는 읽기 전용으로 저장
                     }
                 } catch (error) {
                     console.error('Error loading product:', error);
@@ -66,39 +66,41 @@ function ItemRegistration() {
             alert('상품 이름과 설명은 필수입니다.');
             return;
         }
-        // 수정 모드에서는 반드시 새 이미지를 업로드하도록 강제
+        // 수정 시에는 반드시 새 이미지를 업로드하도록 강제 (기존 이미지는 화면에만 표시)
         if (id && newImages.length === 0) {
             alert('수정 시 반드시 새 이미지를 업로드해야 합니다.');
             return;
         }
 
-        // 새로운 상품 등록을 위한 데이터 구성
+        // 신규 등록시에는 기존 이미지는 사용하고 싶지 않다면 (수정 시에는 삭제 처리)
+        // 여기서는 전송되는 이미지는 newImages만 사용합니다.
         const newItem = {
-            // 수정 모드에서는 pdtId를 전달하지 않으므로 백엔드가 기존 상품을 삭제한 후 새로 등록하도록 함
-            pdtId: null,
+            pdtId: null, // 신규 등록 시 pdtId는 null
             pdtPrice: String(pdtPrice).trim(),
             pdtName: pdtName.trim(),
             pdtQuantity: pdtQuantity ? pdtQuantity.trim() : '',
             description: description.trim(),
             dtype: dtype ? dtype.trim() : '',
-            // 전송되는 이미지는 새로 업로드한 이미지(newImages)만 사용
-            images: newImages,
+            images: newImages, // 새 이미지 파일만 전송
             user: user,
         };
 
         setIsLoading(true);
         try {
             if (id) {
-                // 수정 모드: 기존 상품 삭제 (사용자에게는 기존 상품이 보이지 않게 함)
+                // 수정 모드: 기존 상품 삭제 후 새 상품 등록
                 await postsAPI.deleteItem(id, user);
+                await postsAPI.registItems(newItem);
+                alert('상품이 수정되었습니다.');
+            } else {
+                // 신규 등록
+                await postsAPI.registItems(newItem);
+                alert('상품이 등록되었습니다.');
             }
-            // 신규 등록 (수정 모드인 경우 삭제 후 새 상품 등록)
-            await postsAPI.registItems(newItem);
-            alert('상품이 수정되었습니다.');
             navigate('/items');
         } catch (error) {
-            console.error('상품 수정 오류:', error);
-            alert('상품 수정에 실패했습니다.');
+            console.error('상품 등록/수정 오류:', error);
+            alert('상품 등록/수정에 실패했습니다.');
         } finally {
             setIsLoading(false);
         }
@@ -173,7 +175,7 @@ function ItemRegistration() {
                     />
                 </Form.Group>
 
-                {/* 수정 모드일 경우 기존 이미지는 읽기 전용으로 표시 */}
+                {/* 수정 모드: 기존 이미지 보여주기 (읽기 전용) */}
                 {id && existingImages.length > 0 && (
                     <Form.Group className="mb-3">
                         <Form.Label>기존 이미지 (수정 시 모두 제거됩니다)</Form.Label>
