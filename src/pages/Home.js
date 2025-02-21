@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,9 +13,9 @@ function Home() {
     const { user } = useAuth();
     const { homeData, loading, error } = useHomeData();
 
-    // 찜 목록 state
+    // 찜 목록 state (wishlistItems는 Set형태로 pdtId들을 저장)
     const [wishlistItems, setWishlistItems] = useState(new Set());
-    // 내 판매 목록의 상품 ID들을 저장할 state
+    // 내 판매 목록의 상품 ID 목록 (실제 pdtId가 저장됨)
     const [mySaleIds, setMySaleIds] = useState([]);
 
     const categories = [
@@ -28,7 +27,7 @@ function Home() {
         { name: "기타", icon: "📦" }
     ];
 
-    // 내 위시리스트 불러오기
+    // 위시리스트 불러오기 – 페이지 진입 시 최신 위시리스트 상태 반영
     useEffect(() => {
         if (!user || !user.email || !user.accessToken) return;
         getWishlistItems(0, 999, {
@@ -42,7 +41,7 @@ function Home() {
             .catch((err) => console.error('위시리스트 로딩 오류:', err));
     }, [user]);
 
-    // 내 판매 목록 불러오기 (내가 등록한 상품 ID 목록)
+    // 내 판매 상품 목록 불러오기
     useEffect(() => {
         if (!user || !user.email || !user.accessToken) return;
         getMySaleItems(0, 999, {
@@ -56,6 +55,7 @@ function Home() {
             .catch((err) => console.error('내 판매목록 로딩 오류:', err));
     }, [user]);
 
+    // 찜하기/찜취소 버튼 로직 – 다른 사용자가 등록한 상품에 대해서만 표시
     const handleToggleWishlist = async (item) => {
         if (!user) {
             alert('로그인이 필요한 서비스입니다.');
@@ -64,9 +64,10 @@ function Home() {
         }
         const email = user.email;
         try {
+            // homeData의 상품은 item.itemId가 실제로 pdtId값을 담고 있음
             if (wishlistItems.has(item.itemId)) {
-                // 찜 취소
-                await toggleWishdel(email, item.itemId);
+                // 찜 취소 (accessToken 전달)
+                await toggleWishdel(email, item.itemId, user.accessToken);
                 setWishlistItems((prev) => {
                     const newSet = new Set(prev);
                     newSet.delete(item.itemId);
@@ -74,8 +75,8 @@ function Home() {
                 });
                 alert('위시리스트에서 제거되었습니다!');
             } else {
-                // 찜 등록
-                await toggleWish(email, item.itemId, item.title, item.itemprice);
+                // 찜 등록 (accessToken 전달)
+                await toggleWish(email, item.itemId, item.title, item.itemprice, user.accessToken);
                 setWishlistItems((prev) => {
                     const newSet = new Set(prev);
                     newSet.add(item.itemId);
@@ -151,12 +152,13 @@ function Home() {
                       가격: ₩{Number(item.itemprice).toLocaleString()} 원
                     </span>
                                     </div>
+                                    {/* 다른 사용자가 등록한 상품일 경우에만 찜하기 버튼 표시 */}
                                     {user && !mySaleIds.includes(item.itemId) && (
                                         <Button className="btn-add-to-cart" onClick={() => handleToggleWishlist(item)}>
                                             {wishlistItems.has(item.itemId) ? '찜취소' : '찜해두기'}
                                         </Button>
                                     )}
-                                    {/* 내 판매 상품인 경우 버튼 제거 → 이미지와 이름으로 상세 페이지 이동 */}
+                                    {/* 내 판매 상품인 경우 버튼은 제거 – 이미지/이름 클릭 시 상세 페이지로 이동 */}
                                 </div>
                             </div>
                         ))}

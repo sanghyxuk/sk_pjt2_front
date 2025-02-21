@@ -58,6 +58,12 @@ function MyPurchasePage() {
                                     <Link to="/mypurchase" className="sidebar-link">My purchase</Link>
                                 </li>
                             </ul>
+                            <h3 className="sidebar-title">My WishList</h3>
+                            <ul className="sidebar-menu">
+                                <li className="menu-item">
+                                    <Link to="/wishlist" className="sidebar-link">My WishList</Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 

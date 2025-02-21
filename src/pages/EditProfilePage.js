@@ -47,7 +47,6 @@ function EditProfilePage() {
         }
     }, [user]);
 
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
@@ -56,27 +55,47 @@ function EditProfilePage() {
     const handleSave = async (e) => {
         e.preventDefault();
 
-        // 필수 필드 검증
-        if (!form.email.trim() || !form.Name.trim() || !form.Phonenumber.trim() || !form.address.trim()) {
+        // 필수 필드 체크
+        if (
+            !form.email.trim() ||
+            !form.Name.trim() ||
+            !form.Phonenumber.trim() ||
+            !form.address.trim()
+        ) {
             alert('모든 필수 정보를 입력해주세요.');
             return;
         }
 
-        // 기본 업데이트 데이터 (비밀번호 관련 필드는 제외)
+        // 현재 비밀번호는 반드시 필요함
+        if (!form.currentPassword.trim()) {
+            alert('현재 비밀번호를 입력해주세요.');
+            return;
+        }
+
+        // 기본 업데이트 데이터: currentPassword를 rawPassword로 사용
         let updatedProfile = {
             email: form.email,
             userName: form.Name,
             hp: form.Phonenumber,
             address: form.address,
+            rawPassword: form.currentPassword,
         };
 
-        // 비밀번호 변경을 원하는 경우에만, 모든 비밀번호 필드가 입력되었는지 검증 후 추가
-        if (
-            form.currentPassword.trim() !== '' ||
-            form.newPassword.trim() !== '' ||
-            form.confirmPassword.trim() !== ''
-        ) {
-            if (!form.currentPassword.trim() || !form.newPassword.trim() || !form.confirmPassword.trim()) {
+        // 새 비밀번호 필드가 모두 비어있다면,
+        // 현재 비밀번호를 새 비밀번호로 전송하도록 함
+        if (form.newPassword.trim() === '' && form.confirmPassword.trim() === '') {
+            updatedProfile = {
+                ...updatedProfile,
+                prevPassword: form.currentPassword,
+                newPassword: form.currentPassword,
+            };
+        } else {
+            // 새 비밀번호 입력이 있는 경우: 모든 비밀번호 필드를 체크
+            if (
+                !form.currentPassword.trim() ||
+                !form.newPassword.trim() ||
+                !form.confirmPassword.trim()
+            ) {
                 alert('비밀번호 변경을 위해 모든 비밀번호 필드를 입력해주세요.');
                 return;
             }
@@ -97,7 +116,7 @@ function EditProfilePage() {
             const response = await profileAPI.updateProfile(updatedProfile, {
                 email: user.email,
                 accessToken: user.accessToken,
-            }); //post요청
+            });
             console.log('프로필 업데이트 응답:', response.data);
             alert('개인정보가 수정되었습니다!');
         } catch (error) {

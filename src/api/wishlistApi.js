@@ -1,4 +1,3 @@
-// src/api/wishlistApi.js
 import api from "./axios";
 
 export const getWishlistItems = async (page = 1, size = 3, authData) => {

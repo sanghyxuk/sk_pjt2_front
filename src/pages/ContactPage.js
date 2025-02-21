@@ -1,6 +1,8 @@
 // src/pages/ContactPage.js
 import React, { useState } from 'react';
 import '../styles/ContactPage.css';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function ContactPage() {
     const [form, setForm] = useState({
@@ -9,8 +11,9 @@ function ContactPage() {
         phone: '',
         message: '',
     });
-
     const [loading, setLoading] = useState(false);
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     const validateEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -24,6 +27,7 @@ function ContactPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // 모든 필드가 입력되었는지 체크
         if (!form.name || !form.email || !form.phone || !form.message) {
             alert("모든 필드를 입력해주세요.");
             return;
@@ -34,14 +38,23 @@ function ContactPage() {
             return;
         }
 
+        // 만약 로그인하지 않은 상태라면 로그인 페이지로 이동
+        if (!user) {
+            alert("문의 전송을 위해 로그인 해주세요.");
+            navigate('/login');
+            return;
+        }
+
         setLoading(true);
 
         try {
+            // AuthContext의 user 정보를 이용하여 헤더 설정
             const response = await fetch("http://13.208.145.12:8080/inquiry/upload", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Auth-User": "user1234" // 테스트용, 실제 로그인된 사용자 정보로 대체
+                    "X-Auth-User": user.email,            // 실제 로그인된 사용자의 이메일 사용
+                    "Authorization": user.accessToken,      // 실제 로그인된 사용자의 토큰 사용
                 },
                 body: JSON.stringify(form),
             });

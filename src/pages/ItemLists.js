@@ -1,15 +1,12 @@
-// src/pages/ItemLists.js
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-
 import { useAuth } from '../context/AuthContext';
 import { useHomeData } from '../hooks/useHome';
 import { getMySaleItems } from '../api/mysaleApi';
 import { getWishlistItems, toggleWish, toggleWishdel } from '../api/wishlistApi';
 import Pagination from '../components/Pagination';
-
 import '../styles/common.css';
 import '../styles/ItemLists.css';
 
@@ -19,20 +16,16 @@ function ItemLists() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // URL 쿼리 파라미터
     const searchParams = new URLSearchParams(location.search);
     const selectedCategory = searchParams.get('category') || 'ALL';
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
     const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 0);
 
-    // 카테고리 배열 (ALL 포함)
-    const categories = ['ALL', '디지털기기', '가구/인테리어', '의류', '생활가전', '뷰티/미용', '기타'];
-
-    // 사용자 등록 상품(내 판매) 목록 및 위시리스트 목록
+    // 내 판매 및 위시리스트 목록
     const [mySaleIds, setMySaleIds] = useState([]);
     const [wishlistItems, setWishlistItems] = useState(new Set());
 
-    // (1) 내 판매 상품 목록 불러오기
+    // 내 판매 목록 불러오기
     useEffect(() => {
         if (user && user.email && user.accessToken) {
             getMySaleItems(0, 999, {
@@ -47,7 +40,7 @@ function ItemLists() {
         }
     }, [user]);
 
-    // (2) 위시리스트 목록 불러오기
+    // 위시리스트 불러오기
     useEffect(() => {
         if (user && user.email && user.accessToken) {
             getWishlistItems(0, 999, {
@@ -62,7 +55,7 @@ function ItemLists() {
         }
     }, [user]);
 
-    // (3) 페이지 진입 또는 쿼리 변경 시: 상품 목록 조회
+    // 쿼리 변경 시 상품 목록 조회
     useEffect(() => {
         const category = searchParams.get('category');
         if (category && category !== 'ALL') {
@@ -72,7 +65,6 @@ function ItemLists() {
         }
     }, [location.search, user]);
 
-    // 검색 폼 제출
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         const params = new URLSearchParams();
@@ -85,16 +77,14 @@ function ItemLists() {
         }
     };
 
-    // 페이지네이션 변경
     const handlePageChange = (pageNumber) => {
-        const newPageIndex = pageNumber - 1; // 0-based
+        const newPageIndex = pageNumber - 1;
         const params = new URLSearchParams(location.search);
         params.set('page', newPageIndex);
         navigate(`${location.pathname}?${params.toString()}`);
         setCurrentPage(newPageIndex);
     };
 
-    // "ALL" 버튼 클릭 시: 전체 상품 조회
     const handleShowAllProducts = () => {
         const params = new URLSearchParams();
         params.set('page', '0');
@@ -102,7 +92,6 @@ function ItemLists() {
         handleSearch('', 0);
     };
 
-    // 개별 카테고리 버튼 클릭 시
     const handleCategoryClick = async (category) => {
         const params = new URLSearchParams();
         if (category !== 'ALL') {
@@ -117,7 +106,7 @@ function ItemLists() {
         }
     };
 
-    // 찜하기/찜취소 처리
+    // 찜하기/찜취소 처리 (상품의 pdtId를 기준으로)
     const handleToggleWishlist = async (item) => {
         if (!user) {
             alert('로그인이 필요합니다.');
@@ -126,6 +115,7 @@ function ItemLists() {
         }
         try {
             const email = user.email;
+            // 주의: homeData의 상품은 item.itemId에 pdtId 값이 저장되어 있음
             const inWishlist = wishlistItems.has(item.itemId);
             if (inWishlist) {
                 await toggleWishdel(email, item.itemId, user.accessToken);
@@ -231,10 +221,7 @@ function ItemLists() {
                                     <div className="price">₩{Number(item.itemprice).toLocaleString()}</div>
                                 </Link>
                                 {user && !isMine && (
-                                    <Button
-                                        className="btn-add-to-cart"
-                                        onClick={() => handleToggleWishlist(item)}
-                                    >
+                                    <Button className="btn-add-to-cart" onClick={() => handleToggleWishlist(item)}>
                                         {isWished ? '찜취소' : '찜해두기'}
                                     </Button>
                                 )}
@@ -249,7 +236,7 @@ function ItemLists() {
             {/* 페이지네이션 */}
             {totalPages > 0 && (
                 <Pagination
-                    currentPage={currentPage + 1}
+                    currentPage={currentPage + 1} // UI는 1-based
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
                 />

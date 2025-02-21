@@ -1,5 +1,6 @@
+// src/pages/ItemDetail.js
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Button, Form, Row, Col } from 'react-bootstrap';
+import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FaTrash, FaThumbsUp, FaHeart } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
@@ -39,13 +40,12 @@ function ItemDetail() {
     setCurrentCommentPage(pageNumber);
   };
 
-  // 🔹 페이지 초기화 시 서버에서 내 위시리스트를 불러와서 유지
+  // 찜 목록 state (전체 위시리스트)
   const [wishlistItems, setWishlistItems] = useState(new Set());
 
-  // 1) 마운트/유저 바뀔 때 “전체” 찜 목록 GET
+  // 1) 마운트/유저 변경 시 위시리스트 불러오기
   useEffect(() => {
     if (!user || !user.email || !user.accessToken) return;
-
     getWishlistItems(0, 999, {
       email: user.email,
       accessToken: user.accessToken,
@@ -59,17 +59,17 @@ function ItemDetail() {
         });
   }, [user]);
 
-  // 3) 찜하기/취소 버튼 로직
+  // 3) 찜하기/찜취소 버튼 로직 (다른 사용자가 등록한 상품에 대해서만 보임)
   const handleAddToWishlist = async (item) => {
     if (!user) {
-      alert('로그인이 필요합니다.');
+      alert('로그인이 필요한 서비스입니다.');
       navigate('/login');
       return;
     }
     const email = user.email;
     try {
       if (wishlistItems.has(item.pdtId)) {
-        // 찜취소
+        // 찜 취소
         await toggleWishdel(email, item.pdtId);
         setWishlistItems((prev) => {
           const newSet = new Set(prev);
@@ -78,7 +78,7 @@ function ItemDetail() {
         });
         alert('위시리스트에서 제거되었습니다!');
       } else {
-        // 찜하기
+        // 찜 등록
         await toggleWish(email, item.pdtId, item.pdtName, item.pdtPrice);
         setWishlistItems((prev) => {
           const newSet = new Set(prev);
@@ -93,25 +93,12 @@ function ItemDetail() {
     }
   };
 
-  // 더미 데이터에서 item 가져오기
-  {/*
-  useEffect(() => {
-    if (true) {
-      // 댓글 예시 데이터 추가
-      setCommentList([
-        { commentId: 1, userId: 1, nickname: "작성자 1", content: "첫 번째 후기입니다.", created: "2022-01-02" },
-        { commentId: 2, userId: 2, nickname: "작성자 2", content: "두 번째 후기입니다.", created: "2022-01-03" },
-      ]);
-    }
-  }, [id]);
-*/}
-
+  // 페이지 초기화 시 데이터 로드
   useEffect(() => {
     const navigationEntries = performance.getEntriesByType("navigation");
     const isBack = navigationEntries.length > 0 &&
         navigationEntries[0].type === "back_forward";
     setIsBackNavigation(isBack);
-
     fetchPostData();
   }, [id]);
 
@@ -119,9 +106,7 @@ function ItemDetail() {
     try {
       const response = await postsAPI.getPostDetail(id, isBackNavigation);
       console.log("response: " + JSON.stringify(response.data, null, 2));
-      console.log(user);
       setItem(response.data);
-
     } catch (error) {
       console.error('Error fetching post:', error);
       alert('게시글을 불러오는데 실패했습니다.');
@@ -133,57 +118,38 @@ function ItemDetail() {
       alert("로그인이 필요합니다.");
       return;
     }
-
     if (!item || !item.email) {
       alert("판매자 정보를 불러올 수 없습니다.");
       return;
     }
-
-    const sellerEmail = item.email; // ✅ 상품을 등록한 판매자의 이메일
+    const sellerEmail = item.email; // 상품 등록한 판매자 이메일
 
     try {
       console.log("🔎 기존 채팅방 확인 요청...");
-      console.log("🟢 로그인된 사용자 이메일:", user.email);
-      console.log("🟢 채팅하려는 상대방 이메일 (판매자):", sellerEmail);
-
-      // ✅ 1️⃣ 기존 채팅방 확인
       const response = await axios.get("http://13.208.145.12:8080/room/list", {
         headers: { "X-Auth-User": user.email }
       });
-
-      console.log("✅ 채팅방 목록 응답:", response.data);
-
       const existingRoom = response.data.find(room => {
         const userList = room.users || room.members || room.participants || [];
         return userList.includes(user.email) && userList.includes(sellerEmail);
       });
-
       if (existingRoom) {
-        console.log("✅ 기존 채팅방 발견:", existingRoom.roomUUID);
-        navigate(`/chat?roomUUID=${existingRoom.roomUUID}`);  // ✅ 기존 채팅방으로 이동
+        navigate(`/chat?roomUUID=${existingRoom.roomUUID}`);
         return;
       }
-
-      // ✅ 2️⃣ 기존 채팅방이 없으면 새로운 채팅방 생성
       console.log("🚀 기존 채팅방 없음 → 새로운 채팅방 생성 요청");
       const createResponse = await axios.post(
           `http://13.208.145.12:8080/room/create`,
-          {}, // ✅ Spring Boot에서 params만 읽도록 빈 객체 전달
+          {},
           {
             headers: {
-              "X-Auth-User": user.email, // ✅ 로그인한 사용자 이메일
+              "X-Auth-User": user.email,
               "Content-Type": "application/json"
             },
-            params: { user: sellerEmail } // ✅ 판매자 이메일을 쿼리 파라미터로 전달
+            params: { user: sellerEmail }
           }
       );
-
-      console.log("📢 백엔드 응답 전체:", createResponse.data);
-
-      // ✅ 3️⃣ 생성된 채팅방의 `roomUUID` 즉시 가져오기
       let newRoomUUID = null;
-
-      // 🔹 `room_user`의 응답 구조에서 `roomUUID` 찾기
       if (Array.isArray(createResponse.data) && createResponse.data.length > 0) {
         newRoomUUID = createResponse.data[0]?.roomUUID || createResponse.data[0]?.room?.roomUUID;
       } else if (createResponse.data?.roomUUID) {
@@ -191,28 +157,20 @@ function ItemDetail() {
       } else if (createResponse.data?.room) {
         newRoomUUID = createResponse.data.room.roomUUID;
       }
-
       if (!newRoomUUID) {
-        console.warn("⚠ 채팅방이 생성되었으나 UUID를 찾을 수 없음.");
-        console.log("🔍 백엔드 응답 데이터:", createResponse.data);
+        console.warn("⚠ 채팅방 생성되었으나 UUID를 찾을 수 없음.");
         alert("채팅방을 생성하는데 실패했습니다.");
         return;
       }
-
-      console.log("✅ 채팅방 생성 성공! 이동합니다. roomUUID:", newRoomUUID);
-      navigate(`/chat?roomUUID=${newRoomUUID}`);  // ✅ 새 채팅방으로 이동
-
+      navigate(`/chat?roomUUID=${newRoomUUID}`);
     } catch (error) {
       console.error("❌ 채팅방 생성 또는 조회 중 오류 발생:", error);
-
       if (error.response) {
         console.error("❌ 서버 응답 데이터:", error.response.data);
       }
-
       alert("채팅방을 불러오는 중 오류가 발생했습니다.");
     }
   };
-
 
   if (!item) return <div>로딩 중...</div>;
 
@@ -244,31 +202,31 @@ function ItemDetail() {
                 <h4>{item.pdtName}</h4>
                 <h3 className="item-price">\{item.pdtPrice}</h3>
                 <p>{item.description}</p>
-
                 <div className="divider"></div>
-
                 <div className="like-section">
-                  <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
-                    <FaHeart/>
-                    {wishlistItems.has(item.pdtId) ? ' 찜취소' : ' 찜해두기'}
-                  </Button>
+                  {/* 상품 등록자가 아닌 경우에만 찜하기 버튼 표시 */}
+                  {!(user && item.email === user.email) && (
+                      <Button className="btn-add-to-cart" onClick={() => handleAddToWishlist(item)}>
+                        <FaHeart />
+                        {wishlistItems.has(item.pdtId) ? ' 찜취소' : ' 찜해두기'}
+                      </Button>
+                  )}
                 </div>
-
-
                 <div className="action-buttons mt-3">
                   <div>
-
-                    <Button
-                        variant="primary"
-                        className="me-2"
-                        onClick={() => handleCreateOrJoinChat(item.sellerEmail)}
-                    >
-                      채팅하기
-                    </Button>
-
+                    {/* 상품 등록자가 아닌 경우에만 채팅하기 버튼 표시 */}
+                    {!(user && item.email === user.email) && (
+                        <Button
+                            variant="primary"
+                            className="me-2"
+                            onClick={() => handleCreateOrJoinChat(item.sellerEmail)}
+                        >
+                          채팅하기
+                        </Button>
+                    )}
                   </div>
                   <div>
-
+                    {/* 상품 등록자이면 수정/삭제 버튼 표시 */}
                     {user && item && hasDeletePermission(user, item) && (
                         <>
                           <Button
@@ -298,16 +256,12 @@ function ItemDetail() {
                           </Button>
                         </>
                     )}
-
-
-
                   </div>
                 </div>
                 <div className="action-buttons delivery mt-3">
                   <Button variant="success">배달 \3000</Button>
                   <Button variant="success">직거래</Button>
                 </div>
-
                 <div className="item-meta">
                   <span className="item-date">2020.2.2.</span>
                   <span className="item-views">조회수: 3</span>
