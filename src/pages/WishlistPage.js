@@ -78,7 +78,7 @@ function WishListPage() {
                                             <div className="item-card" key={item.pdtId}>
                                                 <Link to={`/items/${item.pdtId}`} style={{ textDecoration: 'none', color: 'black' }}>
                                                     <img src={item.imageUrl?.[0] || 'default-image-url.jpg'} alt={item.pdtName} />
-                                                    <h3 style={{ textDecoration: 'none', color: 'black' }}>
+                                                    <h3 className="product-title-link" style={{ textDecoration: 'none', color: 'black' }}>
                                                         {item.pdtName}
                                                     </h3>
                                                 </Link>

@@ -270,26 +270,35 @@ function ItemDetail() {
                   <div>
 
                     {user && item && hasDeletePermission(user, item) && (
-                        <Button
-                            variant="primary"
-                            className="me-2"
-                            onClick={async () => {
-                              const confirmDelete = window.confirm("정말로 상품을 삭제하시겠습니까?");
-                              if (!confirmDelete) return;
-
-                              try {
-                                await postsAPI.deleteItem(item.pdtId, user);
-                                alert("상품이 삭제되었습니다.");
-                                navigate(-1);
-                              } catch (error) {
-                                alert("상품 삭제에 실패했습니다.");
-                                console.error(error);
-                              }
-                            }}
-                        >
-                          상품삭제
-                        </Button>
+                        <>
+                          <Button
+                              variant="primary"
+                              className="me-2"
+                              onClick={() => navigate(`/items/edit/${item.pdtId}`)}
+                          >
+                            수정하기
+                          </Button>
+                          <Button
+                              variant="primary"
+                              className="me-2"
+                              onClick={async () => {
+                                const confirmDelete = window.confirm("정말로 상품을 삭제하시겠습니까?");
+                                if (!confirmDelete) return;
+                                try {
+                                  await postsAPI.deleteItem(item.pdtId, user);
+                                  alert("상품이 삭제되었습니다.");
+                                  navigate(-1);
+                                } catch (error) {
+                                  alert("상품 삭제에 실패했습니다.");
+                                  console.error(error);
+                                }
+                              }}
+                          >
+                            상품삭제
+                          </Button>
+                        </>
                     )}
+
 
 
                   </div>
