@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d667ecf2-f3cd-4b80-90cb-e8182bb9dfe0" name="Changes" comment="">
+    <list default="true" id="d667ecf2-f3cd-4b80-90cb-e8182bb9dfe0" name="Changes" comment="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 +">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/posts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/wishlistApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/wishlistApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ItemDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ItemLists.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemLists.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ItemRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemRegistration.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/MyPurchasePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MyPurchasePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/MySalePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MySalePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,10 +81,23 @@
       <updated>1739950366454</updated>
       <workItem from="1739950367581" duration="1163000" />
     </task>
+    <task id="LOCAL-00001" summary="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 +">
+      <option name="closed" value="true" />
+      <created>1740067882269</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740067882269</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 +" />
+    <option name="LAST_COMMIT_MESSAGE" value="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 +" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
