@@ -57,7 +57,7 @@ const Chat = () => {
         console.log(`서버 연결 시도 - 사용자: ${userEmail}`);
 
         const stompClient = new Client({
-            brokerURL: 'ws://56.155.12.67:8070/ws-stomp',
+            brokerURL: 'ws://13.208.52.153:8070/ws-stomp',
             debug: (str) => console.log("🟢 WebSocket Debug:", str),
             reconnectDelay: 5000000,
             connectHeaders: { "sender": userEmail }

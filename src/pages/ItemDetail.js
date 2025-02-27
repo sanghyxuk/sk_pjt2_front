@@ -146,7 +146,7 @@ function ItemDetail() {
               "X-Auth-User": user.email,
               "Content-Type": "application/json"
             },
-            params: { user: sellerEmail }
+            params: { user: sellerEmail, name: item.pdtName }
           }
       );
       let newRoomUUID = null;
