@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://13.208.145.12:8080'; // 백엔드 서버 주소
+const API_BASE_URL = 'http://56.155.23.170:8080'; // 백엔드 서버 주소
 
 const api = axios.create({
     baseURL: API_BASE_URL,

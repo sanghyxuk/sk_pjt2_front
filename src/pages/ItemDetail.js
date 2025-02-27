@@ -126,7 +126,7 @@ function ItemDetail() {
 
     try {
       console.log("🔎 기존 채팅방 확인 요청...");
-      const response = await axios.get("http://13.208.145.12:8080/room/list", {
+      const response = await axios.get("http://56.155.23.170:8080/room/list", {
         headers: { "X-Auth-User": user.email }
       });
       const existingRoom = response.data.find(room => {
@@ -139,7 +139,7 @@ function ItemDetail() {
       }
       console.log("🚀 기존 채팅방 없음 → 새로운 채팅방 생성 요청");
       const createResponse = await axios.post(
-          `http://13.208.145.12:8080/room/create`,
+          `http://56.155.23.170:8080/room/create`,
           {},
           {
             headers: {

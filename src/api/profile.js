@@ -22,5 +22,14 @@ export const profileAPI = {
                 'Authorization': authData.accessToken,
             }
         });
+    },
+
+    deleteAccount: (authData) => {
+        return api.delete('/auth/delete', {
+            headers: {
+                'X-Auth-User': authData.email,
+                'Authorization': authData.accessToken
+            }
+        });
     }
 };

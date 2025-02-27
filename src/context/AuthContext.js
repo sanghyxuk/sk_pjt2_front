@@ -66,6 +66,12 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
+            if (user) {
+                await authAPI.logout({
+                    email: user.email,
+                    accessToken: user.accessToken
+                });
+            }
 
             // 로그아웃 시 state와 로컬 스토리지에서 user 제거
             setUser(null);
