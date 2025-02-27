@@ -15,19 +15,15 @@ export const authAPI = {
             }
         });
     },
-    // 로그인 성공 후 사용자 정보 즉시 조회
-    //if (response.data === "Login Success") {
-    // const userResponse = await api.get('/do');
-    // return userResponse;
-    // }
-    //return response;
-
     // 로그아웃
-    logout: async () => {
+    logout: async (userData) => {
         try {
-            const response = await api.post('/logout', null, {
+            const response = await api.post('/auth/logout', null, {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    // 로그아웃 시 이메일, 액세스 토큰을 헤더에 추가
+                    'X-Auth-User': userData.email,
+                    'Authorization': userData.accessToken,
+                    'Content-Type': 'application/json'
                 }
             });
 

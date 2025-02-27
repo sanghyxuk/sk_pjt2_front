@@ -1,6 +1,6 @@
 // src/pages/EditProfilePage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/EditProfilePage.css';
 import { profileAPI } from '../api/profile';
 import { useAuth } from '../context/AuthContext';
@@ -16,7 +16,8 @@ function EditProfilePage() {
         confirmPassword: '',
     });
 
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     // 프로필 조회: GET /user/modify
     useEffect(() => {
@@ -26,8 +27,7 @@ function EditProfilePage() {
                 accessToken: user.accessToken,
             })
                 .then(response => {
-                    // 백엔드 응답 구조가 { user: { ... } } 이므로,
-                    // response.data에서 user 객체를 추출하도록 수정함
+                    // 백엔드 응답 구조 { user: { ... } }
                     const data = response.data.user;
                     console.log('프로필 조회 응답 데이터:', data);
                     setForm({
@@ -47,42 +47,41 @@ function EditProfilePage() {
         }
     }, [user]);
 
+    // 폼 입력 변경 핸들러
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
+    // 개인정보 수정 (POST /user/modify)
     const handleSave = async (e) => {
         e.preventDefault();
 
         // 필수 필드 체크
-        if (
-            !form.email.trim() ||
+        if (!form.email.trim() ||
             !form.Name.trim() ||
             !form.Phonenumber.trim() ||
-            !form.address.trim()
-        ) {
+            !form.address.trim()) {
             alert('모든 필수 정보를 입력해주세요.');
             return;
         }
 
-        // 현재 비밀번호는 반드시 필요함
+        // 현재 비밀번호는 반드시 필요
         if (!form.currentPassword.trim()) {
             alert('현재 비밀번호를 입력해주세요.');
             return;
         }
 
-        // 기본 업데이트 데이터: currentPassword를 rawPassword로 사용
+        // 기본 업데이트 데이터
         let updatedProfile = {
             email: form.email,
             userName: form.Name,
             hp: form.Phonenumber,
             address: form.address,
-            rawPassword: form.currentPassword,
+            rawPassword: form.currentPassword
         };
 
-        // 새 비밀번호 필드가 모두 비어있다면,
-        // 현재 비밀번호를 새 비밀번호로 전송하도록 함
+        // 새 비밀번호가 비어있다면 currentPassword로 대체
         if (form.newPassword.trim() === '' && form.confirmPassword.trim() === '') {
             updatedProfile = {
                 ...updatedProfile,
@@ -90,12 +89,8 @@ function EditProfilePage() {
                 newPassword: form.currentPassword,
             };
         } else {
-            // 새 비밀번호 입력이 있는 경우: 모든 비밀번호 필드를 체크
-            if (
-                !form.currentPassword.trim() ||
-                !form.newPassword.trim() ||
-                !form.confirmPassword.trim()
-            ) {
+            // 새 비밀번호 필드가 있으면 유효성 확인
+            if (!form.newPassword.trim() || !form.confirmPassword.trim()) {
                 alert('비밀번호 변경을 위해 모든 비밀번호 필드를 입력해주세요.');
                 return;
             }
@@ -115,7 +110,7 @@ function EditProfilePage() {
         try {
             const response = await profileAPI.updateProfile(updatedProfile, {
                 email: user.email,
-                accessToken: user.accessToken,
+                accessToken: user.accessToken
             });
             console.log('프로필 업데이트 응답:', response.data);
             alert('개인정보가 수정되었습니다!');
@@ -125,8 +120,34 @@ function EditProfilePage() {
         }
     };
 
+    // 취소
     const handleCancel = () => {
         alert('수정을 취소합니다');
+    };
+
+    // ✅ 회원탈퇴 (DELETE /auth/delete)
+    const handleDeleteAccount = async () => {
+        const confirmDelete = window.confirm("정말 회원탈퇴 하시겠습니까?");
+        if (!confirmDelete) return;
+
+        try {
+            // API 호출
+            await profileAPI.deleteAccount({
+                email: user.email,
+                accessToken: user.accessToken
+            });
+            alert('회원탈퇴가 완료되었습니다.');
+
+            await logout();
+
+            // 로그아웃 + 홈으로 이동 (예시)
+            // 만약 useAuth에 logout 함수가 있다면 여기서 logout() 호출
+            // navigate('/') → 홈 화면
+            navigate('/');
+        } catch (error) {
+            console.error('회원탈퇴 오류:', error);
+            alert('회원탈퇴 중 오류가 발생했습니다.');
+        }
     };
 
     return (
@@ -166,39 +187,101 @@ function EditProfilePage() {
                                 <div className="row">
                                     <div className="field">
                                         <label className="label">Name</label>
-                                        <input className="input" name="Name" value={form.Name} onChange={handleChange} />
+                                        <input
+                                            className="input"
+                                            name="Name"
+                                            value={form.Name}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                     <div className="field">
                                         <label className="label">Phone number</label>
-                                        <input className="input" name="Phonenumber" value={form.Phonenumber} onChange={handleChange} />
+                                        <input
+                                            className="input"
+                                            name="Phonenumber"
+                                            value={form.Phonenumber}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="field">
                                         <label className="label">Email</label>
-                                        <input className="input" type="email" name="email" value={form.email} onChange={handleChange} />
+                                        <input
+                                            className="input"
+                                            type="email"
+                                            name="email"
+                                            value={form.email}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                     <div className="field">
                                         <label className="label">Address</label>
-                                        <input className="input" name="address" value={form.address} onChange={handleChange} />
+                                        <input
+                                            className="input"
+                                            name="address"
+                                            value={form.address}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                 </div>
                                 <h2 className="section-title">Password Changes</h2>
                                 <div className="field">
                                     <label className="label">Current Password</label>
-                                    <input className="input" type="password" name="currentPassword" value={form.currentPassword} onChange={handleChange} />
+                                    <input
+                                        className="input"
+                                        type="password"
+                                        name="currentPassword"
+                                        value={form.currentPassword}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <div className="field">
                                     <label className="label">New Password</label>
-                                    <input className="input" type="password" name="newPassword" value={form.newPassword} onChange={handleChange} />
+                                    <input
+                                        className="input"
+                                        type="password"
+                                        name="newPassword"
+                                        value={form.newPassword}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <div className="field">
                                     <label className="label">Confirm New Password</label>
-                                    <input className="input" type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
+                                    <input
+                                        className="input"
+                                        type="password"
+                                        name="confirmPassword"
+                                        value={form.confirmPassword}
+                                        onChange={handleChange}
+                                    />
                                 </div>
+
                                 <div className="button-row">
-                                    <button className="cancel-button" type="button" onClick={handleCancel}>Cancel</button>
-                                    <button className="save-button" type="submit">Save Changes</button>
+                                    <div className="left-button-container">
+                                        <button
+                                            type="button"
+                                            onClick={handleDeleteAccount}
+                                            className="cancel-button"
+                                        >
+                                            회원탈퇴
+                                        </button>
+                                    </div>
+                                    <div className="right-button-container">
+                                        <button
+                                            className="cancel-button"
+                                            type="button"
+                                            onClick={handleCancel}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className="save-button"
+                                            type="submit"
+                                        >
+                                            Save Changes
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
