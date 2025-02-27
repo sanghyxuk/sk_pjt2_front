@@ -6,7 +6,7 @@ export const authAPI = {
 
     // 로그인
     login: (userData) => {
-        return api.post('http://13.208.145.12:8080/auth/login', {
+        return api.post('http://56.155.23.170:8080/auth/login', {
             email: userData.email,
             password: userData.password
         }, {
@@ -50,7 +50,7 @@ export const authAPI = {
 
     // 회원가입 (JSON 방식)
     signup: (userData) => {
-        return api.post('http://13.208.145.12:8080/user/signup', {
+        return api.post('http://56.155.23.170:8080/user/signup', {
             email: userData.email,
             userName: userData.userName,
             password: userData.password

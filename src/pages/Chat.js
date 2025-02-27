@@ -44,7 +44,7 @@ const Chat = () => {
         if (!userEmail) return;
 
         console.log("채팅방 목록 조회중...");
-        axios.get("http://13.208.145.12:8080/room/list", { headers: { "X-Auth-User": userEmail } })
+        axios.get("http://56.155.23.170:8080/room/list", { headers: { "X-Auth-User": userEmail } })
             .then(res => setChatRooms(res.data))
             .catch(err => console.log(err));
         console.log("채팅방 목록 조회완료");
@@ -67,7 +67,7 @@ const Chat = () => {
             console.log("✅ WebSocket 연결 성공");
             stompClient.subscribe(`/sub/chat/room/${selectedChat}`, chatting, { id: `cus-${selectedChat}` });
 
-            axios.get(`http://13.208.145.12:8080/chat/room/${selectedChat}`)
+            axios.get(`http://56.155.23.170:8080/chat/room/${selectedChat}`)
                 .then(response => {
                     console.log("✅ 채팅 내역 불러오는 중...");
                     let msg = response.data.map(c => ({

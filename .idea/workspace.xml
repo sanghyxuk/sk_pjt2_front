@@ -6,6 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d667ecf2-f3cd-4b80-90cb-e8182bb9dfe0" name="Changes" comment="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 +">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ContactPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ContactPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ItemDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ItemLists.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemLists.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,12 +27,12 @@
     &quot;assignee&quot;: &quot;sanghyxuk&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/sanghyxuk/sk_pjt2_front.git&quot;,
-    &quot;accountId&quot;: &quot;aa15cec4-e3b4-40a1-ba1a-2360896543c2&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/sanghyxuk/sk_pjt2_front.git",
+    "accountId": "901db54d-6200-4d2f-baf4-a670d7b724c0"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -41,33 +47,21 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/sk_pjt2/sk_pjt2_front",
+    "last_opened_file_path": "C:/Users/r2com/Downloads/sk_pjt2_front (1)",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="sk_pjt2_front" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="sk_pjt2_front" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
       </set>
     </attachedChunks>
   </component>
@@ -80,6 +74,7 @@
       <option name="presentableId" value="Default" />
       <updated>1739950366454</updated>
       <workItem from="1739950367581" duration="1163000" />
+      <workItem from="1740556076748" duration="9727000" />
     </task>
     <task id="LOCAL-00001" summary="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 +">
       <option name="closed" value="true" />
@@ -103,9 +98,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/pages/ItemDetail.js</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/src/pages/ItemLists.js</url>
+          <line>229</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

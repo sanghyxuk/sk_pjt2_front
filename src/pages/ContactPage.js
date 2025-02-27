@@ -49,7 +49,7 @@ function ContactPage() {
 
         try {
             // AuthContext의 user 정보를 이용하여 헤더 설정
-            const response = await fetch("http://13.208.145.12:8080/inquiry/upload", {
+            const response = await fetch("http://56.155.23.170:8080/inquiry/upload", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
