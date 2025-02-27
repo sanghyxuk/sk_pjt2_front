@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d667ecf2-f3cd-4b80-90cb-e8182bb9dfe0" name="Changes" comment="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 + 상세 페이지 자신이 작성한 글에만 수정하기 삭제하기 버튼 나오게 하고 아니면 채팅하기 나오게 함">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/EditProfilePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/EditProfilePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ItemDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/EditProfilePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/EditProfilePage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ItemLists.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ItemLists.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +42,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging mine1",
+    "git-widget-placeholder": "mine1",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/sk_pjt2/sk_pjt2_front",
     "node.js.detected.package.eslint": "true",
@@ -130,7 +123,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740105246700</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="수정하기 수정(이미지 새로 넣기,기존 상품 페이지 제거) + 상품 상세보기 버튼 완전 제거(상품 이미지와 상품 이름 클릭으로 상세 페이지 이동) + 카카오톡 , 구글 로그인 회원가입 제거 + 아이템 리스트 페이지 카테고리 표시 수정 + 상세 페이지 자신이 작성한 글에만 수정하기 삭제하기 버튼 나오게 하고 아니면 채팅하기 나오게 함">
+      <option name="closed" value="true" />
+      <created>1740651592334</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740651592334</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
