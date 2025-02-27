@@ -100,7 +100,7 @@ h2 {
 .me-2 {
   white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
   margin: 0 5px; /* 버튼 사이의 간격 */
-  background-color: #4451db;
+  background-color: #4451db !important;
   color: white;
   border: none;
   padding: 10px 10px;
@@ -110,7 +110,7 @@ h2 {
 }
 
 .me-2:hover {
-  background-color: #2833a1;
+  background-color: #2833a1 !important;
 }
 
 
